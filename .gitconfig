@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Dalton Dayton
+	email = 50755420+DaltonDayton@users.noreply.github.com
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
