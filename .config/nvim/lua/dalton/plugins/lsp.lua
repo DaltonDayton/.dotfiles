@@ -31,8 +31,6 @@ return {
 		require('mason-lspconfig').setup({
 			ensure_installed = {
                 "clangd",
-                "clang-format",
-                "codelldb"
             },
 			handlers = {
 				lsp_zero.default_setup,
@@ -41,9 +39,14 @@ return {
 					require('lspconfig').lua_ls.setup(lua_opts)
 				end,
 			}
-		})
+        })
 
-		local cmp = require('cmp')
+        require("lspconfig").clangd.setup({
+            on_attach = function()
+            end
+        })
+
+        local cmp = require('cmp')
 		local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
 		cmp.setup({
