@@ -4,7 +4,7 @@ return {
 	-- config = function()
 	-- 	vim.cmd([[colorscheme nightfly]])
 	-- end,
-	
+
 	"rose-pine/neovim",
 	name = "rose-pine",
 	config = function()
