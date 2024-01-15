@@ -37,8 +37,9 @@ if [ "$OS" == "Linux" ]; then
 
 	# Declare an array of symlinks to be created
 	symlinks=(
-		~/.gitconfig:~/.dotfiles/.gitconfig
-		~/.config/nvim:~/.dotfiles/.config/nvim
+		"$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
+		"$HOME/.zshrc:$HOME/.dotfiles/.zshrc"
+		"$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
 	)
 
 	# Loop through the array and create symlinks
