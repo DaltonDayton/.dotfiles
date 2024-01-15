@@ -4,18 +4,56 @@
 OS=$(uname)
 
 if [ "$OS" == "Linux" ]; then
-  echo "Linux OS detected"
+	echo "Linux OS detected"
 
-  # Determine Linux distribution
-  if [[ -f /etc/fedora-release ]]; then
-    echo "Fedora detected"
+	echo ""
+	echo "##################"
+	echo "#### Packages ####"
+	echo "##################"
+	echo ""
 
-    # Determine graphics card
-    if [[ $(lspci | grep -i nvidia) ]]; then
-      echo "Nvidia graphics card detected"
-      # sudo dnf install -y akmod-nvidia
-    fi # End of Nvidia graphics card detection
+	# Declare an array of packages to be checked and installed
+	packages=(
+		"neovim-git"
+		"wl-clipboard"
+	)
 
-  fi # End of Fedora detection
+	# Loop through the array and check/install packages
+	for package in "${packages[@]}"; do
+		# Check if the package is already installed with yay
+		if yay -Q "$package" >/dev/null 2>&1; then
+			echo ">>> $package is already installed"
+		else
+			echo "Installing $package"
+			yay -S "$package"
+		fi
+	done
+
+	echo ""
+	echo "##################"
+	echo "#### Symlinks ####"
+	echo "##################"
+	echo ""
+
+	# Declare an array of symlinks to be created
+	symlinks=(
+		~/.gitconfig:~/.dotfiles/.gitconfig
+		~/.bashrc.d/:~/.dotfiles/.bashrc.d/
+		~/.config/nvim:~/.dotfiles/.config/nvim
+	)
+
+	# Loop through the array and create symlinks
+	for symlink_pair in "${symlinks[@]}"; do
+		source="${symlink_pair#*:}"
+		destination="${symlink_pair%%:*}"
+
+		# Check if the symlink exists and is not broken
+		if [ ! -e "$destination" ]; then
+			echo "Creating symlink for $destination"
+			ln -s "$source" "$destination"
+		else
+			echo ">>> $destination symlink already exists"
+		fi
+	done
 
 fi # End of Linux OS detection
