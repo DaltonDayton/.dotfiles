@@ -7,11 +7,36 @@ if [ "$OS" == "Linux" ]; then
 	echo "Linux OS detected"
 
 	echo ""
-	echo "##################"
-	echo "#### Packages ####"
-	echo "##################"
+	echo "###########################"
+	echo "#### Packages / Pacman ####"
+	echo "###########################"
 	echo ""
+	# Declare an array of packages to be checked and installed
+	packages=(
+		"zsh"
+		"zsh-completions"
+		"zsh-autosuggestions"
+		"fzf"
+		"zsh-syntax-highlighting"
+		"tere"
+	)
 
+	# Loop through the array and check/install packages
+	for package in "${packages[@]}"; do
+		# Check if the package is already installed with pacman
+		if pacman -Qq "$package" >/dev/null 2>&1; then
+			echo ">>> $package is already installed"
+		else
+			echo "Installing $package"
+			sudo pacman -S "$package" --noconfirm
+		fi
+	done
+
+	echo ""
+	echo "########################"
+	echo "#### Packages / yay ####"
+	echo "########################"
+	echo ""
 	# Declare an array of packages to be checked and installed
 	packages=(
 		"neovim-git"
