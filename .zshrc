@@ -107,6 +107,7 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/key-bindings.zsh
 # Type ** and hit tab (eg. with the cd command; works with directories, files, process IDs, hostnames, environment variables)
 source /usr/share/fzf/completion.zsh
+source /usr/share/nvm/init-nvm.sh
 
 # Sift through history for previous commands matching everything up to current cursor position.
 # Moves the cursor to the end of line after each match.

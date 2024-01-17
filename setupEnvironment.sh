@@ -65,6 +65,7 @@ if [ "$OS" == "Linux" ]; then
 		"$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
 		"$HOME/.zshrc:$HOME/.dotfiles/.zshrc"
 		"$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
+		"$HOME/.config/solaar:$HOME/.dotfiles/.config/solaar"
 		"$HOME/.config/hypr/hyprland.conf:$HOME/.dotfiles/.config/hypr/"
 	)
 
