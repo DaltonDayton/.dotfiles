@@ -39,6 +39,7 @@ if [ "$OS" == "Linux" ]; then
 		"neovim"
 		"solaar"
 		"nodejs"
+		"vlc"
 	)
 
 	# Loop through the array and check/install packages
@@ -52,6 +53,14 @@ if [ "$OS" == "Linux" ]; then
 		fi
 	done
 
+	# Special case for ffmpeg
+	if dnf list installed ffmpeg >/dev/null 2>&1; then
+		echo ">>> ffmpeg is already installed"
+	else
+		echo "Installing ffmpeg with --allowerasing"
+		sudo dnf install ffmpeg -y --allowerasing
+	fi
+
 	echo ""
 	echo "##################"
 	echo "#### Symlinks ####"
@@ -63,7 +72,7 @@ if [ "$OS" == "Linux" ]; then
 		"$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
 		"$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
 		"$HOME/.config/solaar:$HOME/.dotfiles/.config/solaar"
-		"$HOME/.config/hypr/hyprland.conf:$HOME/.dotfiles/.config/hypr"
+		"$HOME/.config/hypr:$HOME/.dotfiles/.config/hypr"
 		"$HOME/.config/fish:$HOME/.dotfiles/.config/fish"
 		"$HOME/.config/kitty:$HOME/.dotfiles/.config/kitty"
 	)
