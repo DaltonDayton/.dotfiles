@@ -28,6 +28,8 @@ if [ "$OS" == "Linux" ]; then
 		echo "RPM Fusion nonfree repository is already enabled."
 	fi
 
+	sudo dnf update
+
 	echo ""
 	echo "##########################"
 	echo "##### Packages / DNF #####"
@@ -41,6 +43,7 @@ if [ "$OS" == "Linux" ]; then
 		"nodejs"
 		"grim"
 		"slurp"
+		"rofi-wayland"
 		"vlc"
 	)
 
