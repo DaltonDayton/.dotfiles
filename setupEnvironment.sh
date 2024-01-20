@@ -39,6 +39,8 @@ if [ "$OS" == "Linux" ]; then
 		"neovim"
 		"solaar"
 		"nodejs"
+		"grim"
+		"slurp"
 		"vlc"
 	)
 
