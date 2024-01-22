@@ -21,16 +21,16 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- Paste over hightlighted text without losing original copy
-vim.keymap.set("x", "<leader>p", "\"_dP")
+vim.keymap.set("x", "<leader>p", '"_dP')
 
 -- Yank to system clipboard
-vim.keymap.set("n", "<leader>y", "\"+y")
-vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>Y", "\"+Y")
+vim.keymap.set("n", "<leader>y", '"+y')
+vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+Y')
 
 -- Delete to void register
-vim.keymap.set("n", "<leader>d", "\"_d")
-vim.keymap.set("v", "<leader>d", "\"_d")
+vim.keymap.set("n", "<leader>d", '"_d')
+vim.keymap.set("v", "<leader>d", '"_d')
 
 -- Ctrl-C is Escape
 vim.keymap.set("i", "<C-c>", "<Esc>")

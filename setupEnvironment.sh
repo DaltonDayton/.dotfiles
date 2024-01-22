@@ -7,10 +7,49 @@ if [ "$OS" == "Linux" ]; then
 	echo "Linux OS detected"
 
 	echo ""
+	echo "###########################"
+	echo "##### Update dnf.conf #####"
+	echo "###########################"
+	echo ""
+
+	CONFIG_FILE="/etc/dnf/dnf.conf"
+	CONFIG_LINES=(
+		"# Added for speed"
+		"fastestmirror=True"
+		"max_parallel_downloads=10"
+		"defaultyes=True"
+		"keepcache=True"
+	)
+
+	# Function to append a line if it does not exist and display appropriate message
+	append_if_not_exist() {
+		local line="$1"
+		local file="$2"
+		if grep -qF -- "$line" "$file"; then
+			echo "Configuration already present: $line"
+		else
+			# Adding a newline before the first line
+			if [[ "$line" == "${CONFIG_LINES[0]}" ]]; then
+				echo -e "\n$line" | sudo tee -a "$file" >/dev/null
+			else
+				echo "$line" | sudo tee -a "$file" >/dev/null
+			fi
+			echo "Configuration added: $line"
+		fi
+	}
+
+	# Iterate over each config line and append if not exist
+	for line in "${CONFIG_LINES[@]}"; do
+		append_if_not_exist "$line" "$CONFIG_FILE"
+	done
+
+	echo ""
 	echo "#################################"
 	echo "##### Enabling Repositories #####"
 	echo "#################################"
 	echo ""
+
+	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 	# Check and enable RPM Fusion free repository
 	if ! dnf repolist | grep -q rpmfusion-free; then
@@ -44,6 +83,7 @@ if [ "$OS" == "Linux" ]; then
 		"grim"
 		"slurp"
 		"rofi-wayland"
+		"swaylock"
 		"vlc"
 	)
 
