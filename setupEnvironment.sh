@@ -67,6 +67,9 @@ if [ "$OS" == "Linux" ]; then
 		echo "RPM Fusion nonfree repository is already enabled."
 	fi
 
+	echo ""
+	echo ">>> dnf update"
+	echo ""
 	sudo dnf update
 
 	echo ""
@@ -120,6 +123,7 @@ if [ "$OS" == "Linux" ]; then
 		"$HOME/.config/hypr:$HOME/.dotfiles/.config/hypr"
 		"$HOME/.config/fish:$HOME/.dotfiles/.config/fish"
 		"$HOME/.config/kitty:$HOME/.dotfiles/.config/kitty"
+		"$HOME/.config/waybar:$HOME/.dotfiles/.config/waybar"
 	)
 
 	# Loop through the array and create symlinks
