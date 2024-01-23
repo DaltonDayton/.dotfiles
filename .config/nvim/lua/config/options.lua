@@ -13,10 +13,10 @@ vim.opt.smartindent = true
 vim.opt.wrap = false
 
 -- no backups from vim, give undotree access to long running undos
---vim.opt.swapfile = false
---vim.opt.backup = false
---vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
---vim.opt.undofile = true
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
 
 -- No sticky highligting, but enable incremental search highlighting
 vim.opt.hlsearch = false
@@ -33,6 +33,3 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
-
-vim.g.mapleader = " "
-
