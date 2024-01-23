@@ -1,13 +1,5 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-
--- Fat cursor in insert mode
--- vim.opt.guicursor = ""
-
 -- Line Numbers
 vim.opt.nu = true
-
 -- Relative Line Numbers
 vim.opt.relativenumber = true
 
@@ -27,8 +19,8 @@ vim.opt.wrap = false
 --vim.opt.undofile = true
 
 -- No sticky highligting, but enable incremental search highlighting
---vim.opt.hlsearch = false
---vim.opt.incsearch = true
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
 
 -- Good colors
 vim.opt.termguicolors = true
@@ -41,3 +33,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.g.mapleader = " "
+
