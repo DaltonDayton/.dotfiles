@@ -544,6 +544,10 @@ keys.clientkeys = gears.table.join(
       end,
       {description = "toggle fullscreen", group = "client"}
    ),
+    -- toggle floating
+    awful.key({modkey, "Control" }, "space",
+        awful.client.floating.toggle,
+        {description = "toggle floating", group = "client"}),
 
    -- close client
    awful.key({modkey}, "q",
