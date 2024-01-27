@@ -124,6 +124,7 @@ if [ "$OS" == "Linux" ]; then
 		"$HOME/.config/fish:$HOME/.dotfiles/.config/fish"
 		"$HOME/.config/kitty:$HOME/.dotfiles/.config/kitty"
 		"$HOME/.config/waybar:$HOME/.dotfiles/.config/waybar"
+		"$HOME/.config/awesome:$HOME/.dotfiles/.config/awesome"
 	)
 
 	# Loop through the array and create symlinks
