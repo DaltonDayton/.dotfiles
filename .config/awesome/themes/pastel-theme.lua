@@ -50,7 +50,7 @@ theme.gap_single_client = true
 -- Window Borders
 theme.border_width = dpi(5)
 theme.border_normal = theme.bg_normal
-theme.border_focus = "#fc0fc0"
+theme.border_focus = "#e91e63"
 theme.border_marked = theme.fg_urgent
 
 -- Taglist
