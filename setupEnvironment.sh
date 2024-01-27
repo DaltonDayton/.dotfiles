@@ -119,6 +119,7 @@ if [ "$OS" == "Linux" ]; then
 	symlinks=(
 		"$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
 		"$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
+		"$HOME/.config/tmux:$HOME/.dotfiles/.config/tmux"
 		"$HOME/.config/solaar:$HOME/.dotfiles/.config/solaar"
 		"$HOME/.config/hypr:$HOME/.dotfiles/.config/hypr"
 		"$HOME/.config/fish:$HOME/.dotfiles/.config/fish"
