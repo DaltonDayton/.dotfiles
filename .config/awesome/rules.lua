@@ -63,7 +63,7 @@ function rules.create(clientkeys, clientbuttons)
             maximized_horizontal = false,
             maximized_vertical = false,
             maximized = false,
-            },
+        },
       },
       -- Floating clients.
       {
