@@ -6,25 +6,25 @@ OS=$(uname)
 if [ "$OS" == "Linux" ]; then
     echo "Linux OS detected"
 
-    echo ""
-    echo ">>> Creating directories"
-    echo ""
-    # Declare an array of directories to be checked and created
-    directories=(
-        "$HOME/Pictures"
-        "$HOME/Pictures/Backgrounds"
-        "$HOME/Pictures/Screenshots"
-    )
-
-    # Loop through the array and create directories if they don't exist
-    for dir in "${directories[@]}"; do
-        if [ ! -d "$dir" ]; then
-            echo "Creating directory: $dir"
-            mkdir -p "$dir"
-        else
-            echo ">>> Directory already exists: $dir"
-        fi
-    done
+#    echo ""
+#    echo ">>> Creating directories"
+#    echo ""
+#    # Declare an array of directories to be checked and created
+#    directories=(
+#        "$HOME/Pictures"
+#        "$HOME/Pictures/Backgrounds"
+#        "$HOME/Pictures/Screenshots"
+#    )
+#
+#    # Loop through the array and create directories if they don't exist
+#    for dir in "${directories[@]}"; do
+#        if [ ! -d "$dir" ]; then
+#            echo "Creating directory: $dir"
+#            mkdir -p "$dir"
+#        else
+#            echo ">>> Directory already exists: $dir"
+#        fi
+#    done
 
     echo ""
     echo ">>> update"
@@ -41,11 +41,11 @@ if [ "$OS" == "Linux" ]; then
         "neovim"
         "tmux"
         "solaar"
-        "swaybg"
-        "grim"
-        "slurp"
-        "vlc"
-        "ffmpeg"
+#        "swaybg"
+#        "grim"
+#        "slurp"
+#        "vlc"
+#        "ffmpeg"
     )
 
     # Loop through the array and check/install packages
@@ -71,8 +71,8 @@ if [ "$OS" == "Linux" ]; then
         "$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
         "$HOME/.config/tmux:$HOME/.dotfiles/.config/tmux"
         "$HOME/.config/solaar:$HOME/.dotfiles/.config/solaar"
-        "$HOME/.config/hypr:$HOME/.dotfiles/.config/hypr"
-        "$HOME/.config/kitty:$HOME/.dotfiles/.config/kitty"
+#        "$HOME/.config/hypr:$HOME/.dotfiles/.config/hypr"
+#        "$HOME/.config/kitty:$HOME/.dotfiles/.config/kitty"
     )
 
     # Loop through the array and create symlinks
@@ -89,36 +89,36 @@ if [ "$OS" == "Linux" ]; then
         fi
     done
 
-    echo ""
-    echo "###############"
-    echo "#### Fonts ####"
-    echo "###############"
-    echo ""
-
-    # Check if the .nerd-fonts directory exists
-    if [ ! -d "$HOME/.nerd-fonts" ]; then
-        echo "Cloning nerd-fonts repository..."
-        git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git "$HOME/.nerd-fonts"
-    else
-        echo ">>> .nerd-fonts directory already exists"
-    fi
-
-    # Declare an array of fonts to be checked and installed
-    fonts=(
-        "FiraCode"
-    )
-
-    # Loop through the array and check/install fonts
-    for font in "${fonts[@]}"; do
-        # Check if the font is already installed with fc-list
-        if ! fc-list | grep -qi "$font"; then
-            echo "Installing $font Nerd Font..."
-            cd "$HOME/.nerd-fonts"
-            ./install.sh "$font"
-        else
-            echo ">>> $font Nerd Font is already installed"
-        fi
-    done
+#    echo ""
+#    echo "###############"
+#    echo "#### Fonts ####"
+#    echo "###############"
+#    echo ""
+#
+#    # Check if the .nerd-fonts directory exists
+#    if [ ! -d "$HOME/.nerd-fonts" ]; then
+#        echo "Cloning nerd-fonts repository..."
+#        git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git "$HOME/.nerd-fonts"
+#    else
+#        echo ">>> .nerd-fonts directory already exists"
+#    fi
+#
+#    # Declare an array of fonts to be checked and installed
+#    fonts=(
+#        "FiraCode"
+#    )
+#
+#    # Loop through the array and check/install fonts
+#    for font in "${fonts[@]}"; do
+#        # Check if the font is already installed with fc-list
+#        if ! fc-list | grep -qi "$font"; then
+#            echo "Installing $font Nerd Font..."
+#            cd "$HOME/.nerd-fonts"
+#            ./install.sh "$font"
+#        else
+#            echo ">>> $font Nerd Font is already installed"
+#        fi
+#    done
 
 fi # End of Linux OS detection
 
