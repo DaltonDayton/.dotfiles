@@ -89,6 +89,8 @@ if [ "$OS" == "Linux" ]; then
         fi
     done
 
+    # TODO: https://asdf-vm.com/guide/getting-started.html
+
 #    echo ""
 #    echo "###############"
 #    echo "#### Fonts ####"
