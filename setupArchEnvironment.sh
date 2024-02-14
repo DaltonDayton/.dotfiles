@@ -41,6 +41,7 @@ if [ "$OS" == "Linux" ]; then
         "neovim"
         "tmux"
         "solaar"
+        "curl"
 #        "swaybg"
 #        "grim"
 #        "slurp"
@@ -88,6 +89,8 @@ if [ "$OS" == "Linux" ]; then
             echo ">>> $destination symlink already exists"
         fi
     done
+
+    # TODO: https://asdf-vm.com/guide/getting-started.html
 
 #    echo ""
 #    echo "###############"
