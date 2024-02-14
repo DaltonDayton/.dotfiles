@@ -49,6 +49,7 @@ if [ "$OS" == "Linux" ]; then
         sudo apt install "$package" -y
     done
 
+    echo ">>> Autoremoving unnecessary packages"
     sudo apt autoremove -y
 
     echo ""
