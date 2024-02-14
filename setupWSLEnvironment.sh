@@ -41,9 +41,7 @@ if [ "$OS" == "Linux" ]; then
         "libgdbm-dev"
         "libdb-dev"
         "uuid-dev"
-        # end ruby
     )
-    # TODO: set up asdf node and ruby management
 
     # Loop through the array and install packages with apt
     for package in "${packages[@]}"; do
@@ -51,10 +49,13 @@ if [ "$OS" == "Linux" ]; then
         sudo apt install "$package" -y
     done
 
-    echo ""
-    echo "Installing Neovim from source"
-    echo ""
+    sudo apt autoremove -y
 
+    echo ""
+    echo "============================="
+    echo "Installing Neovim from source"
+    echo "============================="
+    echo ""
     # Check if Neovim is already installed
     if command -v nvim &>/dev/null; then
         echo "Neovim is already installed"
@@ -68,18 +69,14 @@ if [ "$OS" == "Linux" ]; then
         # Build and install Neovim
         make CMAKE_BUILD_TYPE=Release
         sudo make install
-        # Add Neovim to PATH
-        #export PATH="$HOME/neovim/bin:$PATH"
-        #echo 'export PATH="$HOME/neovim/bin:$PATH"' >> ~/.bashrc # Persist in .bashrc
         cd $HOME/.dotfiles
-        fi
+    fi
 
-        echo ""
-        echo "===================="
-        echo "===== Symlinks ====="
-        echo "===================="
-        echo ""
-
+    echo ""
+    echo "===================="
+    echo "===== Symlinks ====="
+    echo "===================="
+    echo ""
     # Ensure ~/.config exists
     if [ ! -d "$HOME/.config" ]; then
         echo "Creating $HOME/.config directory"
@@ -108,35 +105,36 @@ if [ "$OS" == "Linux" ]; then
         fi
     done
 
+    echo ""
     echo "================================================"
     echo "===== Set up asdf for node/ruby management ====="
-    echo "================================================"
-
+    echo "================================================ (This can take a few minutes. Especially Ruby.)"
+    echo ""
     # Check if asdf is already installed
     if command -v asdf &>/dev/null; then
         echo "asdf is already installed"
     else
         echo "Building asdf from source"
         # Clone asdf's repository if it doesn't exist
-        if [ ! -d "$HOME/asdf" ]; then
+        if [ ! -d "$HOME/.asdf" ]; then
             git clone https://github.com/asdf-vm/asdf.git ~/.asdf
         fi
-        . "$HOME/.asdf/asdf.sh"
-        . "$HOME/.asdf/completions/asdf.bash"
-
-        asdf plugin add nodejs
-        asdf install nodejs latest
-        asdf global nodejs latest
-
-        asdf plugin add ruby
-        asdf install ruby latest
-        asdf global ruby latest
-        fi
     fi
+    . "$HOME/.asdf/asdf.sh"
+    . "$HOME/.asdf/completions/asdf.bash"
 
+    asdf plugin add nodejs
+    asdf install nodejs latest
+    asdf global nodejs latest
+
+    asdf plugin add ruby
+    asdf install ruby latest
+    asdf global ruby latest
+
+    echo ""
     echo "============================================="
     echo "Installation complete. Restart your terminal."
     echo "============================================="
-
-    fi # End of Linux OS detection
+    echo ""
+fi # End of Linux OS detection
 
