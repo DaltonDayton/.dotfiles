@@ -23,8 +23,12 @@ if [ "$OS" == "Linux" ]; then
         "ninja-build"
         "gettext"
         "cmake"
+        "make"
         "unzip"
         "curl"
+        "python3-venv"
+        "ripgrep"
+        "gcc"
         # asdf (Ruby) dependencies
         "autoconf"
         "patch"
