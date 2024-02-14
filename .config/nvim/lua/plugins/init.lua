@@ -3,5 +3,5 @@ return {
     { "MunifTanjim/nui.nvim",        lazy = true },
     { "nvim-lua/plenary.nvim",       lazy = true },
     { "tpope/vim-rails",             lazy = true },
-    { "github/copilot.vim",          lazy = true },
+    { "github/copilot.vim",          lazy = false },
 }
