@@ -130,3 +130,6 @@ export NVM_DIR="$HOME/.nvm"
 # Use 'java.exe <args>' to utilize Windows Java binaries from within WSL.
 export JAVA_HOME="/mnt/c/Java/jdk-17.0.1"
 export EDITOR="code --wait"
+
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/completions/asdf.bash"
