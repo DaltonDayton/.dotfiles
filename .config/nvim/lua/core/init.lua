@@ -17,23 +17,35 @@ opt.cursorline = true
 
 -- Indenting
 opt.expandtab = true
-opt.shiftwidth = 2
+opt.shiftwidth = 4
 opt.smartindent = true
-opt.tabstop = 2
-opt.softtabstop = 2
+opt.tabstop = 8
+opt.softtabstop = 0
 
 opt.fillchars = { eob = " " }
 opt.ignorecase = true
 opt.smartcase = true
 opt.mouse = "a"
 
+-- No sticky highligting, but enable incremental search highlighting
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+
 -- Numbers
 opt.number = true
+opt.relativenumber = true
 opt.numberwidth = 2
 opt.ruler = false
 
+-- Keeps so many lines on the screen when scrolling
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+vim.opt.isfname:append("@-@")
+
 -- disable nvim intro
 opt.shortmess:append "sI"
+
+opt.colorcolumn = "80"
 
 opt.signcolumn = "yes"
 opt.splitbelow = true
@@ -47,7 +59,8 @@ opt.updatetime = 250
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+-- opt.whichwrap:append "<>[]hl"
+opt.wrap = false
 
 g.mapleader = " "
 
