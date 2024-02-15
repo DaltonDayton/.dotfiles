@@ -57,6 +57,9 @@ if [ "$OS" == "Linux" ]; then
     echo ">>> Autoremoving unnecessary packages"
     sudo apt autoremove -y
 
+    echo ">>> Set default shell to zsh"
+    chsh -s $(which zsh)
+
     echo ""
     echo "===================="
     echo "===== Symlinks ====="
