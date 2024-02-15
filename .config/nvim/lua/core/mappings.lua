@@ -29,9 +29,17 @@ M.general = {
     -- Copy all
     ["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
 
+    -- Keeps cursor in the middle when moving
+    ["<C-d>"] = { "<C-d>zz", "Move down, keep cursor in middle" },
+    ["<C-u>"] = { "<C-u>", "<C-u>zz" },
+
+    -- Keeps search terms in the middle
+    ["n"] = { "nzzzv", "Search forward, keep cursor in middle" },
+    ["N"] = { "Nzzzv", "Search backward, keep cursor in middle" },
+
     -- line numbers
-    ["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
-    ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
+    --["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
+    --["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
