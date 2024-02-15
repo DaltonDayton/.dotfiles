@@ -42,6 +42,8 @@ if [ "$OS" == "Linux" ]; then
         "tmux"
         "solaar"
         "curl"
+        "ripgrep"
+        "zsh"
 #        "swaybg"
 #        "grim"
 #        "slurp"
@@ -69,6 +71,7 @@ if [ "$OS" == "Linux" ]; then
     # Declare an array of symlinks to be created
     symlinks=(
         "$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
+        "$HOME/.zshrc:$HOME/.dotfiles/.zshrc"
         "$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
         "$HOME/.config/tmux:$HOME/.dotfiles/.config/tmux"
         "$HOME/.config/solaar:$HOME/.dotfiles/.config/solaar"
