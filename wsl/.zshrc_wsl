@@ -24,6 +24,9 @@ alias ll="ls -AFhosv $*"
 alias cll="clear && ll"
 # Git
 alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
+alias gbr="git checkout azure && git pull"
+# Docker
+alias dcbu="docker compose build && docker compose up"
 
 # Requires eza (ls replacement)
 # Helpful aliases
