@@ -1,4 +1,5 @@
 return {
+        
     -- Auto Pairs
     {
         "echasnovski/mini.pairs",
