@@ -13,5 +13,20 @@ return {
         { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Telescope: Live Grep" },
         { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Telescope: Buffers" },
         { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Telescope: Help Tags" },
-    }
+    },
+    config = function()
+        require('telescope').setup{
+            defaults = {
+                mappings = {
+                    i = {
+                        ["q"] = require('telescope.actions').close,
+                    },
+                    n = {
+                        ["q"] = require('telescope.actions').close,
+                    },
+                },
+            },
+        }
+    end
 }
+
