@@ -65,6 +65,7 @@ return {
                 { name = 'nvim_lua' },
                 { name = 'luasnip', keyword_length = 2 },
                 { name = 'buffer',  keyword_length = 3 },
+                { name = 'copilot' },
             }),
             formatting = lsp_zero.cmp_format(), -- Use lsp-zero's formatting for completion items
             mapping = cmp.mapping.preset.insert({
@@ -72,6 +73,8 @@ return {
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-Space>'] = cmp.mapping.complete(),
+                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
             }),
         })
     end
