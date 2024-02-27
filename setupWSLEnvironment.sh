@@ -19,12 +19,17 @@ if [ "$OS" == "Linux" ]; then
     # Declare an array of packages to be checked and installed
     packages=(
         "tmux"
+        "zsh"
         # Neovim dependencies
         "ninja-build"
         "gettext"
         "cmake"
+        "make"
         "unzip"
         "curl"
+        "python3-venv"
+        "ripgrep"
+        "gcc"
         # asdf (Ruby) dependencies
         "autoconf"
         "patch"
@@ -52,6 +57,45 @@ if [ "$OS" == "Linux" ]; then
     echo ">>> Autoremoving unnecessary packages"
     sudo apt autoremove -y
 
+    echo ">>> Set default shell to zsh"
+    chsh -s $(which zsh)
+
+    echo ""
+    echo "===================="
+    echo "===== Symlinks ====="
+    echo "===================="
+    echo ""
+    # Ensure ~/.config exists
+    if [ ! -d "$HOME/.config" ]; then
+        echo "Creating $HOME/.config directory"
+        mkdir -p "$HOME/.config"
+    fi
+
+    # Declare an array of symlinks to be created
+    symlinks=(
+        "$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
+        "$HOME/.zshrc:$HOME/.dotfiles/wsl/.zshrc_wsl"
+        "$HOME/.oh-my-zsh:$HOME/.dotfiles/wsl/.oh-my-zsh"
+        "$HOME/.p10k.zsh:$HOME/.dotfiles/wsl/.p10k.zsh"
+        "$HOME/.bashrc:$HOME/.dotfiles/wsl/.bashrc_wsl"
+        "$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
+        "$HOME/.config/tmux:$HOME/.dotfiles/.config/tmux"
+    )
+
+    # Loop through the array and create symlinks
+    for symlink_pair in "${symlinks[@]}"; do
+        source="${symlink_pair#*:}"
+        destination="${symlink_pair%%:*}"
+
+        # Check if the symlink exists and is not broken
+        if [ ! -e "$destination" ]; then
+            echo "Creating symlink for $destination"
+            ln -s "$source" "$destination"
+        else
+            echo ">>> $destination symlink already exists"
+        fi
+    done
+
     echo ""
     echo "============================="
     echo "Installing Neovim from source"
@@ -72,39 +116,6 @@ if [ "$OS" == "Linux" ]; then
         sudo make install
         cd $HOME/.dotfiles
     fi
-
-    echo ""
-    echo "===================="
-    echo "===== Symlinks ====="
-    echo "===================="
-    echo ""
-    # Ensure ~/.config exists
-    if [ ! -d "$HOME/.config" ]; then
-        echo "Creating $HOME/.config directory"
-        mkdir -p "$HOME/.config"
-    fi
-
-    # Declare an array of symlinks to be created
-    symlinks=(
-        "$HOME/.gitconfig:$HOME/.dotfiles/.gitconfig"
-        "$HOME/.bashrc:$HOME/.dotfiles/.bashrc_wsl"
-        "$HOME/.config/nvim:$HOME/.dotfiles/.config/nvim"
-        "$HOME/.config/tmux:$HOME/.dotfiles/.config/tmux"
-    )
-
-    # Loop through the array and create symlinks
-    for symlink_pair in "${symlinks[@]}"; do
-        source="${symlink_pair#*:}"
-        destination="${symlink_pair%%:*}"
-
-        # Check if the symlink exists and is not broken
-        if [ ! -e "$destination" ]; then
-            echo "Creating symlink for $destination"
-            ln -s "$source" "$destination"
-        else
-            echo ">>> $destination symlink already exists"
-        fi
-    done
 
     echo ""
     echo "================================================"
