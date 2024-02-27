@@ -44,6 +44,8 @@ if [ "$OS" == "Linux" ]; then
         "curl"
         "ripgrep"
         "zsh"
+        "zoxide"
+        "fzf"
 #        "swaybg"
 #        "grim"
 #        "slurp"
