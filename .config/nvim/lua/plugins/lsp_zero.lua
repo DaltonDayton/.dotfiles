@@ -8,16 +8,16 @@ return {
         'williamboman/mason-lspconfig.nvim', -- Integrates Mason with nvim-lspconfig
 
         -- Autocompletion setup:
-        'hrsh7th/nvim-cmp',                  -- The main autocompletion plugin
-        'hrsh7th/cmp-nvim-lsp',              -- Allows nvim-cmp to use Neovim's LSP as a source for completion
-        'hrsh7th/cmp-buffer',                -- Buffer completions for nvim-cmp
-        'hrsh7th/cmp-path',                  -- Path completions for nvim-cmp
-        'saadparwaiz1/cmp_luasnip',          -- Snippet completions for nvim-cmp
-        'hrsh7th/cmp-nvim-lua',              -- Lua completions for nvim-cmp (useful for configuring Neovim in Lua)
+        'hrsh7th/nvim-cmp',         -- The main autocompletion plugin
+        'hrsh7th/cmp-nvim-lsp',     -- Allows nvim-cmp to use Neovim's LSP as a source for completion
+        'hrsh7th/cmp-buffer',       -- Buffer completions for nvim-cmp
+        'hrsh7th/cmp-path',         -- Path completions for nvim-cmp
+        'saadparwaiz1/cmp_luasnip', -- Snippet completions for nvim-cmp
+        'hrsh7th/cmp-nvim-lua',     -- Lua completions for nvim-cmp (useful for configuring Neovim in Lua)
 
         -- Snippet support:
-        'L3MON4D3/LuaSnip',                  -- Snippet engine
-        'rafamadriz/friendly-snippets',      -- A collection of snippets for multiple languages
+        'L3MON4D3/LuaSnip',             -- Snippet engine
+        'rafamadriz/friendly-snippets', -- A collection of snippets for multiple languages
     },
     config = function()
         local lsp_zero = require('lsp-zero')
@@ -33,18 +33,18 @@ return {
         -- Customize diagnostic sign icons
         lsp_zero.set_sign_icons({
             error = '✘', -- Custom icon for errors
-            warn = '▲',  -- Custom icon for warnings
-            hint = '⚑',  -- Custom icon for hints
-            info = '»'   -- Custom icon for informational messages
+            warn = '▲', -- Custom icon for warnings
+            hint = '⚑', -- Custom icon for hints
+            info = '»' -- Custom icon for informational messages
         })
 
         -- Mason configuration for automatic LSP server management
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = { "lua_ls" }, -- Ensure the Lua LSP server is installed
-            automatic_installation = true,   -- Automatically install missing LSP servers
+            ensure_installed = { "lua_ls" },                -- Ensure the Lua LSP server is installed
+            automatic_installation = true,                  -- Automatically install missing LSP servers
             handlers = {
-                lsp_zero.default_setup,      -- Default handler for all LSP servers
+                lsp_zero.default_setup,                     -- Default handler for all LSP servers
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls() -- Get default options for Lua LSP
                     require("lspconfig").lua_ls.setup(lua_opts)
@@ -76,4 +76,3 @@ return {
         })
     end
 }
-

@@ -41,7 +41,7 @@ return {
         },
     },
     {
-       "folke/todo-comments.nvim",
+        "folke/todo-comments.nvim",
         lazy = false,
         dependencies = { "folke/trouble.nvim", "nvim-telescope/telescope.nvim" },
         cmd = { "TodoTrouble", "TodoTelescope" },
@@ -51,8 +51,8 @@ return {
             { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
             { "<leader>xt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
             { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
-            { "<leader>ft", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
-            { "<leader>fT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
+            { "<leader>ft", "<cmd>TodoTelescope<cr>",                            desc = "Telescope: Todo" },
+            { "<leader>fT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Telescope: Todo/Fix/Fixme" },
         },
     },
 }
