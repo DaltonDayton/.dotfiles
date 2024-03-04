@@ -75,6 +75,8 @@ if [ "$OS" == "Linux" ]; then
         # Fonts
         "ttf-font-awesome"
         "noto-fonts-emoji"
+
+        "insync"
     )
 
 
