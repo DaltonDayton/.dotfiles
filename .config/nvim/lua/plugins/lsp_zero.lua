@@ -41,14 +41,33 @@ return {
         -- Mason configuration for automatic LSP server management
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = { "lua_ls" },                -- Ensure the Lua LSP server is installed
-            automatic_installation = true,                  -- Automatically install missing LSP servers
+            ensure_installed = { "lua_ls", "solargraph", "emmet_ls" }, -- Ensure the Lua LSP server is installed
+            automatic_installation = true,                                        -- Automatically install missing LSP servers
             handlers = {
-                lsp_zero.default_setup,                     -- Default handler for all LSP servers
+                lsp_zero.default_setup,                                           -- Default handler for all LSP servers
+                -- lua_ls setup
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls() -- Get default options for Lua LSP
                     require("lspconfig").lua_ls.setup(lua_opts)
-                end
+                end,
+                -- emmet_ls setup
+                emmet_ls = function()
+                    require("lspconfig").emmet_ls.setup({
+                        filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "eruby" }
+                    })
+                end,
+                -- solargraph setup
+                solargraph = function()
+                    require("lspconfig").solargraph.setup({
+                        filetypes = { "ruby", "eruby" }
+                    })
+                end,
+                -- rubocop setup
+                -- rubocop = function()
+                --     require("lspconfig").rubocop.setup({
+                --         filetypes = { "ruby", "eruby" }
+                --     })
+                -- end,
             },
         })
 
@@ -57,13 +76,16 @@ return {
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
         require('luasnip.loaders.from_vscode').lazy_load() -- Load snippets from friendly-snippets
+        require 'luasnip'.filetype_extend("ruby", { "rails" })
+        require 'luasnip'.filetype_extend("erb", { "rails" })
+        require 'luasnip'.filetype_extend("erb", { "html" })
 
         cmp.setup({
             sources = cmp.config.sources({
                 { name = 'path' },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lua' },
-                { name = 'luasnip', keyword_length = 2 },
+                { name = 'luasnip', keyword_length = 1 },
                 { name = 'buffer',  keyword_length = 3 },
                 { name = 'copilot' },
             }),
