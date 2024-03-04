@@ -143,6 +143,10 @@ if [ "$OS" == "Linux" ]; then
     asdf install ruby latest
     asdf global ruby latest
 
+    # TODO: Check if installed first
+    # gem update --system
+    # gem install rails
+
     echo ""
     echo "============================================="
     echo "Installation complete. Restart your terminal."
