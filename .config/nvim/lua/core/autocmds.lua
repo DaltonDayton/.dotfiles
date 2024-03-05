@@ -18,3 +18,11 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
+-- Automatically set relative numbering in netrw
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "netrw",
+    callback = function()
+        vim.wo.relativenumber = true
+        vim.wo.number = true
+    end,
+})
