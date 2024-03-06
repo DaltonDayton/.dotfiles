@@ -26,8 +26,10 @@ return {
 
         lsp_zero.on_attach(function(client, bufnr)
             -- Setup default key mappings and symbol highlighting on attach
-            lsp_zero.default_keymaps({ buffer = bufnr })
+            lsp_zero.default_keymaps({ buffer = bufnr, preserve_mappings = false })
             lsp_zero.highlight_symbol(client, bufnr)
+
+            vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', {buffer = bufnr})
         end)
 
         -- Customize diagnostic sign icons
@@ -42,9 +44,9 @@ return {
         require('mason').setup({})
         require('mason-lspconfig').setup({
             ensure_installed = { "lua_ls", "solargraph", "emmet_ls" }, -- Ensure the Lua LSP server is installed
-            automatic_installation = true,                                        -- Automatically install missing LSP servers
+            automatic_installation = true,                             -- Automatically install missing LSP servers
             handlers = {
-                lsp_zero.default_setup,                                           -- Default handler for all LSP servers
+                lsp_zero.default_setup,                                -- Default handler for all LSP servers
                 -- lua_ls setup
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls() -- Get default options for Lua LSP
