@@ -14,7 +14,7 @@ return {
                         move[name] = function(q, ...)
                             if vim.wo.diff then
                                 local config = configs.get_module("textobjects.move")
-                                    [name] ---@type table<string,string>
+                                [name] ---@type table<string,string>
                                 for key, query in pairs(config or {}) do
                                     if q == query and key:find("[%]%[][cC]") then
                                         vim.cmd("normal! " .. key)
@@ -75,10 +75,22 @@ return {
         textobjects = {
             move = {
                 enable = true,
-                goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-                goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-                goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-                goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+                goto_next_start = {
+                    ["]f"] = "@function.outer",
+                    ["]c"] = "@class.outer",
+                },
+                goto_next_end = {
+                    ["]F"] = "@function.outer",
+                    ["]C"] = "@class.outer",
+                },
+                goto_previous_start = {
+                    ["[f"] = "@function.outer",
+                    ["[c"] = "@class.outer",
+                },
+                goto_previous_end = {
+                    ["[F"] = "@function.outer",
+                    ["[C"] = "@class.outer",
+                },
             },
         },
     },
