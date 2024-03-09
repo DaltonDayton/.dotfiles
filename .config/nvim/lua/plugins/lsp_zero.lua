@@ -29,6 +29,8 @@ return {
             -- Setup default key mappings and symbol highlighting on attach
             lsp_zero.default_keymaps({ buffer = bufnr, preserve_mappings = false })
             lsp_zero.highlight_symbol(client, bufnr)
+
+            vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', { buffer = bufnr })
         end)
 
         -- Customize diagnostic sign icons
