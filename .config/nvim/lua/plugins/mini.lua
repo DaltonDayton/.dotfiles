@@ -32,13 +32,29 @@ return {
             local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
             local opts = require("lazy.core.plugin").values(plugin, "opts", false)
             local mappings = {
-                { opts.mappings.add,            desc = "Add surrounding",                     mode = { "n", "v" } },
-                { opts.mappings.delete,         desc = "Delete surrounding" },
-                { opts.mappings.find,           desc = "Find right surrounding" },
-                { opts.mappings.find_left,      desc = "Find left surrounding" },
-                { opts.mappings.highlight,      desc = "Highlight surrounding" },
-                { opts.mappings.replace,        desc = "Replace surrounding" },
-                { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
+                {
+                    opts.mappings.add,
+                    desc = "Add surrounding",
+                    mode = { "n", "v" },
+                },
+                { opts.mappings.delete,  desc = "Delete surrounding" },
+                {
+                    opts.mappings.find,
+                    desc = "Find right surrounding",
+                },
+                {
+                    opts.mappings.find_left,
+                    desc = "Find left surrounding",
+                },
+                {
+                    opts.mappings.highlight,
+                    desc = "Highlight surrounding",
+                },
+                { opts.mappings.replace, desc = "Replace surrounding" },
+                {
+                    opts.mappings.update_n_lines,
+                    desc = "Update `MiniSurround.config.n_lines`",
+                },
             }
             mappings = vim.tbl_filter(function(m)
                 return m[1] and #m[1] > 0
@@ -72,8 +88,8 @@ return {
         opts = {
             options = {
                 custom_commentstring = function()
-                    return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo
-                        .commentstring
+                    return require("ts_context_commentstring.internal").calculate_commentstring()
+                        or vim.bo.commentstring
                 end,
             },
         },
@@ -89,8 +105,8 @@ return {
                 function()
                     local bd = require("mini.bufremove").delete
                     if vim.bo.modified then
-                        local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()),
-                            "&Yes\n&No\n&Cancel")
+                        local choice =
+                            vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
                         if choice == 1 then -- Yes
                             vim.cmd.write()
                             bd(0)
@@ -106,5 +122,5 @@ return {
             -- stylua: ignore
             { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
         },
-    }
+    },
 }
