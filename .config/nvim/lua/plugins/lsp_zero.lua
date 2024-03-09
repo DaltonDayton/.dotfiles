@@ -1,11 +1,12 @@
 return {
     'VonHeikemen/lsp-zero.nvim',
-    lazy = false, -- This plugin is loaded at startup, not lazily loaded.
+    lazy = false,
     dependencies = {
         -- Core LSP plugins for enhanced coding experience in Neovim:
         'neovim/nvim-lspconfig',             -- Basic Neovim LSP configurations
         'williamboman/mason.nvim',           -- Manages installation of LSP servers and other tools
         'williamboman/mason-lspconfig.nvim', -- Integrates Mason with nvim-lspconfig
+        'stevearc/conform.nvim',             -- Formatting
 
         -- Autocompletion setup:
         'hrsh7th/nvim-cmp',         -- The main autocompletion plugin
@@ -26,7 +27,7 @@ return {
 
         lsp_zero.on_attach(function(client, bufnr)
             -- Setup default key mappings and symbol highlighting on attach
-            lsp_zero.default_keymaps({ buffer = bufnr })
+            lsp_zero.default_keymaps({ buffer = bufnr, preserve_mappings = false })
             lsp_zero.highlight_symbol(client, bufnr)
         end)
 
@@ -41,35 +42,65 @@ return {
         -- Mason configuration for automatic LSP server management
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = { "lua_ls", "solargraph", "emmet_ls" }, -- Ensure the Lua LSP server is installed
-            automatic_installation = true,                                        -- Automatically install missing LSP servers
+            ensure_installed = {
+                "lua_ls",                  -- Lua language server
+                "solargraph",              -- Ruby language server
+                "emmet_ls",                -- Emmet language server
+                "pyright",                 -- Python language server
+            },
+            automatic_installation = true, -- Automatically install missing LSP servers
             handlers = {
-                lsp_zero.default_setup,                                           -- Default handler for all LSP servers
+                lsp_zero.default_setup,    -- Default handler for all LSP servers
+
                 -- lua_ls setup
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls() -- Get default options for Lua LSP
                     require("lspconfig").lua_ls.setup(lua_opts)
                 end,
+
                 -- emmet_ls setup
                 emmet_ls = function()
                     require("lspconfig").emmet_ls.setup({
                         filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "eruby" }
                     })
                 end,
+
                 -- solargraph setup
                 solargraph = function()
                     require("lspconfig").solargraph.setup({
                         filetypes = { "ruby", "eruby" }
                     })
                 end,
-                -- rubocop setup
-                -- rubocop = function()
-                --     require("lspconfig").rubocop.setup({
-                --         filetypes = { "ruby", "eruby" }
-                --     })
-                -- end,
+
+                -- pyright setup
+                pyright = function()
+                    require("lspconfig").pyright.setup({
+                        filetypes = { "python" }
+                    })
+                end,
             },
         })
+
+        -- Conform configuration for formatting
+        require('conform').setup({
+            formatters_by_ft = {
+                python = { "isort", 'black' },
+            },
+            -- format_on_save = {
+            --     lsp_fallback = true,
+            --     async = false,
+            --     timeout_ms = 500
+            -- }
+        })
+
+        vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+            require('conform').format({
+                lsp_fallback = true,
+                async = false,
+                timeout_ms = 500
+            })
+        end, { desc = "Conform: Make Pretty" }
+        )
 
         -- nvim-cmp setup for autocompletion
         local cmp = require('cmp')
@@ -100,7 +131,6 @@ return {
             }),
             completion = {
                 completeopt = 'menu,menuone,noselect',
-                -- preselect = cmp.PreselectMode.Item,
             },
         })
     end
