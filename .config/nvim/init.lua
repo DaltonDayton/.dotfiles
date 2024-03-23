@@ -113,7 +113,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -129,7 +129,7 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 50
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -153,6 +153,24 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- Convert tabs to spaces
+vim.opt.expandtab = true
+
+-- Enable true color support
+vim.opt.termguicolors = true
+
+-- Highlight column 80 to encourage limiting line length
+-- vim.opt.colorcolumn = '80'
+
+-- Hide certain elements (like markdown links) in a minimal manner
+vim.opt.conceallevel = 2
+
+-- Backup and undo settings
+vim.opt.swapfile = false -- Disable swap file creation
+vim.opt.backup = false -- Disable backup file creation
+vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir' -- Set the directory for undo files
+vim.opt.undofile = true -- Enable persistent undo
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -199,6 +217,12 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Page down and center' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Page up and center' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next search result, centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result, centered' })
+vim.keymap.set('x', '<leader>p', '"_dP', { desc = 'Paste over selection without yanking' })
+vim.keymap.set('n', '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+vim.keymap.set('v', '<leader>y', '"+y', { desc = 'Yank selection to system clipboard' })
+vim.keymap.set('n', '<leader>Y', '"+Y', { desc = 'Yank line to system clipboard' })
+vim.keymap.set('n', '<leader>d', '"_d', { desc = 'Delete without yanking' })
+vim.keymap.set('v', '<leader>d', '"_d', { desc = 'Delete selection without yanking' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -735,6 +759,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'copilot' },
         },
       }
     end,
@@ -841,11 +866,13 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
 
   -- Personal Plugins
   require 'kickstart.plugins.obsidian',
+  require 'kickstart.plugins.undotree',
+  require 'kickstart.plugins.harpoon',
+  require 'kickstart.plugins.copilot',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
