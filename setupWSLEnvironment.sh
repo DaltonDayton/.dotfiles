@@ -54,6 +54,8 @@ if [ "$OS" == "Linux" ]; then
         sudo apt install "$package" -y
     done
 
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
     echo ">>> Autoremoving unnecessary packages"
     sudo apt autoremove -y
 
