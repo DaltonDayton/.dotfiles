@@ -913,15 +913,15 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.lint',
+  require 'core.plugins.debug',
+  require 'core.plugins.lint',
 
   -- Personal Plugins
-  require 'kickstart.plugins.obsidian',
-  require 'kickstart.plugins.undotree',
-  require 'kickstart.plugins.harpoon',
-  require 'kickstart.plugins.copilot',
-  require 'kickstart.plugins.nvim_tmux_navigator',
+  require 'core.plugins.obsidian',
+  require 'core.plugins.undotree',
+  require 'core.plugins.harpoon',
+  require 'core.plugins.copilot',
+  require 'core.plugins.nvim_tmux_navigator',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
