@@ -79,6 +79,7 @@ if [ "$OS" == "Linux" ]; then
         "insync"
     )
 
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
     # Loop through the array and check/install packages
     for package in "${packages[@]}"; do
