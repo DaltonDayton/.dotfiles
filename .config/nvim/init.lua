@@ -238,6 +238,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Enable relative numbers in netrw
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'netrw',
+  callback = function()
+    vim.wo.relativenumber = true
+    vim.wo.number = true
+  end,
+})
+
 -- [[ User Commands ]]
 -- See `:help vim.cmd`
 -- These are custom commands that you can run from within Neovim
@@ -426,6 +435,15 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sa', function()
+        require('telescope.builtin').find_files {
+          -- find_command = { 'fd', '--type', 'f', '--hidden', '--exclude', '.git' },
+          hidden = true,
+          no_ignore = true,
+          follow = true,
+          desc = '[S]earch [A]ll Files (including hidden)',
+        }
+      end)
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
