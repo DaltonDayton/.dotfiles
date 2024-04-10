@@ -441,9 +441,8 @@ require('lazy').setup({
           hidden = true,
           no_ignore = true,
           follow = true,
-          desc = '[S]earch [A]ll Files (including hidden)',
         }
-      end)
+      end, { desc = '[S]earch [A]ll Files (including hidden)' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
