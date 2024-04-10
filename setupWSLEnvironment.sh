@@ -119,6 +119,8 @@ if [ "$OS" == "Linux" ]; then
         cd $HOME/.dotfiles
     fi
 
+    # TODO: If installed, check for update
+
     echo ""
     echo "================================================"
     echo "===== Set up asdf for node/ruby management ====="
