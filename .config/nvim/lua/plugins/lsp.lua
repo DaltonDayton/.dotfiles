@@ -161,6 +161,10 @@ return { -- LSP Configuration & Plugins
                     },
                 },
             },
+
+            rubocop = {
+                filetypes = { 'ruby', 'eruby', 'erb' },
+            },
         }
 
         -- Ensure the servers and tools above are installed
