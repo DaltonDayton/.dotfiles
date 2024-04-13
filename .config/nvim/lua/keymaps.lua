@@ -49,3 +49,4 @@ vim.keymap.set('v', '<leader>y', '"+y', { desc = 'Yank selection to system clipb
 vim.keymap.set('n', '<leader>Y', '"+Y', { desc = 'Yank line to system clipboard' })
 vim.keymap.set('n', '<leader>d', '"_d', { desc = 'Delete without yanking' })
 vim.keymap.set('v', '<leader>d', '"_d', { desc = 'Delete selection without yanking' })
+vim.keymap.set('n', '<leader>db', ':bd<CR>', { desc = 'Delete Buffer' })
