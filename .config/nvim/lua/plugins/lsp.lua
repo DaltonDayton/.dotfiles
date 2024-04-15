@@ -13,6 +13,9 @@ return { -- LSP Configuration & Plugins
         -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
         -- used for completion, annotations and signatures of Neovim apis
         { 'folke/neodev.nvim', opts = {} },
+
+        -- Omnisharp Extended
+        { 'Hoffs/omnisharp-extended-lsp.nvim' },
     },
     config = function()
         -- Brief aside: **What is LSP?**
@@ -169,6 +172,18 @@ return { -- LSP Configuration & Plugins
             solargraph = {
                 filetypes = { 'ruby', 'eruby', 'erb' },
             },
+
+            omnisharp = {
+                handlers = {
+                    ['textDocument/definition'] = require('omnisharp_extended').definition_handler,
+                    ['textDocument/typeDefinition'] = require('omnisharp_extended').type_definition_handler,
+                    ['textDocument/references'] = require('omnisharp_extended').references_handler,
+                    ['textDocument/implementation'] = require('omnisharp_extended').implementation_handler,
+                },
+                enable_roslyn_analyzers = true,
+                organize_imports_on_format = true,
+                enable_import_completion = true,
+            },
         }
 
         -- Ensure the servers and tools above are installed
@@ -177,7 +192,15 @@ return { -- LSP Configuration & Plugins
         --    :Mason
         --
         --  You can press `g?` for help in this menu.
-        require('mason').setup()
+        require('mason').setup {
+            ui = {
+                icons = {
+                    package_installed = '',
+                    package_pending = '',
+                    package_uninstalled = '',
+                },
+            },
+        }
 
         -- You can add other tools here that you want Mason to install
         -- for you, so that they are available from within Neovim.
