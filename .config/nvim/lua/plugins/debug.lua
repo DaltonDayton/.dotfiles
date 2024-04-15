@@ -35,7 +35,6 @@ return {
             -- online, please don't ask me how to install them :)
             ensure_installed = {
                 'python',
-                'delve',
             },
         }
 
