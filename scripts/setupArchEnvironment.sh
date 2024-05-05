@@ -47,6 +47,7 @@ declare -A links=(
     ["$HOME/.dotfiles/_config/hypr/userprefs.conf"]="$HOME/.config/hypr/userprefs.conf"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/_home/.zshrc"]="$HOME/.zshrc"
+    ["$HOME/.dotfiles/_home/.gitconfig"]="$HOME/.gitconfig"
 )
 
 # Create symlinks
