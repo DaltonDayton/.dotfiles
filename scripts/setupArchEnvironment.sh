@@ -28,6 +28,10 @@ packages=(
     ripgrep
     zoxide
     ttf-font-awesome
+    noto-fonts-emoji
+    noto-fonts
+    steam
+    discord-canary
 )
 
 # Loop through the packages and install if not already installed
