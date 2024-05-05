@@ -20,6 +20,8 @@ packages=(
     vim
     git
     base-devel
+    fzf
+    bat
     neovim-git
     tmux
     swayidle
