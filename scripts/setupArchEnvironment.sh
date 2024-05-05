@@ -44,10 +44,8 @@ echo "=============================="
 echo ""
 # Define symlink mappings from source to destination
 declare -A links=(
-    # ["$HOME/.dotfiles/_config/hypr/userprefs.conf"]="$HOME/.config/hypr/userprefs.conf"
-    # ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
-    ["$HOME/.dotfiles/.config/hypr/userprefs.conf"]="$HOME/.config/hypr/userprefs.conf"
-    ["$HOME/.dotfiles/.config/nvim"]="$HOME/.config/nvim"
+    ["$HOME/.dotfiles/_config/hypr/userprefs.conf"]="$HOME/.config/hypr/userprefs.conf"
+    ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/_home/.zshrc"]="$HOME/.zshrc"
 )
 
