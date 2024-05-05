@@ -4,6 +4,9 @@ ZSH=/usr/share/oh-my-zsh/
 # Path to powerlevel10k theme
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
+# Path to cargo binaries
+export PATH=$PATH:$HOME/.cargo/bin
+
 # List of plugins used
 plugins=( git sudo zsh-256color zsh-autosuggestions zsh-syntax-highlighting asdf)
 source $ZSH/oh-my-zsh.sh
@@ -71,7 +74,7 @@ alias pl='$aurhelper -Qs' # list installed package
 alias pa='$aurhelper -Ss' # list availabe package
 alias pc='$aurhelper -Sc' # remove unused cache
 alias po='$aurhelper -Qtdq | $aurhelper -Rns -' # remove unused packages, also try > $aurhelper -Qqd | $aurhelper -Rsu --print -
-alias vc='code' # gui code editor
+alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
 
 # Handy change dir shortcuts
 alias ..='cd ..'
@@ -83,8 +86,13 @@ alias .5='cd ../../../../..'
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
 
+# Fixes "Error opening terminal: xterm-kitty" when using the default kitty term to open some programs through ssh
+alias ssh='kitten ssh'
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 #Display Pokemon
-pokemon-colorscripts --no-title -r 1,3,6
+pokemon-colorscripts --no-title -r 1,3
+
+eval "$(zoxide init --cmd cd zsh)"
