@@ -28,6 +28,10 @@ alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %C
 alias gbr="git checkout azure && git pull"
 # Docker
 alias dcbu="docker compose build && docker compose up"
+alias dabw="docker attach builder-web-1"
+alias dabs="docker attach builder-sidekiq-1"
+alias dasw="docker attach systemd-web-1"
+alias dass="docker attach systemd-sidekiq-1"
 
 # Requires eza (ls replacement)
 # Helpful aliases
