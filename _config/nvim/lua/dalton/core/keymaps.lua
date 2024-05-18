@@ -3,8 +3,6 @@ vim.g.maplocalleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
-
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
