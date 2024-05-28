@@ -1,8 +1,0 @@
-**/lazy-lock.json
-
-# Ignore everything in the tmux directory
-.config/tmux/*
-
-# But re-include the tmux.conf file
-!.config/tmux/tmux.conf
-
