@@ -19,6 +19,10 @@ packages=(
 	vim
 	zsh
 	eza
+	fzf
+	ripgrep
+	
+	# Python
 	python3
 	python3-pip
 	python3-dev
@@ -78,7 +82,11 @@ echo ""
 
 # Define symlink mappings from source to destination
 declare -A links=(
+    # Home
     ["$HOME/.dotfiles/_home/.gitconfig"]="$HOME/.gitconfig"
+    ["$HOME/.dotfiles/_home/.vimrc"]="$HOME/.vimrc"
+
+    # Config
     ["$HOME/.dotfiles/_config/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
 )
@@ -115,6 +123,21 @@ if [ "$SHELL" != "/bin/zsh" ]; then
     chsh -s /bin/zsh
 else
     echo "zsh is already the default shell."
+fi
+
+echo ""
+echo "===================================="
+echo "=== Installing Zoxide... ==="
+echo "===================================="
+echo ""
+
+# Check if zoxide is installed
+if ! command -v zoxide &> /dev/null; then
+    echo "Zoxide is not installed. Installing now..."
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    echo "Zoxide installation completed."
+else
+    echo "Zoxide is already installed."
 fi
 
 echo ""
