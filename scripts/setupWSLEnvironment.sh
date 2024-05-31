@@ -131,9 +131,9 @@ else
 fi
 
 echo ""
-echo "===================================="
+echo "============================"
 echo "=== Installing Zoxide... ==="
-echo "===================================="
+echo "============================"
 echo ""
 
 # Check if zoxide is installed
@@ -180,9 +180,9 @@ cd "$original_dir"
 echo "Neovim installation or update completed."
 
 echo ""
-echo "================================================"
+echo "================================================="
 echo "===== Set up asdf for Node.js/Ruby management ==="
-echo "================================================"
+echo "================================================="
 echo ""
 
 # Directory for asdf installation
@@ -217,6 +217,8 @@ install_asdf_plugin() {
 install_asdf_plugin "nodejs"
 asdf install nodejs latest
 asdf global nodejs latest
+
+echo "The Ruby section can hang for a while on the initial run."
 
 # Install and set Ruby
 install_asdf_plugin "ruby"
