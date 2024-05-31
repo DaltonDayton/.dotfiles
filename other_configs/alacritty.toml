@@ -14,3 +14,8 @@ option_as_alt = "Both"
 normal.family = "Iosevka Nerd Font"
 size = 12
 
+[[keyboard.bindings]]
+chars = "\u0000"
+key = "Space"
+mods = "Control"
+
