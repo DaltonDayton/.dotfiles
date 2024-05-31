@@ -16,11 +16,14 @@ echo ""
 
 # Define packages on separate lines for easy modification
 packages=(
+	# Terminal
 	vim
 	zsh
 	eza
 	fzf
 	ripgrep
+	bat
+	tmux
 	
 	# Python
 	python3
@@ -85,10 +88,12 @@ declare -A links=(
     # Home
     ["$HOME/.dotfiles/_home/.gitconfig"]="$HOME/.gitconfig"
     ["$HOME/.dotfiles/_home/.vimrc"]="$HOME/.vimrc"
+    ["$HOME/.dotfiles/_home/.zshrc"]="$HOME/.zshrc"
 
     # Config
     ["$HOME/.dotfiles/_config/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
+    ["$HOME/.dotfiles/_config/tmux"]="$HOME/.config/tmux"
 )
 
 # Create symlinks
