@@ -58,6 +58,8 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'bat.exe {-l} --color=always'
+# zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'bat.exe {-l} --color=always'
 
 # Aliases
 alias  c='clear' # clear terminal
@@ -68,6 +70,7 @@ alias cll='clear && ll' # clear and long list all
 alias ld='eza -lhD --icons=auto' # long list dirs
 alias lt='eza --icons=auto --tree' # list folder as tree
 alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
+alias ff="fzf --preview 'bat.exe {-1} --color=always'"
 
 # Handy change dir shortcuts
 alias ..='cd ..'
@@ -78,6 +81,32 @@ alias .5='cd ../../../../..'
 
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
+
+# fd() {
+#   preview="git diff $@ --color=always -- {-1}"
+#   git diff $@ --name-only | fzf -m --ansi --preview $preview
+# }
+
+showPreview()
+{
+  gitFilePreview="git diff $@ --color=always -- {-1}"
+  git diff $@ --name-only | fzf -m --ansi --preview "$gitFilePreview"
+}
+fd()
+{
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    if [ -d .git ]; then
+      showPreview > /dev/null
+    else
+      gitRepoDir=$(git rev-parse --git-dir | sed 's/.git//')
+      pushd $gitRepoDir > /dev/null
+      showPreview > /dev/null
+      popd > /dev/null
+    fi
+  else
+    echo "Error: Not inside a git repository."
+  fi
+}
 
 # Shell integrations
 # eval "$(fzf --zsh)"
