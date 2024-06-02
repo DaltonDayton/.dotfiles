@@ -146,6 +146,21 @@ else
 fi
 
 echo ""
+echo "========================="
+echo "=== Installing TPM... ==="
+echo "========================="
+echo ""
+# Clone TPM repository into the default tmux plugins folder
+tpm_dir="$HOME/.tmux/plugins/tpm"
+
+if [ ! -d "$tpm_dir" ]; then
+    echo "Cloning TPM repository..."
+    git clone https://github.com/tmux-plugins/tpm $tpm_dir
+else
+    echo "TPM is already installed."
+fi
+
+echo ""
 echo "======================================"
 echo "=== Cloning and Building Neovim... ==="
 echo "======================================"
