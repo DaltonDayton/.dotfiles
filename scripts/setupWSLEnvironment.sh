@@ -93,7 +93,8 @@ declare -A links=(
     # Config
     ["$HOME/.dotfiles/_config/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
-    ["$HOME/.dotfiles/_config/tmux"]="$HOME/.config/tmux"
+    ["$HOME/.dotfiles/_config/tmux/tmux.conf"]="$HOME/.config/tmux/tmux.conf"
+    ["$HOME/.dotfiles/_config/tmux/tmux.reset.conf"]="$HOME/.config/tmux/tmux.reset.conf"
 )
 
 # Create symlinks
