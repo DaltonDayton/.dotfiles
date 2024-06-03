@@ -1,4 +1,5 @@
 export PATH="$HOME/.asdf/shims:$PATH"
+export PATH="$HOME/.asdf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # Set the directory we want to store zinit and plugins
@@ -70,7 +71,18 @@ alias cll='clear && ll' # clear and long list all
 alias ld='eza -lhD --icons=auto' # long list dirs
 alias lt='eza --icons=auto --tree' # list folder as tree
 alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
-alias ff="fzf --preview 'bat.exe {-1} --color=always'"
+alias ff="fzf --preview 'batcat {-1} --color=always'"
+alias sz="source ~/.zshrc"
+
+alias gbr="git checkout azure && git pull"
+# Docker
+alias dcb="docker compose build"
+alias dcu="docker compose up"
+alias dcbu="dcb && dcu"
+alias dabw="docker attach builder-web-1"
+alias dabs="docker attach builder-sidekiq-1"
+alias dasw="docker attach systemd-web-1"
+alias dass="docker attach systemd-sidekiq-1"
 
 # Handy change dir shortcuts
 alias ..='cd ..'
@@ -110,6 +122,7 @@ fd()
 
 # Shell integrations
 # eval "$(fzf --zsh)"
+# TODO: Look into building fzf from source.
 source <(fzf --zsh)
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
