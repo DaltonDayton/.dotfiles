@@ -1,6 +1,7 @@
 export PATH="$HOME/.asdf/shims:$PATH"
 export PATH="$HOME/.asdf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/fzf/bin:$PATH"
 
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
