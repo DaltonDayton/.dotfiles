@@ -47,7 +47,7 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 opt.inccommand = "split"
 opt.scrolloff = 10
 -- opt.colorcolumn = "120"
-opt.conceallevel = 2 -- TODO: Move this to an autocmd for markdown files?
+
 -- Backup and undo settings
 opt.swapfile = false -- Disable swap file creation
 opt.backup = false -- Disable backup file creation
