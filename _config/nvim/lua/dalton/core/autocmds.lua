@@ -9,6 +9,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- Set conceallevel=2 for .md files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+        vim.opt.conceallevel = 2
+    end,
+    desc = "Set conceallevel to 2 for markdown files",
+})
+
 -- Command to disable formatting
 vim.api.nvim_create_user_command("FormatDisable", function(args)
     if args.bang then
