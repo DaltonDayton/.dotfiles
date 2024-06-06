@@ -20,7 +20,6 @@ packages=(
 	vim
 	zsh
 	eza
-	fzf
 	ripgrep
 	bat
 	tmux
@@ -57,6 +56,10 @@ packages=(
 	libgdbm-dev
 	libdb-dev
 	uuid-dev
+
+	# Other dependencies
+	git
+	go
 )
 
 # Loop through the packages and install if not already installed
@@ -244,8 +247,37 @@ asdf global ruby latest
 echo "asdf setup for Node.js and Ruby completed."
 
 echo ""
+echo "================================"
+echo "=== Cloning and Building fzf ==="
+echo "================================"
+echo ""
+
+# Define the directory where fzf will be cloned
+fzf_dir="$HOME/fzf"
+
+# Check if the fzf directory exists
+if [ ! -d "$fzf_dir" ]; then
+    # Clone the fzf repository
+    echo "Cloning fzf repository..."
+    git clone https://github.com/junegunn/fzf.git "$fzf_dir"
+else
+    # Update the repository
+    echo "Updating fzf repository..."
+    git -C "$fzf_dir" pull
+fi
+
+# Build fzf
+echo "Building fzf..."
+cd "$fzf_dir"
+./install --bin
+
+# Return to the original directory
+cd "$original_dir"
+
+echo "fzf installation or update completed."
+
+echo ""
 echo "======================="
 echo "=== Setup Complete. ==="
 echo "======================="
 echo ""
-
