@@ -68,6 +68,7 @@ alias cll='clear && ll' # clear and long list all
 alias ld='eza -lhD --icons=auto' # long list dirs
 alias lt='eza --icons=auto --tree' # list folder as tree
 alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
+alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --all --date=short --date-order"
 alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
 

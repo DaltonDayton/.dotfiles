@@ -6,7 +6,7 @@ palette = "catppuccin_mocha"
 
 # move the rest of the prompt to the right
 right_format = """$all"""
-command_timeout = 1000
+command_timeout = 2000
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
