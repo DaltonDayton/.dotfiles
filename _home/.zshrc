@@ -118,8 +118,6 @@ fd()
 }
 
 # Shell integrations
-# eval "$(fzf --zsh)"
-# TODO: Look into building fzf from source.
-source <(fzf --zsh)
+eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
