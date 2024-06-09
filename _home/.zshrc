@@ -118,6 +118,8 @@ fd()
   fi
 }
 
+pokemon-colorscripts -r 1
+
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
