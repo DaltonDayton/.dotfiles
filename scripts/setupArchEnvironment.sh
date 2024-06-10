@@ -55,9 +55,10 @@ packages=(
     db
     util-linux
 
-    # # Other dependencies
-    # git
-    # go
+    # Other
+    git
+    go
+    swayidle-git
 )
 
 # Loop through the packages and install if not already installed
