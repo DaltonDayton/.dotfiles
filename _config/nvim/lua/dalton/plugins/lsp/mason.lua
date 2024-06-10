@@ -36,8 +36,7 @@ return {
         "emmet_ls",
         "prismals",
         "pyright",
-        "ruby-lsp",
-        "rubocop",
+        "ruby_lsp",
       },
     })
 
