@@ -36,4 +36,4 @@ keymap.set("v", "<leader>y", '"+y', { desc = "Yank selection to system clipboard
 keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 keymap.set("n", "<leader>d", '"_d', { desc = "Delete without yanking" })
 keymap.set("v", "<leader>d", '"_d', { desc = "Delete selection without yanking" })
-keymap.set("n", "<leader>db", ":bd<CR>", { desc = "Delete Buffer" })
+keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Buffer Delete" })
