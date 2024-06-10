@@ -22,8 +22,9 @@ packages=(
     exa
     ripgrep
     bat
-    # tmux
+    tmux
     starship
+    # zellij-git
 
     # Python
     python
@@ -69,15 +70,6 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-# echo "Installing starship"
-# if ! command -v starship &> /dev/null; then
-#     echo "Installing Starship..."
-#     curl -sS https://starship.rs/install.sh | sh -s -- -y
-# else
-#     echo "Starship is already installed."
-# fi
-
-
 echo ""
 echo "============================="
 echo "=== Setting Default Shell ==="
@@ -107,20 +99,20 @@ else
     echo "Zoxide is already installed."
 fi
 
-# echo ""
-# echo "========================="
-# echo "=== Installing TPM... ==="
-# echo "========================="
-# echo ""
-# # Clone TPM repository into the default tmux plugins folder
-# tpm_dir="$HOME/.tmux/plugins/tpm"
-# 
-# if [ ! -d "$tpm_dir" ]; then
-#     echo "Cloning TPM repository..."
-#     git clone https://github.com/tmux-plugins/tpm $tpm_dir
-# else
-#     echo "TPM is already installed."
-# fi
+echo ""
+echo "========================="
+echo "=== Installing TPM... ==="
+echo "========================="
+echo ""
+# Clone TPM repository into the default tmux plugins folder
+tpm_dir="$HOME/.tmux/plugins/tpm"
+
+if [ ! -d "$tpm_dir" ]; then
+    echo "Cloning TPM repository..."
+    git clone https://github.com/tmux-plugins/tpm $tpm_dir
+else
+    echo "TPM is already installed."
+fi
 
 echo ""
 echo "======================================"
@@ -252,8 +244,8 @@ declare -A links=(
     # Config
     ["$HOME/.dotfiles/_config/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
-    # ["$HOME/.dotfiles/_config/tmux/tmux.conf"]="$HOME/.config/tmux/tmux.conf"
-    # ["$HOME/.dotfiles/_config/tmux/tmux.reset.conf"]="$HOME/.config/tmux/tmux.reset.conf"
+    ["$HOME/.dotfiles/_config/tmux/tmux.conf"]="$HOME/.config/tmux/tmux.conf"
+    ["$HOME/.dotfiles/_config/tmux/tmux.reset.conf"]="$HOME/.config/tmux/tmux.reset.conf"
 )
 
 # Create symlinks
