@@ -36,6 +36,16 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
+# Home key
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[H' beginning-of-line
+# End key
+bindkey '\e[4~' end-of-line
+bindkey '\e[F' end-of-line
+# Ctrl+Left Arrow key
+bindkey '^[[1;5D' backward-word
+# Ctrl+Right Arrow key
+bindkey '^[[1;5C' forward-word
 
 # History
 HISTSIZE=5000
