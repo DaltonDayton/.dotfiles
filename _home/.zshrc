@@ -82,6 +82,7 @@ alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d
 alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
 
+alias gittag="git log --no-walk --tags --pretty='%h %d %s' --decorate=full"
 alias gbr="git checkout azure && git pull"
 # Docker
 alias dcb="docker compose build"
@@ -127,8 +128,6 @@ fd()
     echo "Error: Not inside a git repository."
   fi
 }
-
-pokemon-colorscripts -r 1
 
 # Shell integrations
 eval "$(fzf --zsh)"

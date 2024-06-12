@@ -199,9 +199,9 @@ cd "$original_dir"
 echo "Neovim installation or update completed."
 
 echo ""
-echo "================================================="
-echo "===== Set up asdf for Node.js/Ruby management ==="
-echo "================================================="
+echo "==============================================="
+echo "=== Set up asdf for Node.js/Ruby management ==="
+echo "==============================================="
 echo ""
 
 # Directory for asdf installation
@@ -277,7 +277,41 @@ cd "$original_dir"
 echo "fzf installation or update completed."
 
 echo ""
+echo "============================="
+echo "=== Installing lazygit... ==="
+echo "============================="
+echo ""
+
+# Install lazygit
+if ! command -v lazygit &> /dev/null; then
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+    rm lazygit.tar.gz lazygit
+    echo "lazygit installation completed."
+else
+    echo "lazygit is already installed."
+fi
+
+echo ""
+echo "================================"
+echo "=== Installing lazydocker... ==="
+echo "================================"
+echo ""
+
+# Install lazydocker
+if ! command -v lazydocker &> /dev/null; then
+    echo "Installing lazydocker..."
+    curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+    echo "lazydocker installation completed."
+else
+    echo "lazydocker is already installed."
+fi
+
+echo ""
 echo "======================="
 echo "=== Setup Complete. ==="
 echo "======================="
 echo ""
+
