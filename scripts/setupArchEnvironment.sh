@@ -59,6 +59,7 @@ packages=(
     git
     go
     swayidle-git
+    solaar-git
 )
 
 # Loop through the packages and install if not already installed
@@ -247,6 +248,7 @@ declare -A links=(
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/_config/tmux/tmux.conf"]="$HOME/.config/tmux/tmux.conf"
     ["$HOME/.dotfiles/_config/tmux/tmux.reset.conf"]="$HOME/.config/tmux/tmux.reset.conf"
+    ["$HOME/.dotfiles/_config/solaar"]="$HOME/.config/solaar"
 )
 
 # Create symlinks
