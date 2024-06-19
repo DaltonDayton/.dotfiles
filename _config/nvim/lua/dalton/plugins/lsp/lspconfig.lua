@@ -85,21 +85,6 @@ return {
           capabilities = capabilities,
         })
       end,
-      -- ["svelte"] = function()
-      --   -- configure svelte server
-      --   lspconfig["svelte"].setup({
-      --     capabilities = capabilities,
-      --     on_attach = function(client, bufnr)
-      --       vim.api.nvim_create_autocmd("BufWritePost", {
-      --         pattern = { "*.js", "*.ts" },
-      --         callback = function(ctx)
-      --           -- Here use ctx.match instead of ctx.file
-      --           client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-      --         end,
-      --       })
-      --     end,
-      --   })
-      -- end,
       ["graphql"] = function()
         -- configure graphql language server
         lspconfig["graphql"].setup({
@@ -141,6 +126,19 @@ return {
               },
             },
           },
+        })
+      end,
+      ["omnisharp"] = function()
+        -- configure omnisharp language server
+        local mason_path = vim.fn.stdpath("data") .. "/mason/packages/omnisharp/libexec/"
+        lspconfig.omnisharp.setup({
+          cmd = { "dotnet", mason_path .. "OmniSharp.dll", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+          capabilities = capabilities,
+          root_dir = function(fname)
+            local root = lspconfig.util.root_pattern("*.sln", "*.csproj", ".git")(fname)
+            print("Omnisharp root_dir: " .. (root or "nil"))
+            return root
+          end,
         })
       end,
     })
