@@ -83,6 +83,10 @@ alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
 
 alias gittag="git log --no-walk --tags --pretty='%h %d %s' --decorate=full"
+function gitlogpr() {
+  git log $1..HEAD --oneline | grep "Merged PR"
+}
+
 alias gbr="git checkout azure && git pull"
 # Docker
 alias dcb="docker compose build"
