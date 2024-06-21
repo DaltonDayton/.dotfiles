@@ -3,6 +3,7 @@ return {
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "jay-babu/mason-nvim-dap.nvim",
   },
   config = function()
     -- import mason
@@ -37,6 +38,35 @@ return {
         "prismals",
         "pyright",
         "ruby_lsp",
+      },
+    })
+
+    require("mason-nvim-dap").setup({
+      automatic_installation = true,
+      ensure_installed = {
+        "python",
+      },
+      handlers = {
+        function(config)
+          -- all sources with no handler get passed here
+
+          -- Keep original functionality
+
+          require("mason-nvim-dap").default_setup(config)
+        end,
+
+        -- python = function(config)
+        --   config.adapters = {
+        --     type = "executable",
+        --     command = "/usr/bin/python3",
+        --     args = {
+        --       "-m",
+        --       "debugpy.adapter",
+        --     },
+        --   }
+        --
+        --   require("mason-nvim-dap").default_setup(config) -- don't forget this!
+        -- end,
       },
     })
 
