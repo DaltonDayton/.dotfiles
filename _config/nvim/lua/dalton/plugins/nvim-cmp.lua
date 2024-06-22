@@ -52,7 +52,7 @@ return {
         { name = "path" }, -- file system paths
       }),
 
-      cmp.setup.filetype({ "sql" }, {
+      cmp.setup.filetype({ "sql", "mysql" }, {
         sources = {
           { name = "vim-dadbod-completion" },
           { name = "buffer" },
