@@ -21,9 +21,9 @@ return {
             vim.keymap.set("n", "<leader>dc", dap.run_to_cursor, { desc = "Run to Cursor" })
 
             -- Eval var under cursor
-            vim.keymap.set("n", "<leader>?", function()
+            vim.keymap.set("n", "<leader>de", function()
                 require("dapui").eval(nil, { enter = true })
-            end)
+            end, { desc = "Eval under cursor" })
 
             vim.keymap.set("n", "<F1>", dap.continue, { desc = "Continue" })
             vim.keymap.set("n", "<F2>", dap.step_into, { desc = "Step Into" })
