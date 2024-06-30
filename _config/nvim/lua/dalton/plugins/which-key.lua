@@ -21,6 +21,7 @@ return {
       ["<leader>d"] = { name = "[D]ebug", _ = "which_key_ignore" },
       ["<leader>e"] = { name = "[E]xplorer", _ = "which_key_ignore" },
       ["<leader>h"] = { name = "[H]unk (Git)", _ = "which_key_ignore" },
+      ["<leader>i"] = { name = "[I]lluminate", _ = "which_key_ignore" },
       ["<leader>l"] = { name = "[L]azy Git", _ = "which_key_ignore" },
       ["<leader>m"] = { name = "[M]ake Pretty", _ = "which_key_ignore" },
       ["<leader>o"] = { name = "[O]bsidian", _ = "which_key_ignore" },
