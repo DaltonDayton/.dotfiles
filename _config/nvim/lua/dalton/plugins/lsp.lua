@@ -114,10 +114,9 @@ return {
 
         lsp_zero.default_keymaps({
           opts,
-          preserve_mappings = false, -- True overrides existing mappings if they exist
+          preserve_mappings = true, -- True overrides existing mappings if they exist
           -- exclude = {'gl', 'K'},       -- List of mappings to exclude
         })
-        -- vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', {buffer = bufnr})
       end)
 
       lsp_zero.set_sign_icons({
