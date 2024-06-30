@@ -1,7 +1,0 @@
-return {}
--- return { -- Collection of various small independent plugins/modules
---     'echasnovski/mini.nvim',
---     config = function()
---         require('mini.indentscope').setup()
---     end,
--- }
