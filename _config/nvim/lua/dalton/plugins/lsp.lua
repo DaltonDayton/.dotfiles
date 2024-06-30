@@ -55,12 +55,12 @@ return {
           { name = 'buffer' },
           { name = 'path' },
         },
-        -- cmp.setup.filetype({ "sql", "mysql" }, {
-        --   sources = {
-        --     { name = "vim-dadbod-completion" },
-        --     { name = "buffer" },
-        --   },
-        -- }),
+        cmp.setup.filetype({ "sql", "mysql" }, {
+          sources = {
+            { name = "vim-dadbod-completion" },
+            { name = "buffer" },
+          },
+        }),
         mapping = cmp.mapping.preset.insert({
           ['<C-a>'] = cmp.mapping.complete(),
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
@@ -99,6 +99,7 @@ return {
     dependencies = {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'williamboman/mason-lspconfig.nvim' },
+      { "jay-babu/mason-nvim-dap.nvim" },
     },
     config = function()
       -- This is where all the LSP shenanigans will live
@@ -126,7 +127,6 @@ return {
         info = '' -- Information
       })
 
-
       require('mason-lspconfig').setup({
         ensure_installed = {
           "lua_ls",
@@ -150,6 +150,32 @@ return {
 
           -- See https://lsp-zero.netlify.app/v3.x/language-server-configuration.html
         }
+      })
+
+      require('mason-nvim-dap').setup({
+        ensure_installed = {
+          "python",
+        },
+        handlers = {
+          function(config)
+            -- all sources with no handler get passed here
+
+            -- Keep original functionality
+            require('mason-nvim-dap').default_setup(config)
+          end,
+          -- python = function(config)
+          --   config.adapters = {
+          --     type = "executable",
+          --     command = "/usr/bin/python3",
+          --     args = {
+          --       "-m",
+          --       "debugpy.adapter",
+          --     },
+          --   }
+          --   require('mason-nvim-dap').default_setup(config) -- don't forget this!
+          -- end,
+        },
+
       })
     end
   }
