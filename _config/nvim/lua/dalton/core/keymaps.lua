@@ -38,5 +38,5 @@ vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste over selection without 
 vim.keymap.set("n", "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set("v", "<leader>y", '"+y', { desc = "Yank selection to system clipboard" })
 vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
-vim.keymap.set("n", "<leader>d", '"_d', { desc = "Delete without yanking" })
-vim.keymap.set("v", "<leader>d", '"_d', { desc = "Delete selection without yanking" })
+vim.keymap.set("n", "<leader>D", '"_d', { desc = "Delete without yanking" })
+vim.keymap.set("v", "<leader>D", '"_d', { desc = "Delete selection without yanking" })

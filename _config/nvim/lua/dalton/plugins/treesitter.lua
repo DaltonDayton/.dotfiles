@@ -43,6 +43,7 @@ return {
                 "vimdoc",
                 "c",
                 "sql",
+                "diff",
             },
             incremental_selection = {
                 enable = true,
