@@ -1,55 +1,55 @@
-vim.cmd("let g:netrw_liststyle = 3")
+-- Netrw settings
+vim.cmd("let g:netrw_liststyle = 3")          -- Use tree-style view for netrw
 
-local opt = vim.opt
+-- Line numbers
+vim.opt.relativenumber = true                 -- Show relative line numbers
+vim.opt.number = true                         -- Show absolute line numbers
 
-opt.relativenumber = true
-opt.number = true
+-- Mouse settings
+vim.opt.mouse = "a"                           -- Enable mouse support
 
-opt.mouse = "a"
+-- Tabs and indentation
+vim.opt.expandtab = true                      -- Expand tab to spaces
+vim.opt.autoindent = true                     -- Copy indent from current line when starting new one
 
--- tabs & indentation
-opt.expandtab = true -- expand tab to spaces
-opt.autoindent = true -- copy indent from current line when starting new one
+-- Text wrapping
+vim.opt.wrap = false                          -- Disable line wrapping
 
-opt.wrap = false
+-- Search settings
+vim.opt.ignorecase = true                     -- Ignore case when searching
+vim.opt.smartcase = true                      -- Case-sensitive search when mixed case is used
 
--- search settings
-opt.ignorecase = true -- ignore case when searching
-opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
+-- Cursor line
+vim.opt.cursorline = true                     -- Highlight the current line
 
-opt.cursorline = true
+-- Appearance settings
+vim.opt.termguicolors = true                  -- Enable 24-bit RGB color in the TUI
+vim.opt.background = "dark"                   -- Use dark background
+vim.opt.signcolumn = "yes"                    -- Always show the sign column
 
--- turn on termguicolors for tokyonight colorscheme to work
--- (have to use iterm2 or any other true color terminal)
-opt.termguicolors = true
-opt.background = "dark" -- colorschemes that can be light or dark will be made dark
-opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+-- Backspace behavior
+vim.opt.backspace = "indent,eol,start"        -- Allow backspace on indent, end of line, or insert mode start position
 
--- backspace
-opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
+-- Clipboard
+-- vim.opt.clipboard:append("unnamedplus")     -- Use system clipboard as default register
 
--- clipboard
--- opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+-- Window splitting
+vim.opt.splitright = true                     -- Split vertical window to the right
+vim.opt.splitbelow = true                     -- Split horizontal window to the bottom
 
--- split windows
-opt.splitright = true -- split vertical window to the right
-opt.splitbelow = true -- split horizontal window to the bottom
+-- File handling
+vim.opt.swapfile = false                      -- Disable swap file creation
+vim.opt.backup = false                        -- Disable backup file creation
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir" -- Set the directory for undo files
+vim.opt.undofile = true                       -- Enable persistent undo
 
--- turn off swapfile
-opt.swapfile = false
-
-opt.showmode = false
-opt.breakindent = true -- TODO: Check if this makes .md files look weird
-opt.updatetime = 50
-opt.timeoutlen = 300
-opt.list = true
-opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-opt.inccommand = "split"
-opt.scrolloff = 10
--- opt.colorcolumn = "120"
-
--- Backup and undo settings
-opt.swapfile = false -- Disable swap file creation
-opt.backup = false -- Disable backup file creation
-opt.undodir = os.getenv("HOME") .. "/.vim/undodir" -- Set the directory for undo files
-opt.undofile = true -- Enable persistent undo
+-- Miscellaneous settings
+vim.opt.showmode = false                      -- Disable showing mode in command line
+vim.opt.breakindent = true                    -- Enable break indent
+vim.opt.updatetime = 50                       -- Faster completion
+vim.opt.timeoutlen = 300                      -- Time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.list = true                           -- Show some invisible characters
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" } -- Define characters for invisible characters
+vim.opt.inccommand = "split"                  -- Show effects of a command incrementally
+vim.opt.scrolloff = 10                        -- Minimum number of screen lines to keep above and below the cursor
+-- vim.opt.colorcolumn = "120"                 -- Highlight column at 120 characters

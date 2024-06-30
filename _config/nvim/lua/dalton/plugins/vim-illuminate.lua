@@ -1,3 +1,4 @@
-return {
-  "RRethy/vim-illuminate",
-}
+return {}
+-- return {
+--   "RRethy/vim-illuminate",
+-- }
