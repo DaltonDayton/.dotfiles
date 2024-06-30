@@ -53,7 +53,7 @@ return {
     end
 }
 
--- TODO: Old config below, fix this stuff or figure out if fugitive is better
+-- TODO: Old config below, fix this stuff or figure out if fugitive is better, and maybe neogit?
 
 -- return {
 --   "lewis6991/gitsigns.nvim",
