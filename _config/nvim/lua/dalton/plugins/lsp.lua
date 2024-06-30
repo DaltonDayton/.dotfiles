@@ -22,8 +22,17 @@ return {
     event = 'InsertEnter',
     dependencies = {
       {
-        'L3MON4D3/LuaSnip',
-        'onsails/lspkind-nvim',
+        "hrsh7th/cmp-buffer",           -- source for text in buffer
+        "hrsh7th/cmp-path",             -- source for file system paths
+        "rafamadriz/friendly-snippets", -- useful snippets
+        'onsails/lspkind-nvim',         -- vs-code like pictograms
+        {
+          "L3MON4D3/LuaSnip",
+          -- follow latest release.
+          version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+          -- install jsregexp (optional!).
+          build = "make install_jsregexp",
+        },
       },
     },
     config = function()
@@ -35,6 +44,7 @@ return {
       local cmp = require('cmp')
       local cmp_action = lsp_zero.cmp_action()
 
+      -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
       require('luasnip.loaders.from_vscode').lazy_load()
 
       cmp.setup({
@@ -43,9 +53,16 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'buffer' },
+          { name = 'path' },
         },
+        -- cmp.setup.filetype({ "sql", "mysql" }, {
+        --   sources = {
+        --     { name = "vim-dadbod-completion" },
+        --     { name = "buffer" },
+        --   },
+        -- }),
         mapping = cmp.mapping.preset.insert({
-          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-a>'] = cmp.mapping.complete(),
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-f>'] = cmp_action.luasnip_jump_forward(),
@@ -64,8 +81,8 @@ return {
         formatting = {
           fields = { 'abbr', 'kind', 'menu' },
           format = require('lspkind').cmp_format({
-            mode = 'symbol_text', -- show only symbol annotations
-            maxwidth = 50,        -- prevent the popup from showing more than provided characters
+            mode = 'symbol_text',  -- show only symbol annotations
+            maxwidth = 50,         -- prevent the popup from showing more than provided characters
             symbol_map = { Copilot = "" },
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
           })
@@ -101,10 +118,6 @@ return {
           -- exclude = {'gl', 'K'},       -- List of mappings to exclude
         })
         -- vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', {buffer = bufnr})
-
-        vim.keymap.set({ 'n', 'x' }, 'gq', function()
-          vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
-        end, opts)
       end)
 
       lsp_zero.set_sign_icons({
