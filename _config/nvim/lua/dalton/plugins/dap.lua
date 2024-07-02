@@ -25,12 +25,12 @@ return {
                 require("dapui").eval(nil, { enter = true })
             end, { desc = "Eval under cursor" })
 
-            vim.keymap.set("n", "<F1>", dap.continue, { desc = "Continue" })
-            vim.keymap.set("n", "<F2>", dap.step_into, { desc = "Step Into" })
-            vim.keymap.set("n", "<F3>", dap.step_over, { desc = "Step Over" })
-            vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Step Out" })
-            vim.keymap.set("n", "<F5>", dap.step_back, { desc = "Step Back" })
-            vim.keymap.set("n", "<F6>", dap.restart, { desc = "Restart" })
+            vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue" })
+            vim.keymap.set("n", "<F6>", dap.step_into, { desc = "Step Into" })
+            vim.keymap.set("n", "<F7>", dap.step_over, { desc = "Step Over" })
+            vim.keymap.set("n", "<F8>", dap.step_out, { desc = "Step Out" })
+            vim.keymap.set("n", "<F9>", dap.step_back, { desc = "Step Back" })
+            vim.keymap.set("n", "<F10>", dap.restart, { desc = "Restart" })
 
             -- Toggle UI
             vim.keymap.set("n", "<leader>du", function()
