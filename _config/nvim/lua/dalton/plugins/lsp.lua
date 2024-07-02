@@ -111,13 +111,28 @@ return {
       lsp_zero.on_attach(function(client, bufnr)
         -- see :help lsp-zero-keybindings
         -- to learn the available actions
-        local opts = { buffer = bufnr }
 
-        lsp_zero.default_keymaps({
-          opts,
-          preserve_mappings = true, -- True overrides existing mappings if they exist
-          -- exclude = {'gl', 'K'},       -- List of mappings to exclude
-        })
+        lsp_zero.default_keymaps({ buffer = bufnr, preserve_mappings = false })
+
+        -- Helper function to keep keymap line short
+        local function set_keymap(key, func, desc)
+          local opts = { buffer = bufnr, noremap = true, silent = true, desc = desc }
+          vim.keymap.set('n', key, func, opts)
+        end
+
+        set_keymap('K', vim.lsp.buf.hover, '[LSP] Hover Info')
+        set_keymap('gd', require('telescope.builtin').lsp_definitions, '[LSP/T] Go to Definition')
+        set_keymap('gD', vim.lsp.buf.declaration, '[LSP] Go to Declaration')
+        set_keymap('gi', require('telescope.builtin').lsp_implementations, '[LSP/T] Go to Implementation')
+        set_keymap('go', require('telescope.builtin').lsp_type_definitions, '[LSP/T] Go to Type Definition')
+        set_keymap('gr', require('telescope.builtin').lsp_references, '[LSP/T] Go to References')
+        set_keymap('gs', vim.lsp.buf.signature_help, '[LSP] Signature Help')
+        set_keymap('<F2>', vim.lsp.buf.rename, '[LSP] Rename Symbol')
+        set_keymap('<F3>', vim.lsp.buf.format, '[LSP] Format Code')
+        set_keymap('<F4>', vim.lsp.buf.code_action, '[LSP] Code Action')
+        set_keymap('gl', vim.diagnostic.open_float, '[LSP] Show Diagnostics')
+        set_keymap('[d', function() vim.diagnostic.jump({ count = -1 }) end, '[LSP] Previous Diagnostic')
+        set_keymap(']d', function() vim.diagnostic.jump({ count = 1 }) end, '[LSP] Next Diagnostic')
       end)
 
       lsp_zero.set_sign_icons({
