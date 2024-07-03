@@ -24,6 +24,7 @@ return {
       ["<leader>i"] = { name = "[I]lluminate", _ = "which_key_ignore" },
       ["<leader>l"] = { name = "[L]azy Git", _ = "which_key_ignore" },
       ["<leader>m"] = { name = "[M]ake Pretty", _ = "which_key_ignore" },
+      ["<leader>n"] = { name = "[N]eoTest", _ = "which_key_ignore" },
       ["<leader>o"] = { name = "[O]bsidian", _ = "which_key_ignore" },
       ["<leader>t"] = { name = "[T]rouble", _ = "which_key_ignore" },
       ["<leader>u"] = { name = "[U]ndotree", _ = "which_key_ignore" },
