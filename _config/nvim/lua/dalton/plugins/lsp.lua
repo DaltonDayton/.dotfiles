@@ -145,6 +145,7 @@ return {
       require('mason-lspconfig').setup({
         ensure_installed = {
           "lua_ls",
+          "pyright",
         },
         handlers = {
           -- this first function is the "default handler"

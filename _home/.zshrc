@@ -82,6 +82,9 @@ alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %C
 alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --all --date=short --date-order"
 alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
+alias poetryactivate='source $(poetry env info --path)/bin/activate'
+alias pa='poetryactivate'
+alias pd='deactivate'
 
 alias gittag="git log --no-walk --tags --pretty='%h %d %s' --decorate=full"
 function gitlogpr() {
