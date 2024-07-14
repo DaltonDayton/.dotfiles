@@ -16,14 +16,21 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Zinit Update Commands
+# zinit self-update
+# zinit update
+
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
 # Add in snippets
-zinit snippet OMZP::git
+# zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 
