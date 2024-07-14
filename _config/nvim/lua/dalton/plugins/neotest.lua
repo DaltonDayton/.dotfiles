@@ -49,6 +49,6 @@ return {
     { "<leader>nO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
     { "<leader>nS", function() require("neotest").run.stop() end, desc = "Stop" },
     { "<leader>nw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Toggle Watch" },
-    { "<leader>nd", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Toggle Watch" },
+    { "<leader>nd", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Toggle Watch with DAP" },
   },
 }
