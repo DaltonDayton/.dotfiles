@@ -54,11 +54,12 @@ packages=(
     gdbm
     db
     util-linux
-    
+
     # Fonts
     ttf-symbola
     noto-fonts-cjk
     noto-fonts-emoji
+    ttf-iosevka-nerd
 
     # Other
     git
@@ -252,7 +253,6 @@ declare -A links=(
     ["$HOME/.dotfiles/_config/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/_config/nvim"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/_config/tmux/tmux.conf"]="$HOME/.config/tmux/tmux.conf"
-    ["$HOME/.dotfiles/_config/tmux/tmux.reset.conf"]="$HOME/.config/tmux/tmux.reset.conf"
     ["$HOME/.dotfiles/_config/solaar"]="$HOME/.config/solaar"
     ["$HOME/.dotfiles/_config/hypr/userprefs.conf"]="$HOME/.config/hypr/userprefs.conf"
 )
