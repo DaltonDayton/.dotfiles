@@ -1,6 +1,7 @@
 return {
   "christoomey/vim-tmux-navigator",
   "tpope/vim-sleuth",
+  "echasnovski/mini.icons",
   {
     "RRethy/vim-illuminate",
     config = function()
