@@ -2,6 +2,8 @@ return {
   "nvim-neotest/neotest",
   dependencies = {
     "nvim-neotest/nvim-nio",
+    "nvim-neotest/neotest-vim-test",
+    "vim-test/vim-test",
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -35,6 +37,11 @@ return {
           -- instances for files containing a parametrize mark (default: false)
           pytest_discover_instances = true,
         }),
+
+        -- neotest-vim-test for test runners not available by default neotest
+        require("neotest-vim-test")({ ignore_filetypes = { "python", "lua" } }),
+        -- Or to only allow specified file types
+        -- require("neotest-vim-test")({ allow_file_types = { "csharp" } }),
       },
     })
   end,
