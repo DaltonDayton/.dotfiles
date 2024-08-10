@@ -4,6 +4,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/fzf/bin:$PATH"
 
+# export LIBGL_ALWAYS_SOFTWARE=1 # Force software rendering for OpenGL (instead of GPU)
+
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -96,6 +98,45 @@ alias pd='deactivate'
 alias gittag="git log --no-walk --tags --pretty='%h %d %s' --decorate=full"
 function gitlogpr() {
   git log $1..HEAD --oneline | grep "Merged PR"
+}
+
+# Function to record screen with a specified filename
+record_screen() {
+    local filename=$1
+    if [ -z "$filename" ]; then
+        echo "Usage: record_screen <filename>"
+        return 1
+    fi
+    wf-recorder -f "${filename}.mp4"
+}
+
+# Function to convert the recording to GIF with a specified filename
+convert_to_gif() {
+    local filename=$1
+    if [ -z "$filename" ]; then
+        echo "Usage: convert_to_gif <filename>"
+        return 1
+    fi
+    ffmpeg -i "${filename}.mp4" -vf "fps=15,scale=640:-1:flags=lanczos" -c:v gif "${filename}.gif"
+}
+
+record_and_convert() {
+    local filename=$1
+    if [ -z "$filename" ]; then
+        echo "Usage: record_and_convert <filename>"
+        return 1
+    fi
+
+    # Start recording
+    wf-recorder -f "${filename}.mp4"
+
+    # Wait for the recording to finish
+    echo "Recording stopped. Converting to GIF..."
+
+    # Convert to GIF with 15fps
+    ffmpeg -i "${filename}.mp4" -vf "fps=15,scale=640:-1:flags=lanczos" -c:v gif "${filename}.gif"
+
+    echo "Conversion complete: ${filename}.gif"
 }
 
 alias gbr="git checkout azure && git pull"
