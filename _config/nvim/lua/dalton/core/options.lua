@@ -11,6 +11,7 @@ vim.opt.mouse = "a"                           -- Enable mouse support
 -- Tabs and indentation
 vim.opt.expandtab = true                      -- Expand tab to spaces
 vim.opt.autoindent = true                     -- Copy indent from current line when starting new one
+vim.opt.tabstop = 4                           -- Number of spaces that a <Tab> in the file counts for
 
 -- Text wrapping
 vim.opt.wrap = false                          -- Disable line wrapping
