@@ -112,6 +112,31 @@
       kitty
       eza
       git
+      nodejs
+      unzip
+      python3Full
+      ripgrep
+      xclip
+      luarocks
+      gcc
+      rustc
+      cargo
+      python3Packages.tiktoken
+      wget
+      go
+      php
+      # composer
+      jdk
+      julia
+      gh
+      tree-sitter
+      fd
+      nodePackages.neovim
+      lua
+      lua51Packages.luarocks
+      # (pkgs.ruby.withPackages (ps: with ps; [ neovim ]))
+      lua-language-server
+      lazygit
     ];
   
     # Some programs need SUID wrappers, can be configured further or are
