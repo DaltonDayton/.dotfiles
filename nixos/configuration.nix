@@ -137,6 +137,10 @@
       # (pkgs.ruby.withPackages (ps: with ps; [ neovim ]))
       lua-language-server
       lazygit
+      stylua
+      pyright
+      isort
+      black
     ];
   
     # Some programs need SUID wrappers, can be configured further or are

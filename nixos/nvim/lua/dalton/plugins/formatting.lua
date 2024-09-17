@@ -44,14 +44,15 @@ return {
       end, { desc = "Toggle format on save" })
     end,
   },
-  {
-    "zapling/mason-conform.nvim",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "stevearc/conform.nvim",
-    },
-    config = function()
-      require("mason-conform").setup({})
-    end,
-  },
+  -- ,
+  -- {
+  --   "zapling/mason-conform.nvim",
+  --   dependencies = {
+  --     "williamboman/mason.nvim",
+  --     "stevearc/conform.nvim",
+  --   },
+  --   config = function()
+  --     require("mason-conform").setup({})
+  --   end,
+  -- },
 }
