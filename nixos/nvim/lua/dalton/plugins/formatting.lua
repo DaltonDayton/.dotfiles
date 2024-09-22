@@ -7,6 +7,7 @@ return {
 
       conform.setup({
         formatters_by_ft = {
+          nix = { "nixfmt" },
           javascript = { "prettier" },
           typescript = { "prettier" },
           javascriptreact = { "prettier" },
@@ -22,6 +23,15 @@ return {
           lua = { "stylua" },
           python = { "isort", "black" },
           sql = { "sql_formatter" },
+        },
+        keys = {
+          {
+            "<leader>mf",
+            function()
+              require("conform").format({ lsp_fallback = true })
+            end,
+            desc = "Format Buffer",
+          },
         },
         format_on_save = function(bufnr)
           if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
