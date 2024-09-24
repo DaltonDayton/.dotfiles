@@ -154,6 +154,8 @@
       black
       nixfmt-rfc-style
       nil
+      fzf
+      bat
     ];
 
     # Some programs need SUID wrappers, can be configured further or are
