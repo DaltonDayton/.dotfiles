@@ -14,6 +14,8 @@
       monitor=DP-1,3440x1440@165,0x1440,1
       monitor=DP-2,3440x1440@144,0x0,1
 
+      exec-once = solaar --window=hide
+
       # ANIMATIONS
       animations {
           enabled = yes
@@ -120,7 +122,7 @@
 
       # Window/Session actions
       bindd = $mainMod+Shift, P,Color Picker , exec, hyprpicker -a # Pick color (Hex) >> clipboard# 
-      bind = $mainMod, Q, exec, $scrPath/dontkillsteam.sh # close focused window
+      bind = $mainMod, Q, killactive # close focused window
       bind = Alt, F4, exec, $scrPath/dontkillsteam.sh # close focused window
       bind = $mainMod, Delete, exit, # kill hyprland session
       bind = $mainMod, W, togglefloating, # toggle the window between focus and float
