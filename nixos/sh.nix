@@ -12,6 +12,7 @@ let
     githistall = "git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --all --date=short --date-order";
     ff = "fzf --preview 'bat {-1} --color=always'";
     sz = "source ~/.zshrc";
+    lg = "lazygit";
 
     poetryactivate = "source $(poetry env info --path)/bin/activate";
     pa = "poetryactivate";
