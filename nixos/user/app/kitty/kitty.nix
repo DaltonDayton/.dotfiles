@@ -1,11 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  userSettings,
+  ...
+}:
 
 {
   programs.kitty = {
     enable = true;
 
     font = {
-      name = "Fira Code Nerd Font";
+      name = userSettings.font;
       size = 11;
     };
   };

@@ -13,18 +13,6 @@
   home.username = "dalton";
   home.homeDirectory = "/home/dalton";
 
-  # Symlink your existing nvim configuration
-  home.file.".config/nvim" = {
-    source = ./nvim; # Path to your nvim config directory
-    recursive = true;
-  };
-
-  # Optionally, manage Neovim plugins and settings
-  programs.neovim = {
-    enable = true;
-    # Additional configurations can go here
-  };
-
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
