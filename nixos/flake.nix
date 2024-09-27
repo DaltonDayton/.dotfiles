@@ -1,9 +1,8 @@
 {
   description = "Primary Config";
 
-  # your built and working system config
   outputs =
-    input@{ self, ... }:
+    inputs@{ self, ... }:
     let
       systemSettings = {
         system = "x86_64-linux"; # system arch
@@ -24,52 +23,164 @@
         # window manager type (hyprland or x11) translator
         wmType = if ((wm == "hyprland") || (wm == "plasma")) then "wayland" else "x11";
         browser = "firefox"; # Default browser; must select one from ./user/app/browser/
-        # spawnBrowser =
-        #   if ((browser == "qutebrowser") && (wm == "hyprland")) then
-        #     "qutebrowser-hyprprofile"
-        #   else
-        #     (
-        #       if (browser == "qutebrowser") then
-        #         "qutebrowser --qt-flag enable-gpu-rasterization --qt-flag enable-native-gpu-memory-buffers --qt-flag num-raster-threads=4"
-        #       else
-        #         browser
-        #     ); # Browser spawn command must be specail for qb, since it doesn't gpu accelerate by default (why?)
-        # defaultRoamDir = "Personal.p"; # Default org roam directory relative to ~/Org
         term = "kitty"; # Default terminal command;
         font = "Intel One Mono"; # Selected font
         fontPkg = pkgs.intel-one-mono; # Font package
         editor = "neovim"; # Default editor;
       };
 
-      # TODO: This is where I left off. Look at the pkg stuff in phoenix flake.nix
+      # create patched nixpkgs
+      nixpkgs-patched =
+        (import inputs.nixpkgs {
+          system = systemSettings.system;
+          # rocmSupport = (if systemSettings.gpu == "amd" then true else false);
+        }).applyPatches
+          {
+            name = "nixpkgs-patched";
+            src = inputs.nixpkgs;
+            patches = [ ];
+          };
+
+      # configure pkgs
+      # use nixpkgs if running a server (homelab or worklab profile)
+      # otherwise use patched nixos-unstable nixpkgs
+      pkgs = (
+        # if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab")) then
+        #   pkgs-stable
+        # else
+        (import nixpkgs-patched {
+          system = systemSettings.system;
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = (_: true);
+          };
+        })
+      );
+      #
+      pkgs-stable = import inputs.nixpkgs-stable {
+        system = systemSettings.system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+      #
+      # pkgs-unstable = import inputs.nixpkgs-patched {
+      #   system = systemSettings.system;
+      #   config = {
+      #     allowUnfree = true;
+      #     allowUnfreePredicate = (_: true);
+      #   };
+      #   overlays = [ inputs.rust-overlay.overlays.default ];
+      # };
+      #
+      # pkgs-emacs = import inputs.emacs-pin-nixpkgs {
+      #   system = systemSettings.system;
+      # };
+      #
+      # pkgs-kdenlive = import inputs.kdenlive-pin-nixpkgs {
+      #   system = systemSettings.system;
+      # };
+      #
+      # pkgs-nwg-dock-hyprland = import inputs.nwg-dock-hyprland-pin-nixpkgs {
+      #   system = systemSettings.system;
+      # };
+      #
+      # # configure lib
+      # # use nixpkgs if running a server (homelab or worklab profile)
+      # # otherwise use patched nixos-unstable nixpkgs
+      lib = (
+        # if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab")) then
+        #   inputs.nixpkgs-stable.lib
+        # else
+        inputs.nixpkgs.lib
+      );
+      #
+      # # use home-manager-stable if running a server (homelab or worklab profile)
+      # # otherwise use home-manager-unstable
+      home-manager = (
+        #   if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab")) then
+        #     inputs.home-manager-stable
+        #   else
+        inputs.home-manager-unstable
+      );
+      #
+      # # Systems that can run tests:
+      # supportedSystems = [
+      #   "aarch64-linux"
+      #   "i686-linux"
+      #   "x86_64-linux"
+      # ];
+      #
+      # # Function to generate a set based on supported systems:
+      # forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
+      #
+      # # Attribute set of nixpkgs for each system:
+      # nixpkgsFor = forAllSystems (system: import inputs.nixpkgs { inherit system; });
 
     in
     {
-      nixosConfigurations = {
-        nixos = lib.nixosSystem {
-          inherit system; # inherit passes the var in as an arg
-          modules = [ ./configuration.nix ];
-        };
-      };
       homeConfigurations = {
         dalton = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home.nix ];
-
+          modules = [
+            (./. + "/profiles" + ("/" + systemSettings.profile) + "/home.nix")
+          ];
+          extraSpecialArgs = {
+            inherit pkgs-stable;
+            inherit systemSettings;
+            inherit userSettings;
+            inherit inputs;
+          };
         };
       };
+      nixosConfigurations = {
+        nixos = lib.nixosSystem {
+          system = systemSettings.system;
+          modules = [
+            (./. + "/profiles" + ("/" + systemSettings.profile) + "/configuration.nix")
+            # inputs.lix-module.nixosModules.default
+          ];
+          specialArgs = {
+            inherit pkgs-stable;
+            inherit systemSettings;
+            inherit userSettings;
+            inherit inputs;
+          };
+        };
+      };
+
+      # Original config
+      # nixosConfigurations = {
+      #   nixos = lib.nixosSystem {
+      #     inherit system; # inherit passes the var in as an arg
+      #     modules = [ ./configuration.nix ];
+      #   };
+      # };
+      # homeConfigurations = {
+      #   dalton = home-manager.lib.homeManagerConfiguration {
+      #     inherit pkgs;
+      #     modules = [ ./home.nix ];
+      #
+      #   };
+      # };
     };
 
   # git repos - nixpkgs for example
   inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+
+    home-manager-unstable.url = "github:nix-community/home-manager/master";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs";
+
+    # original config
     # nixpkgs = {
     #   url = "github:NixOS/nixpkgs/nixos-24.05";
     # };
-
     #Shorter version of the above
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-
-    home-manager.url = "github:nix-community/home-manager/master";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # nixpkgs.url = "nixpkgs/nixos-unstable";
+    # home-manager.url = "github:nix-community/home-manager/master";
+    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 }
