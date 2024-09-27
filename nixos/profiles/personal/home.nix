@@ -12,7 +12,7 @@
   programs.home-manager.enable = true;
 
   imports = [
-    (../../system/wm + ("/" + userSettings.wm + "/" + userSettings.wm) + ".nix")
+    (../../user/wm + ("/" + userSettings.wm + "/" + userSettings.wm) + ".nix")
     ../../user/shell/sh.nix
     ../../user/app/nvim/nvim.nix
     ../../user/app/git/git.nix
@@ -20,7 +20,7 @@
     ../../user/app/solaar/solaar.nix
   ];
 
-  system.stateVersion = "24.05";
+  home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
     # Core
@@ -34,7 +34,7 @@
     # TODO: split these packages out into categories or
     # into separate files where applicable
 
-    neovim
+    # neovim
     kitty
     eza
     git
@@ -44,7 +44,7 @@
     ripgrep
     xclip
     # mostly nvim stuff
-    luarocks
+    # luarocks
     gcc
     rustc
     cargo
@@ -58,7 +58,7 @@
     gh
     tree-sitter
     fd
-    nodePackages.neovim
+    # nodePackages.neovim
     lua
     lua51Packages.luarocks
     # (pkgs.ruby.withPackages (ps: with ps; [ neovim ]))
@@ -74,6 +74,8 @@
     fzf
     bat
     fira-code-nerdfont
+    wl-clipboard
+    cliphist
   ];
 
   # TODO: Look into these options before enabling

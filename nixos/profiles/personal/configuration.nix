@@ -72,6 +72,10 @@
       LC_TELEPHONE = systemSettings.locale;
     };
 
+    # Enable the GNOME Desktop Environment.
+    # services.xserver.displayManager.gdm.enable = true;
+    # services.xserver.desktopManager.gnome.enable = true;
+
     # User Account
     users.users.${userSettings.username} = {
       isNormalUser = true;
@@ -104,12 +108,15 @@
 
     fonts.fontDir.enable = true;
 
+    hardware.logitech.wireless.enable = true;
+
     xdg.portal = {
-      enable = true;
-      extraPortals = [
-        pkgs.xdg-desktop-portal
-        pkgs.xdg-desktop-portal-gtk
-      ];
+      # enable = true;
+      config.common.default = "pkgs.xdg-desktop-portal-hyprland";
+      # extraPortals = [
+      #   pkgs.xdg-desktop-portal
+      #   pkgs.xdg-desktop-portal-gtk
+      # ];
     };
 
     # Leave this unchanged
