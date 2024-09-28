@@ -17,7 +17,6 @@
     ../../system/hardware/printing.nix
     ../../system/hardware/bluetooth.nix
     (../../system/wm + ("/" + userSettings.wm) + ".nix")
-    ../../system/wm/pipewire.nix # TODO: temporary: move to wm like in phoenix
   ];
 
   options = {

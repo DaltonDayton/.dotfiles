@@ -23,14 +23,6 @@
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
-    # Core
-    # Already listed in configuration.nix
-    # zsh
-    # kitty
-    # firefox
-    # git
-    # vim
-
     # TODO: split these packages out into categories or
     # into separate files where applicable
 
