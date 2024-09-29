@@ -13,6 +13,10 @@ source "$MODULES_DIR/common.sh"
 # Ensure 'yay' is installed
 ensure_yay_installed
 
+# Perform a system update once
+echo "Updating system..."
+yay -Syu --noconfirm
+
 # List of modules to install
 MODULES=(
   "git"
@@ -31,4 +35,12 @@ for module in "${MODULES[@]}"; do
     echo "Error: Module $module not found!"
   fi
 done
+
+# Install all missing packages at once
+if [ ${#MISSING_PACKAGES[@]} -gt 0 ]; then
+  echo "Installing missing packages..."
+  yay -S --needed --noconfirm "${MISSING_PACKAGES[@]}"
+else
+  echo "All packages are already installed and up to date."
+fi
 

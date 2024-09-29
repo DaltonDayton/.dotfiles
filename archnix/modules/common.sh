@@ -18,49 +18,39 @@ function ensure_yay_installed() {
   fi
 }
 
+# Initialize an array to collect missing packages
+declare -a MISSING_PACKAGES=()
+
 function ensure_package_installed() {
-  # TODO: This is slow. Find a better way to check if already installed at correct version
   local package="$1"
   local version="${2:-latest}"
 
-  if yay -Qs "^${package}$" > /dev/null; then
+  # Check if the package is installed
+  if pacman -Qq "$package" &> /dev/null; then
     echo "$package is already installed."
-    if [ "$version" == "latest" ]; then
-      echo "Updating $package to the latest version..."
-      yay -Syu --noconfirm "$package"
-    else
-      echo "Ensuring $package is at version $version..."
-      yay -S --noconfirm "$package=$version"
+    # Check if a specific version is required
+    if [ "$version" != "latest" ]; then
+      # Get the installed version
+      installed_version=$(pacman -Q "$package" | awk '{print $2}')
+      if [ "$installed_version" != "$version" ]; then
+        echo "$package is at version $installed_version, needs to be updated to $version."
+        MISSING_PACKAGES+=("$package=$version")
+      else
+        echo "$package is already at version $version."
+      fi
     fi
   else
+    # Package is not installed
     if [ "$version" == "latest" ]; then
-      echo "Installing $package..."
-      yay -S --noconfirm "$package"
+      echo "$package will be installed."
+      MISSING_PACKAGES+=("$package")
     else
-      echo "Installing $package version $version..."
-      yay -S --noconfirm "$package=$version"
+      echo "$package version $version will be installed."
+      MISSING_PACKAGES+=("$package=$version")
     fi
   fi
 }
 
-function prompt_and_backup() {
-  local dest_file="$1"
-  local backup_file="${dest_file}.backup.$(date +%s)"
-
-  if [ -f "$dest_file" ]; then
-    read -p "File $dest_file exists. Overwrite? (y/n): " choice
-    if [[ "$choice" =~ ^[Yy]$ ]]; then
-      cp "$dest_file" "$backup_file"
-      echo "Backed up $dest_file to $backup_file"
-      return 0  # Proceed with overwrite
-    else
-      echo "Skipped updating $dest_file"
-      return 1  # Skip overwrite
-    fi
-  else
-    return 0  # File doesn't exist, proceed
-  fi
-}
 
 # Function to symlink configuration files or directories without using rm -rf
 function symlink_config() {

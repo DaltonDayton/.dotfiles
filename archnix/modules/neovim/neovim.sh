@@ -6,6 +6,7 @@ function install_neovim() {
   local packages=(
     "neovim"
     "lazygit"
+    "ripgrep"
   )
 
   # Install the packages using ensure_package_installed function
@@ -26,8 +27,6 @@ function install_neovim() {
 
 # Function to configure the module
 function configure_neovim() {
-  # TODO:
-  # Define the source and destination of configuration files
   # These can be duplicated if multiple iterations need to be symlinked
   CONFIG_SOURCE="$MODULES_DIR/neovim/nvim"
   CONFIG_DEST="$HOME/.config/nvim"
