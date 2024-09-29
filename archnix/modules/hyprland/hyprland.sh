@@ -5,6 +5,9 @@ function install_hyprland() {
   # Define the list of packages required for this module
   local packages=(
     "wl-clipboard"
+    "nvidia-dkms"
+    "nvidia-utils"
+    "egl-wayland"
   )
 
   # Install the packages using ensure_package_installed function
@@ -20,18 +23,16 @@ function install_hyprland() {
   done
 
   # Proceed to configuration
-  # configure_hyprland
+  configure_hyprland
 }
 
 # Function to configure the module
 function configure_hyprland() {
-  # TODO:
-  # Define the source and destination of configuration files
   # These can be duplicated if multiple iterations need to be symlinked
-  CONFIG_SOURCE="$MODULES_DIR/hyprland/config/files"
-  CONFIG_DEST="$HOME/.config/hyprland"
+  CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr"
+  CONFIG_DEST="$HOME/.config/hypr"
 
-  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
