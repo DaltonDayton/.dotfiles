@@ -23,6 +23,7 @@ MODULES=(
   "hyprland"
   "zsh"
   "neovim"
+  "kitty"
 )
 
 for module in "${MODULES[@]}"; do
