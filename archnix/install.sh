@@ -32,7 +32,9 @@ MODULES=(
 for module in "${MODULES[@]}"; do
   MODULE_SCRIPT="$MODULES_DIR/${module}/${module}.sh"
   if [ -f "$MODULE_SCRIPT" ]; then
+    echo "====================="
     echo "Processing $module..."
+    echo "====================="
     source "$MODULE_SCRIPT"
     "install_$module"
   else
