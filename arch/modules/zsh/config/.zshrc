@@ -94,6 +94,7 @@ alias sz="source ~/.zshrc"
 alias poetryactivate='source $(poetry env info --path)/bin/activate'
 alias pa='poetryactivate'
 alias pd='deactivate'
+alias lg='lazygit'
 
 # Function to record screen with a specified filename
 record_screen() {
