@@ -13,9 +13,8 @@ source "$MODULES_DIR/common.sh"
 # Ensure 'yay' is installed
 ensure_yay_installed
 
-# Perform a system update once
-echo "Updating system..."
-yay -Syu --noconfirm
+echo "Synchronizing package databases..."
+yay -Sy --noconfirm
 
 # List of modules to install
 MODULES=(
@@ -26,6 +25,8 @@ MODULES=(
   "neovim"
   "kitty"
   "solaar"
+  "gaming"
+  "misc"
 )
 
 for module in "${MODULES[@]}"; do

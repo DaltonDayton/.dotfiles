@@ -39,17 +39,18 @@ function ensure_package_installed() {
 
   # Check if the package is installed
   if pacman -Qq "$package" &>/dev/null; then
-    echo "$package is already installed."
-    # Check if a specific version is required
+    installed_version=$(pacman -Q "$package" | awk '{print $2}')
     if [ "$version" != "latest" ]; then
-      # Get the installed version
-      installed_version=$(pacman -Q "$package" | awk '{print $2}')
       if [ "$installed_version" != "$version" ]; then
-        echo "$package is at version $installed_version, needs to be updated to $version."
-        yay -S --noconfirm "$package=$version"
+        echo "$package is at version $installed_version, but version $version is required."
+        # Handle the version mismatch (e.g., prompt the user, attempt to downgrade)
+        # Downgrading can be complex; consider notifying the user instead
+        echo "Please downgrade $package to version $version manually."
       else
-        echo "$package is already at version $version."
+        echo "$package is already at the required version $version."
       fi
+    else
+      echo "$package is already installed."
     fi
   else
     # Package is not installed
@@ -58,7 +59,11 @@ function ensure_package_installed() {
       yay -S --needed --noconfirm "$package"
     else
       echo "Installing $package version $version..."
-      yay -S --noconfirm "$package=$version"
+      # Attempt to install the specific version
+      yay -S --noconfirm "$package=$version" || {
+        echo "Failed to install $package version $version."
+        echo "Please install it manually."
+      }
     fi
   fi
 }
