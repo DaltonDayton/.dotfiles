@@ -5,6 +5,7 @@ function install_kitty() {
   # Define the list of packages required for this module
   local packages=(
     "kitty"
+    "ttf-firacode-nerd"
   )
 
   # Install the packages using the install_packages function
@@ -17,8 +18,8 @@ function install_kitty() {
 # Function to configure the module
 function configure_kitty() {
   # These can be duplicated if multiple iterations need to be symlinked
-  CONFIG_SOURCE="$MODULES_DIR/kitty/config"
-  CONFIG_DEST="$HOME/.config/kitty"
+  CONFIG_SOURCE="$MODULES_DIR/kitty/config/kitty.conf"
+  CONFIG_DEST="$HOME/.config/kitty/kitty.conf"
 
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
