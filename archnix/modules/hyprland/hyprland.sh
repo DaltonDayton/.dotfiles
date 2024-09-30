@@ -17,7 +17,31 @@ function install_hyprland() {
 
 # Function to configure the module
 function configure_hyprland() {
-  # These can be duplicated if multiple iterations need to be symlinked
+  set -euo pipefail
+
+  HYDE_DIR="$HOME/HyDE"
+  HYDE_REPO="https://github.com/prasanthrangan/hyprdots"
+
+  # Clone or update HyDE repository
+  if [ -d "$HYDE_DIR" ]; then
+    echo "HyDE directory already exists. Updating repository..."
+    git -C "$HYDE_DIR" pull
+  else
+    git clone --depth 1 "$HYDE_REPO" "$HYDE_DIR"
+  fi
+
+  # Run HyDE install script
+  pushd "$HYDE_DIR/Scripts"
+  if ./install.sh; then
+    echo "HyDE installed successfully."
+  else
+    echo "HyDE installation failed."
+    popd
+    exit 1
+  fi
+  popd
+
+  # Symlink custom userprefs.conf
   CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr/userprefs.conf"
   CONFIG_DEST="$HOME/.config/hypr/userprefs.conf"
 
@@ -25,8 +49,4 @@ function configure_hyprland() {
 
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
-
-  # TODO: install HyDE via install script, then run hyde cli?
-  # Or maybe just import themes using cli:
-  # https://github.com/HyDE-Project/hyde-gallery
 }
