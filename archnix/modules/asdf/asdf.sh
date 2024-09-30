@@ -41,14 +41,6 @@ function install_asdf() {
 
 # Function to configure the module
 function configure_asdf() {
-    # # TODO:
-    # # Define the source and destination of configuration files
-    # # These can be duplicated if multiple iterations need to be symlinked
-    # CONFIG_SOURCE="$MODULES_DIR/asdf/config/files"
-    # CONFIG_DEST="$HOME/.config/asdf"
-    #
-    # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
-
     # Additional configuration steps can be added here
     # For example, setting environment variables, running setup scripts, etc.
 
@@ -84,10 +76,6 @@ function configure_asdf() {
     install_asdf_plugin "nodejs"
     asdf install nodejs latest
     asdf global nodejs latest
-
-    echo "==="
-    echo "=== The Ruby section can hang for a while on the initial run."
-    echo "==="
 
     # Install and set Ruby
     install_asdf_plugin "ruby"
