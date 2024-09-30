@@ -95,11 +95,6 @@ alias poetryactivate='source $(poetry env info --path)/bin/activate'
 alias pa='poetryactivate'
 alias pd='deactivate'
 
-alias gittag="git log --no-walk --tags --pretty='%h %d %s' --decorate=full"
-function gitlogpr() {
-  git log $1..HEAD --oneline | grep "Merged PR"
-}
-
 # Function to record screen with a specified filename
 record_screen() {
     local filename=$1
@@ -139,16 +134,6 @@ record_and_convert() {
     echo "Conversion complete: ${filename}.gif"
 }
 
-alias gbr="git checkout azure && git pull"
-# Docker
-alias dcb="docker compose build"
-alias dcu="docker compose up"
-alias dcbu="dcb && dcu"
-alias dabw="docker attach builder-web-1"
-alias dabs="docker attach builder-sidekiq-1"
-alias dasw="docker attach systemd-web-1"
-alias dass="docker attach systemd-sidekiq-1"
-
 # Handy change dir shortcuts
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -158,11 +143,6 @@ alias .5='cd ../../../../..'
 
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
-
-# fd() {
-#   preview="git diff $@ --color=always -- {-1}"
-#   git diff $@ --name-only | fzf -m --ansi --preview $preview
-# }
 
 showPreview()
 {
