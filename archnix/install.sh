@@ -24,6 +24,7 @@ MODULES=(
   "zsh"
   "neovim"
   "kitty"
+  "solaar"
 )
 
 for module in "${MODULES[@]}"; do
