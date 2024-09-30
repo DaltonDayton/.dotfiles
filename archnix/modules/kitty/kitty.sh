@@ -25,4 +25,3 @@ function configure_kitty() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 }
-

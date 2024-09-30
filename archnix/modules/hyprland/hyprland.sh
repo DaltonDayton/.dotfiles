@@ -28,4 +28,3 @@ function configure_hyprland() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 }
-

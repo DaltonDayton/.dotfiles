@@ -7,6 +7,7 @@ function install_neovim() {
     "neovim"
     "lazygit"
     "ripgrep"
+    "unzip"
   )
 
   # Install the packages using the install_packages function
@@ -27,4 +28,3 @@ function configure_neovim() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 }
-
