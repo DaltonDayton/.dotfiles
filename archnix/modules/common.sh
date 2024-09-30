@@ -18,6 +18,22 @@ function ensure_yay_installed() {
   fi
 }
 
+# Function to install a list of packages
+function install_packages() {
+  local packages=("$@")
+  for package_entry in "${packages[@]}"; do
+    if [[ "$package_entry" == *"="* ]]; then
+      # If a specific version is specified
+      IFS='=' read -r pkg ver <<< "$package_entry"
+      ensure_package_installed "$pkg" "$ver"
+    else
+      # Install the latest version
+      ensure_package_installed "$package_entry"
+    fi
+  done
+}
+
+
 # Initialize an array to collect missing packages
 declare -a MISSING_PACKAGES=()
 
