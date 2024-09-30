@@ -25,7 +25,7 @@ function configure_solaar() {
   # For example, setting environment variables, running setup scripts, etc.
 
   # Ensure the 'uinput' group exists
-  if ! getent group uinput > /dev/null; then
+  if ! getent group uinput >/dev/null; then
     echo "Creating 'uinput' group..."
     sudo groupadd uinput
   fi
@@ -42,7 +42,7 @@ function configure_solaar() {
   # Create udev rule for /dev/uinput
   if [ ! -f /etc/udev/rules.d/99-uinput.rules ]; then
     echo "Creating udev rule for /dev/uinput..."
-    sudo tee /etc/udev/rules.d/99-uinput.rules > /dev/null <<EOF
+    sudo tee /etc/udev/rules.d/99-uinput.rules >/dev/null <<EOF
 KERNEL=="uinput", SUBSYSTEM=="misc", MODE="0660", GROUP="uinput"
 EOF
     sudo udevadm control --reload-rules
@@ -56,9 +56,8 @@ EOF
     echo "Loading uinput module..."
     sudo modprobe uinput
     # Make it load on boot
-    echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf > /dev/null
+    echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf >/dev/null
   else
     echo "uinput module is already loaded."
   fi
 }
-

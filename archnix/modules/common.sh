@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Function to ensure 'yay' is installed
 function ensure_yay_installed() {
-  if ! command -v yay &> /dev/null; then
+  if ! command -v yay &>/dev/null; then
     echo "yay is not installed. Installing yay..."
     # Install dependencies for building yay
     sudo pacman -S --needed --noconfirm git base-devel
@@ -24,25 +25,20 @@ function install_packages() {
   for package_entry in "${packages[@]}"; do
     if [[ "$package_entry" == *"="* ]]; then
       # If a specific version is specified
-      IFS='=' read -r pkg ver <<< "$package_entry"
+      IFS='=' read -r pkg ver <<<"$package_entry"
       ensure_package_installed "$pkg" "$ver"
     else
-      # Install the latest version
       ensure_package_installed "$package_entry"
     fi
   done
 }
-
-
-# Initialize an array to collect missing packages
-declare -a MISSING_PACKAGES=()
 
 function ensure_package_installed() {
   local package="$1"
   local version="${2:-latest}"
 
   # Check if the package is installed
-  if pacman -Qq "$package" &> /dev/null; then
+  if pacman -Qq "$package" &>/dev/null; then
     echo "$package is already installed."
     # Check if a specific version is required
     if [ "$version" != "latest" ]; then
@@ -50,7 +46,7 @@ function ensure_package_installed() {
       installed_version=$(pacman -Q "$package" | awk '{print $2}')
       if [ "$installed_version" != "$version" ]; then
         echo "$package is at version $installed_version, needs to be updated to $version."
-        MISSING_PACKAGES+=("$package=$version")
+        yay -S --noconfirm "$package=$version"
       else
         echo "$package is already at version $version."
       fi
@@ -58,15 +54,14 @@ function ensure_package_installed() {
   else
     # Package is not installed
     if [ "$version" == "latest" ]; then
-      echo "$package will be installed."
-      MISSING_PACKAGES+=("$package")
+      echo "Installing $package..."
+      yay -S --needed --noconfirm "$package"
     else
-      echo "$package version $version will be installed."
-      MISSING_PACKAGES+=("$package=$version")
+      echo "Installing $package version $version..."
+      yay -S --noconfirm "$package=$version"
     fi
   fi
 }
-
 
 # Function to symlink configuration files or directories without using rm -rf
 function symlink_config() {

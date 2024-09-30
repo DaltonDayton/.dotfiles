@@ -31,4 +31,3 @@ function configure_exampleModule() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 }
-
