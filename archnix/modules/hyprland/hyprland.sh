@@ -21,6 +21,7 @@ function configure_hyprland() {
 
   HYDE_DIR="$HOME/HyDE"
   HYDE_REPO="https://github.com/prasanthrangan/hyprdots"
+  HYDE_MARKER="$HYDE_DIR/.hyde_installed"
 
   # Clone or update HyDE repository
   if [ -d "$HYDE_DIR" ]; then
@@ -30,16 +31,23 @@ function configure_hyprland() {
     git clone --depth 1 "$HYDE_REPO" "$HYDE_DIR"
   fi
 
-  # Run HyDE install script
-  pushd "$HYDE_DIR/Scripts"
-  if ./install.sh; then
-    echo "HyDE installed successfully."
+  # Check if HyDE has been installed before
+  if [ -f "$HYDE_MARKER" ]; then
+    echo "HyDE has already been installed. Skipping installation."
   else
-    echo "HyDE installation failed."
+    # Run HyDE install script
+    pushd "$HYDE_DIR/Scripts"
+    if ./install.sh; then
+      echo "HyDE installed successfully."
+      # Create marker file
+      touch "$HYDE_MARKER"
+    else
+      echo "HyDE installation failed."
+      popd
+      exit 1
+    fi
     popd
-    exit 1
   fi
-  popd
 
   # Symlink custom userprefs.conf
   CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr/userprefs.conf"
