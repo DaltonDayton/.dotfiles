@@ -11,17 +11,8 @@ function install_zsh() {
     "fzf"
   )
 
-  # Install the packages using ensure_package_installed function
-  for package_entry in "${packages[@]}"; do
-    if [[ "$package_entry" == *"="* ]]; then
-      # If a specific version is specified
-      IFS='=' read -r pkg ver <<< "$package_entry"
-      ensure_package_installed "$pkg" "$ver"
-    else
-      # Install the latest version
-      ensure_package_installed "$package_entry"
-    fi
-  done
+  # Install the packages using the install_packages function
+  install_packages "${packages[@]}"
 
   # Proceed to configuration
   configure_zsh
