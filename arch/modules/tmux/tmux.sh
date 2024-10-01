@@ -18,11 +18,7 @@ function install_tmux() {
 function configure_tmux() {
   # These can be duplicated if multiple iterations need to be symlinked
   CONFIG_SOURCE="$MODULES_DIR/tmux/config/tmux.conf"
-  CONFIG_DEST="$HOME/.config/tmux/tmux.conf"
-  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
-
-  CONFIG_SOURCE="$MODULES_DIR/tmux/config/tmux.reset.conf"
-  CONFIG_DEST="$HOME/.config/tmux/tmux.reset.conf"
+  CONFIG_DEST="$HOME/.tmux.conf"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Additional configuration steps can be added here
