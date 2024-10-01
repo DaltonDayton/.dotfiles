@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Function to install the module
-function install_zsh() {
+function install_shell() {
   # Define the list of packages required for this module
   local packages=(
     "zsh"
@@ -15,14 +15,17 @@ function install_zsh() {
   install_packages "${packages[@]}"
 
   # Proceed to configuration
-  configure_zsh
+  configure_shell
 }
 
 # Function to configure the module
-function configure_zsh() {
-  CONFIG_SOURCE="$MODULES_DIR/zsh/config/.zshrc"
+function configure_shell() {
+  CONFIG_SOURCE="$MODULES_DIR/shell/config/.zshrc"
   CONFIG_DEST="$HOME/.zshrc"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
+  CONFIG_SOURCE="$MODULES_DIR/shell/config/starship.toml"
+  CONFIG_DEST="$HOME/.config/starship.toml"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Additional configuration steps can be added here
