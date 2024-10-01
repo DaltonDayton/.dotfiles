@@ -21,6 +21,7 @@ MODULES=(
   "git"
   "hyprland"
   "zsh"
+  "tmux"
   "asdf"
   "neovim"
   "kitty"
