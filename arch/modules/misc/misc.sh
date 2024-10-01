@@ -5,6 +5,7 @@ function install_misc() {
   # Define the list of packages required for this module
   local packages=(
     "bat"
+    "less"
     "expressvpn"
   )
 
