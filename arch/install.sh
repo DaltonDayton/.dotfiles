@@ -20,7 +20,7 @@ yay -Sy --noconfirm
 MODULES=(
   "git"
   "hyprland"
-  "zsh"
+  "shell"
   "tmux"
   "asdf"
   "neovim"
