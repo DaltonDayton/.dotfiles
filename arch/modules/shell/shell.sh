@@ -5,9 +5,11 @@ function install_shell() {
   # Define the list of packages required for this module
   local packages=(
     "zsh"
+    "starship"
     "eza"
     "zoxide"
-    "starship"
+    "bat"
+    "less"
     "fzf"
   )
 
