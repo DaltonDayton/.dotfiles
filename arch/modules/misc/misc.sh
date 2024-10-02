@@ -4,9 +4,14 @@
 function install_misc() {
   # Define the list of packages required for this module
   local packages=(
-    "bat"
-    "less"
+    # VPN
     "expressvpn"
+
+    # Fonts
+    "ttf-symbola"
+    "noto-fonts-cjk"
+    "noto-fonts-emoji"
+    "ttf-firacode-nerd"
   )
 
   # Install the packages using the install_packages function

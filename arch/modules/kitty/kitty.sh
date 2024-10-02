@@ -5,7 +5,6 @@ function install_kitty() {
   # Define the list of packages required for this module
   local packages=(
     "kitty"
-    "ttf-firacode-nerd"
   )
 
   # Install the packages using the install_packages function
