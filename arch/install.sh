@@ -26,6 +26,7 @@ MODULES=(
   "neovim"
   "kitty"
   "solaar"
+  "insync"
   "gaming"
   "misc"
 )
