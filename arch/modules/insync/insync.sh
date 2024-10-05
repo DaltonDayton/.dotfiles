@@ -18,7 +18,7 @@ function install_insync() {
 function configure_insync() {
   # These can be duplicated if multiple iterations need to be symlinked
   CONFIG_SOURCE="$HOME/Insync/daltondayton1@gmail.com/Google Drive/Development"
-  CONFIG_DEST="$HOME/Development"
+  CONFIG_DEST="$HOME/Development/Drive"
 
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
