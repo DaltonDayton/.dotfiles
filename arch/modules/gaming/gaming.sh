@@ -14,6 +14,10 @@ function install_gaming() {
 
     # Communication
     "discord-canary"
+
+    # WoW
+    "curseforge"
+    "weakauras-companion-bin"
   )
 
   # Install the packages using the install_packages function
