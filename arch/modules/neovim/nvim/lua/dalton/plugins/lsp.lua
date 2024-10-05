@@ -150,6 +150,7 @@ return {
           "lua_ls",
           "pyright",
           "ruby_lsp",
+          "emmet_language_server",
         },
         handlers = {
           -- this first function is the "default handler"
