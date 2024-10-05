@@ -15,6 +15,7 @@ function install_misc() {
     "ttf-font-awesome"
 
     # Notes
+    # TODO: Move to a module and git clone personal_notes?
     "obsidian"
   )
 
