@@ -12,6 +12,7 @@ function install_misc() {
     "noto-fonts-cjk"
     "noto-fonts-emoji"
     "ttf-firacode-nerd"
+    "ttf-font-awesome"
   )
 
   # Install the packages using the install_packages function
