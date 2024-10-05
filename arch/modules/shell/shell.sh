@@ -11,6 +11,7 @@ function install_shell() {
     "bat"
     "less"
     "fzf"
+    "yazi"
   )
 
   # Install the packages using the install_packages function
