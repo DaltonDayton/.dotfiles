@@ -13,6 +13,9 @@ function install_misc() {
     "noto-fonts-emoji"
     "ttf-firacode-nerd"
     "ttf-font-awesome"
+
+    # Notes
+    "obsidian"
   )
 
   # Install the packages using the install_packages function
