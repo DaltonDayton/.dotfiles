@@ -42,14 +42,15 @@ return {
         "sql",
         "diff",
         "c_sharp",
+        "python",
       },
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
+          init_selection = "<leader>fi",
+          node_incremental = "<leader>fn",
           scope_incremental = false,
-          node_decremental = "<bs>",
+          node_decremental = "<leader>fb",
         },
       },
     })
