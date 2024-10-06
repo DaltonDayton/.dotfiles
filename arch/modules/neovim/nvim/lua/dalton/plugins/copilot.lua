@@ -24,6 +24,41 @@ return {
       language = "English", -- Copilot answer language settings when using default prompts. Default language is English.
       -- proxy = "socks5://127.0.0.1:3000", -- Proxies requests via https or socks.
       -- temperature = 0.1,
+      mappings = {
+        complete = {
+          detail = "Use @<Tab> or /<Tab> for options.",
+          insert = "<Tab>",
+        },
+        close = {
+          normal = "q",
+          insert = "<C-c>",
+        },
+        reset = {
+          normal = "<leader>ccr",
+          insert = "<leader>ccr",
+        },
+        submit_prompt = {
+          normal = "<CR>",
+          insert = "<C-s>",
+        },
+        accept_diff = {
+          normal = "<C-y>",
+          insert = "<C-y>",
+        },
+        yank_diff = {
+          normal = "gy",
+          register = '"',
+        },
+        show_diff = {
+          normal = "gd",
+        },
+        show_system_prompt = {
+          normal = "gp",
+        },
+        show_user_selection = {
+          normal = "gs",
+        },
+      },
     },
     build = function()
       vim.cmd("UpdateRemotePlugins")
