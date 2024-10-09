@@ -17,6 +17,7 @@ sudo apt update
 # List of modules to install
 MODULES=(
   "git"
+  "shell"
   "neovim"
 )
 
