@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
+# Function to install the module
 function install_neovim() {
-  # Define the list of packages required
+  # Define the list of packages required for this module
   local packages=(
     "git"
     "curl"
@@ -16,11 +17,26 @@ function install_neovim() {
   # Install the packages using the install_packages function
   install_packages "${packages[@]}"
 
+  # Proceed to configuration
+  configure_neovim
+}
+
+# Function to configure the module
+function configure_neovim() {
+  # These can be duplicated if multiple iterations need to be symlinked
+  CONFIG_SOURCE="$MODULES_DIR/neovim/nvim"
+  CONFIG_DEST="$HOME/.config/neovim"
+
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+
+  # Additional configuration steps can be added here
+  # For example, setting environment variables, running setup scripts, etc.
+
   # Install Neovim from the pre-built binary
   install_neovim_prebuilt
 
-  # Proceed to configuration
-  configure_neovim
+  # Install LazyGit
+  install_lazygit
 }
 
 # Function to install Neovim from the pre-built binary
@@ -58,18 +74,6 @@ function install_neovim_prebuilt() {
   else
     echo "Failed to install Neovim."
   fi
-}
-
-# Function to configure the module
-function configure_neovim() {
-  # Symlink Neovim configuration
-  CONFIG_SOURCE="$MODULES_DIR/neovim/nvim"
-  CONFIG_DEST="$HOME/.config/nvim"
-
-  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
-
-  # Install LazyGit
-  install_lazygit
 }
 
 # Function to install LazyGit
