@@ -17,16 +17,7 @@ sudo apt update
 # List of modules to install
 MODULES=(
   "git"
-#  "hyprland"
-#  "shell"
-#  "tmux"
-#  "asdf"
   "neovim"
-#  "kitty"
-#  "solaar"
-#  "insync"
-#  "gaming"
-#  "misc"
 )
 
 for module in "${MODULES[@]}"; do
