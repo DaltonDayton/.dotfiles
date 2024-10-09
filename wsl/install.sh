@@ -18,6 +18,7 @@ sudo apt update
 MODULES=(
   "git"
   "shell"
+  "asdf"
   "neovim"
 )
 
