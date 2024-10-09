@@ -47,13 +47,15 @@ function install_neovim_prebuilt() {
   # Check if Neovim is already installed and get its version
   if command -v nvim &>/dev/null; then
     installed_version=$(nvim --version | head -n1 | awk '{print $2}')
-    if [ "$installed_version" == "${desired_version#v}" ]; then
+    if [ "$installed_version" == "$desired_version" ]; then
       echo "Neovim ${desired_version#v} is already installed."
       return
     fi
   fi
 
   echo "Installing Neovim ${desired_version#v} from pre-built binary..."
+
+  # TODO: idk if this is the best way to do this.
 
   # Download the pre-built binary
   curl -LO https://github.com/neovim/neovim/releases/download/${desired_version}/nvim-linux64.tar.gz
