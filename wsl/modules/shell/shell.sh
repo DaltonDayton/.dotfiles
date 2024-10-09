@@ -7,7 +7,6 @@ function install_shell() {
     "zsh"
     "bat"
     "less"
-    "fzf"
     "curl"
     "git"
     "gpg"
@@ -16,6 +15,9 @@ function install_shell() {
 
   # Install the packages using the install_packages function
   install_packages "${packages[@]}"
+
+  # Install starship
+  install_fzf
 
   # Install starship
   install_starship
@@ -50,6 +52,33 @@ function configure_shell() {
   else
     echo "zsh is the default shell."
   fi
+}
+
+# Function to install fzf
+function install_fzf() {
+  # Define the directory where fzf will be cloned
+  fzf_dir="$HOME/fzf"
+
+  # Check if the fzf directory exists
+  if [ ! -d "$fzf_dir" ]; then
+      # Clone the fzf repository
+      echo "Cloning fzf repository..."
+      git clone https://github.com/junegunn/fzf.git "$fzf_dir"
+  else
+      # Update the repository
+      echo "Updating fzf repository..."
+      git -C "$fzf_dir" pull
+  fi
+
+  # Build fzf
+  echo "Building fzf..."
+  cd "$fzf_dir"
+  ./install --bin
+
+  # Return to the original directory
+  cd "$original_dir"
+
+  echo "fzf installation or update completed."
 }
 
 # Function to install starship
