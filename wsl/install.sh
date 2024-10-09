@@ -13,11 +13,13 @@ source "$MODULES_DIR/common.sh"
 # Update package lists
 echo "Updating package lists..."
 sudo apt update
+sudo apt upgrade
 
 # List of modules to install
 MODULES=(
   "git"
   "shell"
+  "tmux"
   "asdf"
   "neovim"
 )
