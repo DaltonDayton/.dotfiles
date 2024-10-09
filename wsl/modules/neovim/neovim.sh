@@ -25,7 +25,7 @@ function install_neovim() {
 function configure_neovim() {
   # These can be duplicated if multiple iterations need to be symlinked
   CONFIG_SOURCE="$MODULES_DIR/neovim/nvim"
-  CONFIG_DEST="$HOME/.config/neovim"
+  CONFIG_DEST="$HOME/.config/nvim"
 
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
