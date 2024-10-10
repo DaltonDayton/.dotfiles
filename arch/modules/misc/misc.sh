@@ -17,6 +17,7 @@ function install_misc() {
     "noto-fonts-emoji"
     "ttf-firacode-nerd"
     "ttf-font-awesome"
+    "ttf-cascadia-code-nerd"
 
     # Notes
     # TODO: Move to a module and git clone personal_notes?
