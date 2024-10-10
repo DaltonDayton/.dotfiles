@@ -11,7 +11,7 @@ blur = true
 option_as_alt = "Both"
 
 [font]
-normal.family = "Iosevka Nerd Font Mono"
+normal.family = "CaskaydiaCove Nerd Font"
 size = 12
 
 [[keyboard.bindings]]
