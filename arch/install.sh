@@ -23,6 +23,7 @@ MODULES=(
   "shell"
   "tmux"
   "asdf"
+  "python"
   "neovim"
   "kitty"
   "solaar"
