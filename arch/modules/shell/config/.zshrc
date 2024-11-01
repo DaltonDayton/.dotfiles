@@ -4,6 +4,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/fzf/bin:$PATH"
 
+export EDITOR=nvim
+
 # export LIBGL_ALWAYS_SOFTWARE=1 # Force software rendering for OpenGL (instead of GPU)
 
 # Set the directory we want to store zinit and plugins
@@ -92,7 +94,7 @@ alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d
 alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
 alias poetryactivate='source "$(poetry env info --path)/bin/activate"'
-alias pa='poetryactivate'
+alias pa='poetryactivate && export PYTHONPATH=$(pwd)'
 alias pd='deactivate'
 alias lg='lazygit'
 
