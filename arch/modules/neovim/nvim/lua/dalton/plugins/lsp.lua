@@ -175,7 +175,7 @@ return {
 
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          "python",
+          "debugpy",
         },
         handlers = {
           function(config)
