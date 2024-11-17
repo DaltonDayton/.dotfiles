@@ -132,6 +132,7 @@ return {
         set_keymap('<F2>', vim.lsp.buf.rename, '[LSP] Rename Symbol')
         set_keymap('<F3>', vim.lsp.buf.format, '[LSP] Format Code')
         set_keymap('<F4>', vim.lsp.buf.code_action, '[LSP] Code Action')
+        set_keymap('<leader>ca', vim.lsp.buf.code_action, '[LSP] Code Action')
         set_keymap('gl', vim.diagnostic.open_float, '[LSP] Show Diagnostics')
         set_keymap('[d', function() vim.diagnostic.jump({ count = -1 }) end, '[LSP] Previous Diagnostic')
         set_keymap(']d', function() vim.diagnostic.jump({ count = 1 }) end, '[LSP] Next Diagnostic')
