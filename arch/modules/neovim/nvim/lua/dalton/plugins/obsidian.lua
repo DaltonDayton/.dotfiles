@@ -182,18 +182,18 @@ return {
         opts = { buffer = true },
       },
     },
-    notes_subdir = "Zettelkasten",
+    notes_subdir = "6 - Main Notes",
     new_notes_location = "notes_subdir",
     disable_frontmatter = true,
 
     templates = {
-      subdir = "Templates",
+      subdir = "5 - Templates",
       date_format = "%d %b %Y",
       time_format = "%H:%m",
     },
 
     attachments = {
-      img_folder = "Files",
+      img_folder = "0 - Files",
     },
 
     -- Optional, customize how note IDs are generated given an optional title.
