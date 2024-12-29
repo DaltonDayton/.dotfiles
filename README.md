@@ -20,6 +20,11 @@ Clone this repository to your home directory (or any location you prefer):
 git clone https://github.com/DaltonDayton/.dotfiles.git ~/.dotfiles
 ```
 
+To update:
+
+1. Authorize `gh auth login`
+2. `git clone git@github.com:DaltonDayton/.dotfiles.git`
+
 ## Notes
 
 - **Backup Existing Configurations:** Before running any installation scripts or applying configurations, it's recommended to back up your existing configuration files to prevent any loss of personalized settings.
