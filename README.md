@@ -52,9 +52,12 @@ To update:
 2. Restart
 3. Install [ArchWSL](https://github.com/yuk7/ArchWSL)
 4. [Set up user](https://wsldl-pg.github.io/ArchW-docs/How-to-Setup/#set-up-the-default-user)
-5. ~~? This one might be done by gh auth login ?~~
+5. [Initialize keyring](https://wsldl-pg.github.io/ArchW-docs/How-to-Setup/#initialize-keyring)
+6. ~~? This one might be done by gh auth login ?~~
    - ~~install openssh and ssh-keygen based on github's docs~~
    - ~~`sudo pacman -Syu openssh`~~
    - ~~`ssh-keygen -t ed25519 -C "50755420+DaltonDayton@users.noreply.github.com"`~~
-6. Authorize `gh auth login`
-7. `git clone git@github.com:DaltonDayton/.dotfiles.git`
+7. Install dependencies:
+   - `sudo pacman -Syu git github-cli openssh`
+8. Authorize `gh auth login`
+9. `git clone git@github.com:DaltonDayton/.dotfiles.git`
