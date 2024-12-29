@@ -54,6 +54,10 @@ Key Features:
    - Synchronize package databases.
    - Install and configure each module listed in the `MODULES` array within `install.sh`.
 
+4. Close the terminal completely (or exit WSL)
+5. Reopen and allow the new shell to install
+6. (Optional) Exit and restart the terminal one last time
+
 ## Modules
 
 The installation and configuration are organized into modules for better modularity and maintainability.
