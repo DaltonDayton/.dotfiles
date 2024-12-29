@@ -20,8 +20,6 @@ Clone this repository to your home directory (or any location you prefer):
 git clone https://github.com/DaltonDayton/.dotfiles.git ~/.dotfiles
 ```
 
-Use `gh auth login`, github's cli, to create an ssh key and upload.
-
 ## Notes
 
 - **Backup Existing Configurations:** Before running any installation scripts or applying configurations, it's recommended to back up your existing configuration files to prevent any loss of personalized settings.
