@@ -10,27 +10,52 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 # Source common functions
 source "$MODULES_DIR/common.sh"
 
+# Load environment variables
+if [ -f "$SCRIPT_DIR/.env" ]; then
+  source "$SCRIPT_DIR/.env"
+else
+  echo "Error: .env file not found!"
+  exit 1
+fi
+
 # Ensure 'yay' is installed
 ensure_yay_installed
 
 echo "Synchronizing package databases..."
 yay -Sy --noconfirm
 
-# List of modules to install
-MODULES=(
-  "git"
-  "hyprland"
-  "shell"
-  "tmux"
-  "asdf"
-  "python"
-  "neovim"
-  "kitty"
-  "solaar"
-  "insync"
-  "gaming"
-  "misc"
-)
+MODULES=()
+
+# Modules for both Arch and WSL
+if [[ "$ENVIRONMENT" == "arch" || "$ENVIRONMENT" == "wsl" ]]; then
+  MODULES+=(
+    "git"
+    "shell"
+    "tmux"
+    "asdf"
+    "python"
+    "neovim"
+    "misc"
+  )
+fi
+
+# Modules exclusive to Arch
+if [[ "$ENVIRONMENT" == "arch" ]]; then
+  MODULES+=(
+    "hyprland"
+    "kitty"
+    "solaar"
+    "insync"
+    "gaming"
+  )
+fi
+
+# Modules exclusive to WSL
+if [[ "$ENVIRONMENT" == "wsl" ]]; then
+  MODULES+=(
+    # Nothing exclusive to WSL at the moment
+  )
+fi
 
 for module in "${MODULES[@]}"; do
   MODULE_SCRIPT="$MODULES_DIR/${module}/${module}.sh"
@@ -44,3 +69,4 @@ for module in "${MODULES[@]}"; do
     echo "Error: Module $module not found!"
   fi
 done
+
