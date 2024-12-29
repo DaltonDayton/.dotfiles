@@ -55,8 +55,12 @@ function configure_asdf() {
             git clone https://github.com/asdf-vm/asdf.git "$asdf_dir"
         fi
         # Source asdf scripts for this session
-        . "$asdf_dir/asdf.sh"
-        . "$asdf_dir/completions/asdf.bash"
+        if [ -f "$asdf_dir/asdf.sh" ]; then
+            . "$asdf_dir/asdf.sh"
+        fi
+        if [ -f "$asdf_dir/completions/asdf.bash" ]; then
+            . "$asdf_dir/completions/asdf.bash"
+        fi
     else
         echo "asdf is already installed."
     fi
