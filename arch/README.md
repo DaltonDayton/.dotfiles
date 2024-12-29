@@ -2,22 +2,47 @@
 
 This repository contains my personal dotfiles and scripts to automate the setup of my development environment. The goal is to streamline the installation and configuration of the tools and applications I use regularly.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Usage](#usage)
+- [Modules](#modules)
+- [Customization](#customization)
+  - [Adding a New Module](#adding-a-new-module)
+  - [Modifying Existing Modules](#modifying-existing-modules)
+  - [Running Specific Modules](#running-specific-modules)
+- [Notes](#notes)
+- [Troubleshooting](#troubleshooting)
+
 ## Overview
 
-- **install.sh**: The main script that orchestrates the installation and configuration of all modules.
-- **modules/**: A directory containing individual modules for different tools and configurations.
-  - Each module has its own installation script (`module_name.sh`) and may include a `config/` directory with configuration files.
-- **common.sh**: A script located in `modules/` that contains common functions and utilities used across modules.
+This repository contains my personal dotfiles and scripts to automate the setup of my development environment. The goal is to streamline the installation and configuration of the tools and applications I use regularly.
+
+Key Features:
+
+- **Modular Design**: Each tool or application is encapsulated in its own module for easier management and customization.
+- **Idempotent**: The scripts are designed to run multiple times without causing unintended side effects.
+- **Environment-Specific Configurations**: Easily adaptable for different setups, such as Arch Linux or WSL.
 
 ## Usage
 
-1. **Make the `install.sh` script executable**:
+1. **Create a `.env` file**:
+
+   Copy the provided `.env_default` to `.env` and edit it to specify your environment:
+
+   ```bash
+   cp .env_default .env
+   ```
+
+   The `.env` file defines the environment (e.g., `arch` or `wsl`) and is required for the scripts to function correctly.
+
+2. **Make the `install.sh` script executable**:
 
    ```bash
    chmod +x install.sh
    ```
 
-2. **Run the installation script**:
+3. **Run the installation script**:
 
    ```bash
    ./install.sh
@@ -31,84 +56,30 @@ This repository contains my personal dotfiles and scripts to automate the setup 
 
 ## Modules
 
-The installation and configuration are organized into modules for better modularity and maintainability. Below is a brief explanation of each module:
-
-### asdf
-
-- **Purpose**: Manages multiple runtime versions using [asdf](https://github.com/asdf-vm/asdf).
-
-### gaming
-
-- **Purpose**: Sets up gaming-related tools and configurations.
-
-### git
-
-- **Purpose**: Configures Git settings.
-
-### hyprland
-
-- **Purpose**: Installs and configures [Hyprland](https://github.com/hyprwm/Hyprland), a dynamic tiling Wayland compositor.
-- **Notes**:
-  - Clones and installs [Hyprdots](https://github.com/prasanthrangan/hyprdots).
-  - Only symlinks `userprefs.conf` for custom settings.
-
-### kitty
-
-- **Purpose**: Installs and configures the [Kitty](https://sw.kovidgoyal.net/kitty/) terminal emulator.
-
-### misc
-
-- **Purpose**: Handles miscellaneous installations and configurations that don't fit into other modules.
-
-### neovim
-
-- **Purpose**: Sets up [Neovim](https://neovim.io/) with custom configurations and plugins.
-- **Features**:
-  - Uses Lua for configuration.
-  - Includes a rich set of plugins managed by [lazy.nvim](https://github.com/folke/lazy.nvim).
-
-### solaar
-
-- **Purpose**: Installs and configures [Solaar](https://pwr-solaar.github.io/Solaar/) for managing Logitech devices.
-- **Notes**:
-  - Adds the user to the `input` group for device access.
-  - Customizes device settings via `config.yaml` and `rules.yaml`.
-
-### tmux
-
-- **Purpose**: Installs and configures [tmux](https://github.com/tmux/tmux), a terminal multiplexer.
-- **Features**:
-  - Custom key bindings and options.
-  - Plugin management with [TPM](https://github.com/tmux-plugins/tpm).
-  - Includes themes and additional plugins.
-
-### zsh
-
-- **Purpose**: Installs and configures [Zsh](https://www.zsh.org/) with custom settings and plugins.
-- **Features**:
-  - Sets Zsh as the default shell.
-  - Includes plugins like `eza`, `zoxide`, `starship`, and `fzf`.
+The installation and configuration are organized into modules for better modularity and maintainability.
 
 ## Customization
 
-- **Adding a New Module**:
+### Adding a New Module
 
-  1. Copy `_example_module` and modify following tips within.
+1. Copy the `_example_module` directory:
 
-  Manually
+   ```bash
+   cp -r modules/_example_module modules/<new_module_name>
+   ```
 
-  1. Create a new directory under `modules/` with the module's name.
-  2. Add an installation script named `module_name.sh`.
-  3. Include any configuration files in a `config/` subdirectory.
-  4. Update the `MODULES` array in `install.sh` to include the new module.
+2. Edit the `example_module.sh` script and rename it to `<new_module_name>.sh`.
+3. Add any necessary configuration files under a `config/` directory within the module.
+4. Update the `MODULES` array in `install.sh` to include `<new_module_name>`.
 
-- **Modifying Existing Modules**:
+### Modifying Existing Modules
 
-  - Edit the corresponding `module_name.sh` script to change installation steps.
-  - Update configuration files in the `config/` directory as needed.
+- Edit the corresponding `module_name.sh` script to change installation steps.
+- Update configuration files in the `config/` directory as needed.
 
-- **Running Specific Modules**:
-  - Edit the `MODULES` array in `install.sh` to include only the modules you want to install or configure.
+### Running Specific Modules
+
+- Edit the `MODULES` array in `install.sh` to include only the modules you want to install or configure.
 
 ## Notes
 
@@ -122,10 +93,36 @@ The installation and configuration are organized into modules for better modular
 
 ## Troubleshooting
 
-- **Module-Specific Issues**:
-
-  - Check the corresponding `module_name.sh` script and logs for any errors during installation or configuration.
-
 - **Common Issues**:
-  - If a package fails to install, make sure your package databases are up to date and that you have an active internet connection.
-  - Ensure that you have the necessary permissions to install packages and modify configurations.
+
+  - **Error: "Command not found" when running `install.sh`**:
+
+    - Ensure the script is executable:
+      ```bash
+      chmod +x install.sh
+      ```
+    - Verify that your shell can locate the script:
+      ```bash
+      ./install.sh
+      ```
+
+  - **Error: "Package not found"**:
+
+    - Check if the package is available in the official repositories or AUR.
+    - Update your package databases:
+      ```bash
+      sudo pacman -Sy
+      ```
+
+  - **Environment variable-related errors**:
+    - Ensure the `.env` file exists and is correctly configured:
+      ```bash
+      ENVIRONMENT=arch  # Example value
+      ```
+    - If `.env` is missing, recreate it from `.env_default`:
+      ```bash
+      cp .env_default .env
+      ```
+
+- **Module-Specific Issues**:
+  - Check the corresponding `module_name.sh` script and logs for any errors during installation or configuration.
