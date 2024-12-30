@@ -150,7 +150,6 @@ return {
         ensure_installed = {
           "lua_ls",
           "pyright",
-          "ruby_lsp",
           "emmet_language_server",
         },
         handlers = {
@@ -159,6 +158,10 @@ return {
           function(server_name)
             require("lspconfig")[server_name].setup({})
           end,
+
+          require("lspconfig").ruby_lsp.setup({
+            cmd = { vim.fn.expand("~/.asdf/shims/ruby-lsp") },
+          }),
 
           -- Custom handlers example
           -- tsserver = function()
