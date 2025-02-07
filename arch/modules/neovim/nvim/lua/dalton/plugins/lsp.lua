@@ -152,17 +152,16 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
-          -- C
-          -- codelldb
           -- C#
-          -- netcoredbg
+          -- "csharp_ls",
           -- Python
           -- "pyright",
           -- Ruby
           -- "ruby_lsp",
-          -- Idk js maybe?
+          -- Typescript
+          -- "ts_ls",
+          -- Emmet (html)
           -- "emmet_language_server",
-
         },
         handlers = {
           -- this first function is the "default handler"
@@ -197,11 +196,11 @@ return {
       require("mason-nvim-dap").setup({
         ensure_installed = {
           -- C
-          -- codelldb
+          -- "codelldb",
           -- C#
-          -- netcoredbg
+          -- "coreclr", -- netcoredbg
           -- Python
-          -- debugpy
+          -- "python", -- debugpy
         },
         handlers = {
           function(config)
