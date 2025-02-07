@@ -173,6 +173,8 @@ return {
 
           require("lspconfig").ruby_lsp.setup({
             cmd = { vim.fn.expand("~/.asdf/shims/ruby-lsp") },
+            -- May need to set a symlink from
+            -- ~/.local/share/nvim/mason/bin/ruby-lsp to ~/.asdf/shims/ruby-lsp
           }),
 
           -- Custom handlers example
