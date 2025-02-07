@@ -148,9 +148,10 @@ return {
 
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",
-          "pyright",
-          "emmet_language_server",
+          -- "lua_ls",
+          -- "pyright",
+          -- "ruby_lsp",
+          -- "emmet_language_server",
         },
         handlers = {
           -- this first function is the "default handler"
@@ -179,7 +180,7 @@ return {
 
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          "debugpy",
+          -- "debugpy",
         },
         handlers = {
           function(config)
