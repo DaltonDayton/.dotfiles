@@ -22,10 +22,10 @@ return {
     event = "InsertEnter",
     dependencies = {
       {
-        "hrsh7th/cmp-buffer", -- source for text in buffer
-        "hrsh7th/cmp-path", -- source for file system paths
+        "hrsh7th/cmp-buffer",           -- source for text in buffer
+        "hrsh7th/cmp-path",             -- source for file system paths
         "rafamadriz/friendly-snippets", -- useful snippets
-        "onsails/lspkind-nvim", -- vs-code like pictograms
+        "onsails/lspkind-nvim",         -- vs-code like pictograms
         {
           "L3MON4D3/LuaSnip",
           -- follow latest release.
@@ -82,8 +82,8 @@ return {
         formatting = {
           fields = { "abbr", "kind", "menu" },
           format = require("lspkind").cmp_format({
-            mode = "symbol_text", -- show only symbol annotations
-            maxwidth = 50, -- prevent the popup from showing more than provided characters
+            mode = "symbol_text",  -- show only symbol annotations
+            maxwidth = 50,         -- prevent the popup from showing more than provided characters
             symbol_map = { Copilot = "" },
             ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
           }),
@@ -169,12 +169,8 @@ return {
           function(server_name)
             require("lspconfig")[server_name].setup({})
           end,
-
-          require("lspconfig").ruby_lsp.setup({
-            cmd = { vim.fn.expand("~/.asdf/shims/ruby-lsp") },
-            -- May need to set a symlink from
-            -- ~/.local/share/nvim/mason/bin/ruby-lsp to ~/.asdf/shims/ruby-lsp
-          }),
+          --   ruby_lsp config
+          --   From `~/.local/share/nvim/mason/bin/` execute `ln -s ~/.asdf/shims/ruby-lsp .`
 
           -- Custom handlers example
           -- tsserver = function()
