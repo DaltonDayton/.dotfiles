@@ -32,6 +32,7 @@ return {
       vim.keymap.set("n", "<F8>", dap.step_out, { desc = "Step Out" })
       vim.keymap.set("n", "<F9>", dap.step_back, { desc = "Step Back" })
       vim.keymap.set("n", "<F10>", dap.restart, { desc = "Restart" })
+      vim.keymap.set("n", "<F11>", dap.stop, { desc = "Stop" })
 
       -- Toggle UI
       vim.keymap.set("n", "<leader>du", function()
