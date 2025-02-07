@@ -146,12 +146,23 @@ return {
         info = "", -- Information
       })
 
+      -- ===============
+      -- == MASON LSP ==
+      -- ===============
       require("mason-lspconfig").setup({
         ensure_installed = {
-          -- "lua_ls",
+          "lua_ls",
+          -- C
+          -- codelldb
+          -- C#
+          -- netcoredbg
+          -- Python
           -- "pyright",
+          -- Ruby
           -- "ruby_lsp",
+          -- Idk js maybe?
           -- "emmet_language_server",
+
         },
         handlers = {
           -- this first function is the "default handler"
@@ -178,9 +189,17 @@ return {
         },
       })
 
+      -- ===============
+      -- == MASON DAP ==
+      -- ===============
       require("mason-nvim-dap").setup({
         ensure_installed = {
-          -- "debugpy",
+          -- C
+          -- codelldb
+          -- C#
+          -- netcoredbg
+          -- Python
+          -- debugpy
         },
         handlers = {
           function(config)
