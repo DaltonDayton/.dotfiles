@@ -35,7 +35,7 @@ function configure_asdf() {
         local name=$1
         if ! asdf list | grep "^$name\$"; then
             echo "Adding $name plugin..."
-            asdf plugin-add $name
+            asdf plugin add $name
         else
             echo "$name plugin is already added."
         fi
