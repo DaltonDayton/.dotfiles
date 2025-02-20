@@ -6,6 +6,7 @@ function install_git() {
   local packages=(
     "git"
     "github-cli"
+    "openssh"
   )
 
   # Install the packages using the install_packages function
