@@ -182,6 +182,15 @@ return {
           --   })
           -- end,
 
+          -- clangd config
+          clangd = function()
+            require('lspconfig').clangd.setup({
+              capabilities = {
+                offsetEncoding = { "utf-16" }
+              }
+            })
+          end,
+
           -- See https://lsp-zero.netlify.app/v3.x/language-server-configuration.html
         },
       })
