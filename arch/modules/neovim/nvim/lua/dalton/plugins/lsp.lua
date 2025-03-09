@@ -49,7 +49,8 @@ return {
 
       cmp.setup({
         sources = {
-          { name = "copilot" },
+          -- { name = "copilot" },
+          -- { name = "augment" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
@@ -82,9 +83,12 @@ return {
         formatting = {
           fields = { "abbr", "kind", "menu" },
           format = require("lspkind").cmp_format({
-            mode = "symbol_text",  -- show only symbol annotations
-            maxwidth = 50,         -- prevent the popup from showing more than provided characters
-            symbol_map = { Copilot = "" },
+            mode = "symbol_text", -- show only symbol annotations
+            maxwidth = 50,        -- prevent the popup from showing more than provided characters
+            symbol_map = {
+              -- Augment = "🤖",
+              -- Copilot = "",
+            },
             ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
           }),
         },
