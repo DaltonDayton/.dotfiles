@@ -206,6 +206,129 @@ EOF
   echo
 }
 
+# Global arrays to track module dependencies and installation status
+declare -A MODULE_DEPENDENCIES
+declare -A MODULE_INSTALLED
+
+# Function to declare module dependencies
+function declare_module_dependencies() {
+  local module="$1"
+  shift
+  local dependencies=("$@")
+
+  # Store dependencies as a space-separated string
+  MODULE_DEPENDENCIES["$module"]="${dependencies[*]}"
+}
+
+# Function to check if a module is installed
+function is_module_installed() {
+  local module="$1"
+  [[ "${MODULE_INSTALLED[$module]:-false}" == "true" ]]
+}
+
+# Function to mark a module as installed
+function mark_module_installed() {
+  local module="$1"
+  MODULE_INSTALLED["$module"]="true"
+}
+
+# Function to resolve dependencies using topological sort
+function resolve_dependencies() {
+  local modules=("$@")
+  local resolved=()
+  local visiting=()
+
+  # Function to visit a module and its dependencies
+  visit_module() {
+    local module="$1"
+
+    # Check if already resolved
+    for resolved_module in "${resolved[@]}"; do
+      if [[ "$resolved_module" == "$module" ]]; then
+        return 0
+      fi
+    done
+
+    # Check for circular dependency
+    for visiting_module in "${visiting[@]}"; do
+      if [[ "$visiting_module" == "$module" ]]; then
+        echo "Error: Circular dependency detected involving module '$module'"
+        echo "Dependency chain: ${visiting[*]} -> $module"
+        exit 1
+      fi
+    done
+
+    # Mark as visiting
+    visiting+=("$module")
+
+    # Visit dependencies first
+    local deps="${MODULE_DEPENDENCIES[$module]:-}"
+    if [[ -n "$deps" ]]; then
+      for dep in $deps; do
+        # Check if dependency module exists
+        if [[ ! -f "$MODULES_DIR/$dep/$dep.sh" ]]; then
+          echo "Warning: Dependency '$dep' for module '$module' not found. Skipping."
+          continue
+        fi
+        visit_module "$dep"
+      done
+    fi
+
+    # Remove from visiting and add to resolved
+    visiting=("${visiting[@]/$module}")
+    resolved+=("$module")
+  }
+
+  # Visit all requested modules
+  for module in "${modules[@]}"; do
+    visit_module "$module"
+  done
+
+  # Return resolved order
+  printf '%s\n' "${resolved[@]}"
+}
+
+# Function to install a module with dependency checking
+function install_module_with_deps() {
+  local module="$1"
+
+  # Check if already installed
+  if is_module_installed "$module"; then
+    echo "Module '$module' is already installed."
+    return 0
+  fi
+
+  # Check if module script exists
+  local module_script="$MODULES_DIR/$module/$module.sh"
+  if [[ ! -f "$module_script" ]]; then
+    echo "Error: Module '$module' not found at $module_script"
+    return 1
+  fi
+
+  # Install dependencies first
+  local deps="${MODULE_DEPENDENCIES[$module]:-}"
+  if [[ -n "$deps" ]]; then
+    echo "Installing dependencies for '$module': $deps"
+    for dep in $deps; do
+      if [[ -f "$MODULES_DIR/$dep/$dep.sh" ]]; then
+        install_module_with_deps "$dep"
+      else
+        echo "Warning: Dependency '$dep' for module '$module' not found. Continuing anyway."
+      fi
+    done
+  fi
+
+  # Install the module
+  echo "====================="
+  echo "Processing $module..."
+  echo "====================="
+  source "$module_script"
+  "install_$module"
+  mark_module_installed "$module"
+
+  echo "✅ Module '$module' installed successfully."
+}
+
 # Function to symlink configuration files or directories without using rm -rf
 function symlink_config() {
   local source_path="$1"

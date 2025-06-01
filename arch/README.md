@@ -21,6 +21,7 @@ This repository contains my personal dotfiles and scripts to automate the setup 
 Key Features:
 
 - **Modular Design**: Each tool or application is encapsulated in its own module for easier management and customization.
+- **Dependency Management**: Automatic resolution and installation of module dependencies in the correct order.
 - **Idempotent**: The scripts are designed to run multiple times without causing unintended side effects.
 - **Environment-Specific Configurations**: Easily adaptable for different setups, such as Arch Linux or WSL.
 
@@ -47,6 +48,8 @@ Key Features:
    The script will then:
    - Ensure that `yay` (an AUR helper) is installed.
    - Synchronize package databases.
+   - **Resolve module dependencies** automatically.
+   - **Install modules in the correct order** based on their dependencies.
    - Install and configure each module listed in the `MODULES` array within `install.sh`.
 
 ### Manual .env Configuration (Optional)
@@ -78,7 +81,11 @@ The installation and configuration are organized into modules for better modular
 
 2. Edit the `example_module.sh` script and rename it to `<new_module_name>.sh`.
 3. Add any necessary configuration files under a `config/` directory within the module.
-4. Update the `MODULES` array in `install.sh` to include `<new_module_name>`.
+4. **Declare dependencies** in `modules/dependencies.sh`:
+   ```bash
+   declare_module_dependencies "<new_module_name>" "git" "misc"
+   ```
+5. Update the `MODULES` array in `install.sh` to include `<new_module_name>`.
 
 ### Modifying Existing Modules
 
@@ -88,6 +95,24 @@ The installation and configuration are organized into modules for better modular
 ### Running Specific Modules
 
 - Edit the `MODULES` array in `install.sh` to include only the modules you want to install or configure.
+
+### Dependency Management
+
+The system automatically manages dependencies between modules:
+
+- **Automatic Resolution**: Dependencies are resolved using topological sorting to ensure correct installation order.
+- **Circular Dependency Detection**: The system detects and prevents circular dependencies.
+- **Missing Dependency Warnings**: If a dependency is missing, the system shows a warning but continues installation.
+
+**Current Dependencies:**
+- `neovim`, `tmux`, `shell`, `asdf`, `hyprland` → depend on `git`
+- `python` → depends on `asdf`
+- `kitty`, `solaar`, `insync`, `gaming` → depend on `misc` (for fonts)
+
+**Testing Dependencies:**
+```bash
+./test_dependencies.sh  # Test dependency resolution without installing
+```
 
 ## Notes
 

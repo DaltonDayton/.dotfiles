@@ -5,6 +5,8 @@
 # TIP: `:%s/exampleModule/[module name]/g`
 function install_exampleModule() {
   # NOTE: For environment specific packages, see the 'misc' module and the 'install.sh' script
+  # NOTE: To declare dependencies, add them to modules/dependencies.sh:
+  #       declare_module_dependencies "exampleModule" "git" "misc"
 
   # Define the list of packages required for this module
   local packages=(

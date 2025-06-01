@@ -10,6 +10,9 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 # Source common functions
 source "$MODULES_DIR/common.sh"
 
+# Load module dependencies
+source "$MODULES_DIR/dependencies.sh"
+
 # Setup or load environment variables
 setup_env_file "$SCRIPT_DIR"
 
@@ -52,16 +55,18 @@ if [[ "$ENVIRONMENT" == "wsl" ]]; then
   )
 fi
 
-for module in "${MODULES[@]}"; do
-  MODULE_SCRIPT="$MODULES_DIR/${module}/${module}.sh"
-  if [ -f "$MODULE_SCRIPT" ]; then
-    echo "====================="
-    echo "Processing $module..."
-    echo "====================="
-    source "$MODULE_SCRIPT"
-    "install_$module"
-  else
-    echo "Error: Module $module not found!"
-  fi
+# Resolve dependencies and get installation order
+echo "🔍 Resolving module dependencies..."
+RESOLVED_MODULES=($(resolve_dependencies "${MODULES[@]}"))
+
+echo "📋 Installation order: ${RESOLVED_MODULES[*]}"
+echo
+
+# Install modules in dependency order
+for module in "${RESOLVED_MODULES[@]}"; do
+  install_module_with_deps "$module"
 done
+
+echo
+echo "🎉 All modules processed successfully!"
 
