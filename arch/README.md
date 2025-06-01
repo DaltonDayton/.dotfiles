@@ -36,7 +36,9 @@ Key Features:
 2. **Run the installation script**:
 
    ```bash
-   ./install.sh
+   ./install.sh           # Normal installation
+   ./install.sh --dry-run # Preview what would be installed
+   ./install.sh --help    # Show usage information
    ```
 
    On first run, the script will automatically:
@@ -109,9 +111,11 @@ The system automatically manages dependencies between modules:
 - `python` → depends on `asdf`
 - `kitty`, `solaar`, `insync`, `gaming` → depend on `misc` (for fonts)
 
-**Testing Dependencies:**
+**Testing and Validation:**
 ```bash
-./test_dependencies.sh  # Test dependency resolution without installing
+./test_dependencies.sh  # Validate dependency declarations
+./test_env_setup.sh     # Test environment detection
+./install.sh --dry-run  # Preview installation without changes
 ```
 
 ## Notes

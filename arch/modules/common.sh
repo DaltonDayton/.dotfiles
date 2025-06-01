@@ -2,6 +2,11 @@
 
 # Function to ensure 'yay' is installed
 function ensure_yay_installed() {
+  if [[ "${DRY_RUN:-false}" == "true" ]]; then
+    echo "🔧 Would ensure yay is installed"
+    return 0
+  fi
+
   if ! command -v yay &>/dev/null; then
     echo "yay is not installed. Installing yay..."
     # Install dependencies for building yay
@@ -36,6 +41,15 @@ function install_packages() {
 function ensure_package_installed() {
   local package="$1"
   local version="${2:-latest}"
+
+  if [[ "${DRY_RUN:-false}" == "true" ]]; then
+    if [ "$version" == "latest" ]; then
+      echo "📦 Would install: $package"
+    else
+      echo "📦 Would install: $package=$version"
+    fi
+    return 0
+  fi
 
   # Check if the package is installed
   if pacman -Qq "$package" &>/dev/null; then
@@ -120,6 +134,22 @@ function setup_env_file() {
   if [ -f "$env_file" ]; then
     echo "Found existing .env file."
     source "$env_file"
+    return 0
+  fi
+
+  # In dry-run mode, use defaults without creating file
+  if [[ "${DRY_RUN:-false}" == "true" ]]; then
+    echo "🔍 No .env file found - would trigger interactive setup"
+    echo "📝 Using default values for dry-run:"
+    export ENVIRONMENT="arch"
+    export CONTEXT="personal"
+    export GIT_NAME="Test User"
+    export GIT_EMAIL="test@example.com"
+    echo "   ENVIRONMENT=$ENVIRONMENT"
+    echo "   CONTEXT=$CONTEXT"
+    echo "   GIT_NAME=$GIT_NAME"
+    echo "   GIT_EMAIL=$GIT_EMAIL"
+    echo
     return 0
   fi
 
@@ -294,7 +324,11 @@ function install_module_with_deps() {
 
   # Check if already installed
   if is_module_installed "$module"; then
-    echo "Module '$module' is already installed."
+    if [[ "${DRY_RUN:-false}" == "true" ]]; then
+      echo "Module '$module' would be skipped (already installed)."
+    else
+      echo "Module '$module' is already installed."
+    fi
     return 0
   fi
 
@@ -308,7 +342,11 @@ function install_module_with_deps() {
   # Install dependencies first
   local deps="${MODULE_DEPENDENCIES[$module]:-}"
   if [[ -n "$deps" ]]; then
-    echo "Installing dependencies for '$module': $deps"
+    if [[ "${DRY_RUN:-false}" == "true" ]]; then
+      echo "Would install dependencies for '$module': $deps"
+    else
+      echo "Installing dependencies for '$module': $deps"
+    fi
     for dep in $deps; do
       if [[ -f "$MODULES_DIR/$dep/$dep.sh" ]]; then
         install_module_with_deps "$dep"
@@ -322,17 +360,43 @@ function install_module_with_deps() {
   echo "====================="
   echo "Processing $module..."
   echo "====================="
-  source "$module_script"
-  "install_$module"
-  mark_module_installed "$module"
 
-  echo "✅ Module '$module' installed successfully."
+  if [[ "${DRY_RUN:-false}" == "true" ]]; then
+    # SAFE: Only analyze the script, don't execute it
+    echo "📋 Dependencies: ${deps:-none}"
+
+    # Show what packages would be installed
+    if grep -q "local packages=(" "$module_script"; then
+      echo "📦 Packages that would be installed:"
+      grep -A 10 "local packages=(" "$module_script" | grep -E '^\s*"[^"]*"' | sed 's/.*"\([^"]*\)".*/   - \1/'
+    fi
+
+    # Show what configs would be symlinked
+    if grep -q "symlink_config" "$module_script"; then
+      echo "🔗 Configurations that would be symlinked:"
+      grep -B 2 -A 2 "symlink_config" "$module_script" | grep -E 'CONFIG_(SOURCE|DEST)=' | sed 's/.*="\([^"]*\)".*/   \1/'
+    fi
+
+    echo "✅ Module '$module' analyzed (NOT EXECUTED)"
+  else
+    # ACTUAL EXECUTION: Source and run the install function
+    source "$module_script"
+    "install_$module"
+    echo "✅ Module '$module' installed successfully."
+  fi
+
+  mark_module_installed "$module"
 }
 
 # Function to symlink configuration files or directories without using rm -rf
 function symlink_config() {
   local source_path="$1"
   local dest_path="$2"
+
+  if [[ "${DRY_RUN:-false}" == "true" ]]; then
+    echo "🔗 Would create symlink: $source_path → $dest_path"
+    return 0
+  fi
 
   # Ensure the parent directory of the destination exists
   dest_dir=$(dirname "$dest_path")
