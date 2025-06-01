@@ -26,33 +26,37 @@ Key Features:
 
 ## Usage
 
-1. **Create a `.env` file**:
-
-   Copy the provided `.env_default` to `.env` and edit it to specify your environment:
-
-   ```bash
-   cp .env_default .env
-   ```
-
-   The `.env` file defines the environment (e.g., `arch` or `wsl`) and is required for the scripts to function correctly.
-
-2. **Make the `install.sh` script executable**:
+1. **Make the `install.sh` script executable**:
 
    ```bash
    chmod +x install.sh
    ```
 
-3. **Run the installation script**:
+2. **Run the installation script**:
 
    ```bash
    ./install.sh
    ```
 
-   This script will:
+   On first run, the script will automatically:
+   - **Detect your environment** (Arch Linux or WSL)
+   - **Prompt for configuration** with smart defaults
+   - **Create the `.env` file** automatically
+   - **Use existing git configuration** when available
 
+   The script will then:
    - Ensure that `yay` (an AUR helper) is installed.
    - Synchronize package databases.
    - Install and configure each module listed in the `MODULES` array within `install.sh`.
+
+### Manual .env Configuration (Optional)
+
+If you prefer to configure manually, you can still:
+
+```bash
+cp .env_default .env
+# Edit .env with your preferred settings
+```
 
 4. Close the terminal completely (or exit WSL)
 5. Reopen and allow the new shell to install
@@ -119,13 +123,16 @@ The installation and configuration are organized into modules for better modular
       ```
 
   - **Environment variable-related errors**:
-    - Ensure the `.env` file exists and is correctly configured:
+    - The script should automatically create the `.env` file on first run
+    - If you encounter issues, you can manually recreate it:
       ```bash
-      ENVIRONMENT=arch  # Example value
+      rm .env  # Remove the problematic file
+      ./install.sh  # Run again to trigger the setup wizard
       ```
-    - If `.env` is missing, recreate it from `.env_default`:
+    - Or create it manually from the template:
       ```bash
       cp .env_default .env
+      # Edit .env with your settings
       ```
 
 - **Module-Specific Issues**:

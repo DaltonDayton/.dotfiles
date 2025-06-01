@@ -10,13 +10,8 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 # Source common functions
 source "$MODULES_DIR/common.sh"
 
-# Load environment variables
-if [ -f "$SCRIPT_DIR/.env" ]; then
-  source "$SCRIPT_DIR/.env"
-else
-  echo "Error: .env file not found!"
-  exit 1
-fi
+# Setup or load environment variables
+setup_env_file "$SCRIPT_DIR"
 
 # Ensure 'yay' is installed
 ensure_yay_installed
@@ -29,24 +24,24 @@ MODULES=()
 # Modules for both Arch and WSL
 if [[ "$ENVIRONMENT" == "arch" || "$ENVIRONMENT" == "wsl" ]]; then
   MODULES+=(
-    "git"
-    "shell"
-    "tmux"
-    "asdf"
-    "python"
-    "neovim"
-    "misc"
+    # "git"
+    # "shell"
+    # "tmux"
+    # "asdf"
+    # "python"
+    # "neovim"
+    # "misc"
   )
 fi
 
 # Modules exclusive to Arch
 if [[ "$ENVIRONMENT" == "arch" ]]; then
   MODULES+=(
-    "hyprland"
-    "kitty"
-    "solaar"
-    "insync"
-    "gaming"
+    # "hyprland"
+    # "kitty"
+    # "solaar"
+    # "insync"
+    # "gaming"
   )
 fi
 
