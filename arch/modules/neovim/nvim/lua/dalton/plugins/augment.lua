@@ -2,7 +2,7 @@ return {
   "augmentcode/augment.vim",
   event = "InsertEnter",
   config = function()
-    vim.g.augment_workspace_folders = { "/home/dalton/.config/nvim" }
+    vim.g.augment_workspace_folders = { "/home/dalton/.dotfiles/" }
     -- vim.g.augment_workspace_folders = { "/home/dalton/repos" }
 
     vim.g.augment_disable_tab_mapping = true
