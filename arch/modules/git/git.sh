@@ -7,6 +7,8 @@ function install_git() {
     "git"
     "github-cli"
     "openssh"
+    "bat"
+    "man-db"
   )
 
   # Install the packages using the install_packages function
@@ -34,6 +36,7 @@ function configure_git() {
     exit 1
   fi
 
+  # TODO: Make this idempotent
   echo "[user]" > "$user_config"
   echo "  name = $GIT_NAME" >> "$user_config"
   echo "  email = $GIT_EMAIL" >> "$user_config"
