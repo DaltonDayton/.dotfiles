@@ -24,6 +24,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 # zinit self-update
 # zinit update
 
+# hyde_plugins=(sudo git zsh-256color zsh-autosuggestions zsh-syntax-highlighting)
+
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
