@@ -8,6 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULES_DIR="$SCRIPT_DIR/modules"
 
 # Source common functions
+# shellcheck source=modules/common.sh
 source "$MODULES_DIR/common.sh"
 
 # Load environment variables
@@ -24,20 +25,20 @@ ensure_yay_installed
 echo "Synchronizing package databases..."
 yay -Sy --noconfirm
 
-MODULES+=(
-    "git"
-#    "shell"
-#    "tmux"
-#    "asdf"
-#    "python"
-    "neovim"
-#    "misc"
-#
-#    "hyprland"
-#    "kitty"
-#    "solaar"
-#    "insync"
-#    "gaming"
+MODULES=(
+  "git"
+  #    "shell"
+  #    "tmux"
+  #    "asdf"
+  #    "python"
+  "neovim"
+  #    "misc"
+  #
+  #    "hyprland"
+  #    "kitty"
+  #    "solaar"
+  #    "insync"
+  #    "gaming"
 )
 
 for module in "${MODULES[@]}"; do
@@ -46,10 +47,10 @@ for module in "${MODULES[@]}"; do
     echo "====================="
     echo "Processing $module..."
     echo "====================="
+    # shellcheck disable=SC1090
     source "$MODULE_SCRIPT"
     "install_$module"
   else
     echo "Error: Module $module not found!"
   fi
 done
-
