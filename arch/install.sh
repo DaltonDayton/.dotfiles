@@ -24,38 +24,21 @@ ensure_yay_installed
 echo "Synchronizing package databases..."
 yay -Sy --noconfirm
 
-MODULES=()
-
-# Modules for both Arch and WSL
-if [[ "$ENVIRONMENT" == "arch" || "$ENVIRONMENT" == "wsl" ]]; then
-  MODULES+=(
+MODULES+=(
     "git"
-    "shell"
-    "tmux"
-    "asdf"
-    "python"
+#    "shell"
+#    "tmux"
+#    "asdf"
+#    "python"
     "neovim"
-    "misc"
-  )
-fi
-
-# Modules exclusive to Arch
-if [[ "$ENVIRONMENT" == "arch" ]]; then
-  MODULES+=(
-    "hyprland"
-    "kitty"
-    "solaar"
-    "insync"
-    "gaming"
-  )
-fi
-
-# Modules exclusive to WSL
-if [[ "$ENVIRONMENT" == "wsl" ]]; then
-  MODULES+=(
-    # Nothing exclusive to WSL at the moment
-  )
-fi
+#    "misc"
+#
+#    "hyprland"
+#    "kitty"
+#    "solaar"
+#    "insync"
+#    "gaming"
+)
 
 for module in "${MODULES[@]}"; do
   MODULE_SCRIPT="$MODULES_DIR/${module}/${module}.sh"
