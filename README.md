@@ -1,59 +1,115 @@
-# README
+# Dotfiles
 
-This repository contains my personal dotfiles and configuration scripts for various operating systems and environments. It's organized into directories based on the specific setup, making it easier to manage and deploy configurations as needed.
+Personal dotfiles and development environment configuration management system.
 
-## Directory Structure
+## Quick Start
 
-- **arch/**: Configuration files and installation scripts for Arch Linux. Also ArchWSL
-- **nixos/**: Configuration files and scripts for NixOS.
-- **other_configs/**: Miscellaneous configuration files that don't fit into the other categories.
-- **scripts/**: Miscellaneous scripts
-- **wsl_ubuntu/**: Configurations for Windows Subsystem for Linux. (Ubuntu)
+```bash
+git clone <this-repo> ~/.dotfiles
+cd ~/.dotfiles/arch
+cp .env_default .env
+./install.sh
+```
+
+## Overview
+
+This repository contains modular dotfiles configurations for different environments, with the primary focus on Arch Linux systems. The configuration system is designed to be idempotent, safe, and easily customizable.
+
+### Repository Structure
+
+```
+.
+├── arch/               # Arch Linux configuration system (primary)
+│   ├── modules/        # Modular tool configurations
+│   ├── install.sh      # Main installation script
+│   └── README.md       # Detailed arch-specific documentation
+├── other_configs/      # Standalone configuration files
+├── scripts/           # Utility scripts
+└── CLAUDE.md          # Development guidance for AI assistants
+```
+
+## Features
+
+- **Modular Design**: Each tool/application has its own module
+- **Idempotent**: Safe to run multiple times
+- **Symlink-based**: Non-destructive configuration deployment
+- **Version Pinning**: Support for specific package versions
+- **Environment-aware**: Context-specific configurations
+
+## Current Modules
+
+- **Git & GitHub CLI**: Version control and collaboration tools
+- **Shell Environment**: Zsh with Zinit, Starship prompt, modern CLI tools
+- **Terminal**: Kitty terminal emulator with optimized configuration
+- **Editor**: Neovim with LazyVim and extensive plugin ecosystem
+- **Development Tools**: asdf version manager, Python environment
+- **Multiplexer**: tmux for session management
+- **File Management**: Modern replacements (eza, bat, fzf, yazi)
+- **System Tools**: Logitech device management and utilities
 
 ## Usage
 
-### Cloning the Repository
-
-Clone this repository to your home directory (or any location you prefer):
+### Full Installation
 
 ```bash
-git clone https://github.com/DaltonDayton/.dotfiles.git ~/.dotfiles
+cd arch/
+cp .env_default .env    # Edit as needed
+./install.sh
 ```
 
-To update:
+### Adding Custom Modules
 
-1. Authorize `gh auth login`
-2. `git clone git@github.com:DaltonDayton/.dotfiles.git`
+1. Copy the example module:
+   ```bash
+   cp -r arch/modules/_example_module arch/modules/your_module
+   ```
 
-## Notes
+2. Edit the module script and add configuration files
 
-- **Backup Existing Configurations:** Before running any installation scripts or applying configurations, it's recommended to back up your existing configuration files to prevent any loss of personalized settings.
+3. Add module to `MODULES` array in `arch/install.sh`
 
-- **Review Scripts and Configurations:** Make sure to review the scripts and configuration files to understand the changes that will be made to your system.
+### Testing Changes
 
-- **Permissions:** Some scripts may require elevated permissions (e.g., `sudo`) to install packages or modify system configurations. You will be prompted for your password when necessary.
+```bash
+# Validate shell scripts
+shellcheck arch/install.sh
 
-- **Idempotency:** The scripts are designed to be idempotent, meaning they can be run multiple times without causing unintended side effects.
+# Test individual modules by sourcing and calling functions
+source arch/modules/common.sh
+source arch/modules/git/git.sh
+install_git
+```
 
-## Windows and ArchWSL
+## Environment Configuration
 
-### Terminal (Windows)
+Create and customize `.env` file in the `arch/` directory:
 
-1. Download [Alacritty](https://alacritty.org/)
-1. Install CaskaydiaCove Nerd Font
-   - [Nerd Fonts - Downloads](https://www.nerdfonts.com/font-downloads)
-1. Copy alacritty.toml from `../other_configs/alacritty.toml` to `C:\Users\[user]\AppData\Roaming\alacritty\alacritty.toml`
-   - Create the file/directory if needed
+```bash
+ENVIRONMENT=arch
+CONTEXT=personal
+GIT_NAME="Your Name"
+GIT_EMAIL="your.email@domain.com"
+```
 
-### WSL
+## Requirements
 
-1. Install WSL2
-   - `wsl --install`
-2. Restart
-3. Install [ArchWSL](https://github.com/yuk7/ArchWSL)
-4. [Set up user](https://wsldl-pg.github.io/ArchW-docs/How-to-Setup/#set-up-the-default-user)
-5. [Initialize keyring](https://wsldl-pg.github.io/ArchW-docs/How-to-Setup/#initialize-keyring)
-6. Install dependencies:
-   - `sudo pacman -Syu git github-cli openssh`
-7. Authorize `gh auth login`
-8. `git clone git@github.com:DaltonDayton/.dotfiles.git`
+- Arch Linux (or Arch-based distribution)
+- Git (for initial clone and repository management)
+- Base development tools (`base-devel` package group)
+
+## Safety Features
+
+- Error handling with immediate exit on failures
+- Non-destructive symlink management
+- Package installation validation
+- Idempotent operations throughout
+
+## Documentation
+
+- See `arch/README.md` for detailed Arch Linux system documentation
+- See `CLAUDE.md` for development and AI assistant guidance
+- Individual modules contain inline documentation
+
+## License
+
+Personal use - modify as needed for your own dotfiles setup.
