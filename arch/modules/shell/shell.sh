@@ -42,7 +42,7 @@ function configure_shell() {
   # Set zsh as the default shell
   if [ "$SHELL" != "/bin/zsh" ]; then
     echo "Setting zsh as the default shell..."
-    chsh -s /bin/zsh
+    chsh -s /usr/bin/zsh # TODO: set this via `which zsh` maybe?
   else
     echo "zsh is the default shell."
   fi
