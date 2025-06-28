@@ -8,11 +8,11 @@ function install_misc() {
   if [[ "$ENVIRONMENT" == "arch" || "$ENVIRONMENT" == "wsl" ]]; then
     packages+=(
       # Fonts
-      "noto-fonts-cjk"
+      # "noto-fonts-cjk"
       "noto-fonts-emoji"
-      "ttf-firacode-nerd"
-      "ttf-font-awesome"
-      "ttf-cascadia-code-nerd"
+      # "ttf-firacode-nerd"
+      # "ttf-font-awesome"
+      # "ttf-cascadia-code-nerd"
 
       # May be unnecessary with Noto Emoji
       # "font-symbola"
@@ -26,11 +26,11 @@ function install_misc() {
       "firefox-developer-edition"
 
       # VPN
-      "expressvpn"
+      # "expressvpn"
 
       # Notes
       # TODO: Move to a module and git clone personal_notes?
-      "obsidian"
+      # "obsidian"
     )
   fi
 

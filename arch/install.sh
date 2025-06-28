@@ -27,18 +27,16 @@ yay -Sy --noconfirm
 
 MODULES=(
   "git"
-  #    "shell"
-  #    "tmux"
-  #    "asdf"
-  #    "python"
+  "shell"
+  "tmux"
+  "asdf"
+  "python"
   "neovim"
-  #    "misc"
-  #
-  #    "hyprland"
-  #    "kitty"
-  #    "solaar"
-  #    "insync"
-  #    "gaming"
+  "misc"
+  "kitty"
+  "solaar"
+
+  # "hyprland"
 )
 
 for module in "${MODULES[@]}"; do

@@ -4,15 +4,15 @@
 function install_hyprland() {
   # Define the list of packages required for this module
   local packages=(
-    "swayidle"
-    "sway-audio-idle-inhibit-git"
+    # "swayidle"
+    # "sway-audio-idle-inhibit-git"
   )
 
   # Install the packages using the install_packages function
-  install_packages "${packages[@]}"
+  # install_packages "${packages[@]}"
 
   # Proceed to configuration
-  configure_hyprland
+  # configure_hyprland
 }
 
 # Function to configure the module
