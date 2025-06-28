@@ -40,10 +40,16 @@ function configure_shell() {
   # For example, setting environment variables, running setup scripts, etc.
 
   # Set zsh as the default shell
-  if [ "$SHELL" != "/bin/zsh" ]; then
-    echo "Setting zsh as the default shell..."
-    chsh -s /usr/bin/zsh # TODO: set this via `which zsh` maybe?
+  local zsh_path=$(which zsh)
+  if [ -z "$zsh_path" ]; then
+    echo "Error: zsh not found in PATH. Please ensure zsh is installed."
+    return 1
+  fi
+
+  if [ "$SHELL" != "$zsh_path" ]; then
+    echo "Setting zsh as the default shell ($zsh_path)..."
+    chsh -s "$zsh_path"
   else
-    echo "zsh is the default shell."
+    echo "zsh is already the default shell."
   fi
 }

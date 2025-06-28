@@ -36,10 +36,26 @@ function configure_git() {
     exit 1
   fi
 
-  # TODO: Make this idempotent
-  echo "[user]" > "$user_config"
-  echo "  name = $GIT_NAME" >> "$user_config"
-  echo "  email = $GIT_EMAIL" >> "$user_config"
+  # Check if user config exists and has correct values
+  local config_changed=false
+  if [ ! -f "$user_config" ]; then
+    config_changed=true
+  else
+    local current_name=$(grep "name = " "$user_config" | sed 's/.*name = //')
+    local current_email=$(grep "email = " "$user_config" | sed 's/.*email = //')
+    if [ "$current_name" != "$GIT_NAME" ] || [ "$current_email" != "$GIT_EMAIL" ]; then
+      config_changed=true
+    fi
+  fi
+
+  if [ "$config_changed" = true ]; then
+    echo "[user]" > "$user_config"
+    echo "  name = $GIT_NAME" >> "$user_config"
+    echo "  email = $GIT_EMAIL" >> "$user_config"
+    echo "Updated Git user configuration."
+  else
+    echo "Git user configuration is already correct."
+  fi
 
   echo "Git configured for $CONTEXT context."
 
