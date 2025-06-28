@@ -174,3 +174,6 @@ fd()
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+# opencode
+export PATH=/home/dalton/.opencode/bin:$PATH
