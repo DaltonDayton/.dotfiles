@@ -34,7 +34,7 @@ function configure_shell() {
   CONFIG_SOURCE="$MODULES_DIR/shell/config/yazi"
   CONFIG_DEST="$HOME/.config/yazi"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
-  ya pack -u
+  ya pkg upgrade
 
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
