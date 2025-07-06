@@ -85,10 +85,80 @@ function configure_shell() {
     return 1
   fi
 
+  local shell_switched=false
   if [ "$SHELL" != "$zsh_path" ]; then
     echo "Setting zsh as the default shell ($zsh_path)..."
     chsh -s "$zsh_path"
+    shell_switched=true
   else
     echo "zsh is already the default shell."
+  fi
+
+  # If we just switched to zsh, continue installation in zsh environment
+  if [ "$shell_switched" = true ]; then
+    echo "Switching to zsh environment to continue installation..."
+    echo "This ensures all subsequent modules run with proper zsh configuration."
+    
+    # Create a temporary script to continue with remaining modules
+    local continue_script="/tmp/continue_install_in_zsh.sh"
+    cat > "$continue_script" << 'EOF'
+#!/usr/bin/env zsh
+set -e
+trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
+
+# Get the directory of the original script
+SCRIPT_DIR="$1"
+MODULES_DIR="$SCRIPT_DIR/modules"
+
+# Source common functions
+source "$MODULES_DIR/common.sh"
+
+# Load environment variables
+if [ -f "$SCRIPT_DIR/.env" ]; then
+  source "$SCRIPT_DIR/.env"
+else
+  echo "Error: .env file not found!"
+  exit 1
+fi
+
+# Ensure apt is updated
+ensure_apt_updated
+
+echo "Continuing installation in zsh environment..."
+
+# Process remaining modules (after shell)
+REMAINING_MODULES=(
+  "asdf"
+  "claude-code"
+)
+
+for module in "${REMAINING_MODULES[@]}"; do
+  MODULE_SCRIPT="$MODULES_DIR/${module}/${module}.sh"
+  if [ -f "$MODULE_SCRIPT" ]; then
+    echo "====================="
+    echo "Processing $module..."
+    echo "====================="
+    source "$MODULE_SCRIPT"
+    "install_$module"
+    echo ""
+  else
+    echo "Warning: Module script $MODULE_SCRIPT not found!"
+  fi
+done
+
+echo "====================="
+echo "Installation complete!"
+echo "====================="
+echo "Environment: $ENVIRONMENT"
+echo "Context: $CONTEXT"
+
+# Clean up
+rm -f "$0"
+EOF
+    
+    chmod +x "$continue_script"
+    
+    # Execute the continuation script in zsh and exit current bash session
+    exec zsh "$continue_script" "$SCRIPT_DIR"
   fi
 }
