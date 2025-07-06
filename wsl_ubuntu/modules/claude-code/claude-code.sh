@@ -16,6 +16,9 @@ function install_claude-code() {
 function configure_claude-code() {
   echo "Setting up Claude Code with asdf-managed Node.js..."
 
+  # Ensure we're in a valid directory before running Go commands
+  cd "$SCRIPT_DIR" 2>/dev/null || cd /
+
   # Ensure Go bin directory is in PATH (for Go-installed asdf)
   export PATH="$(go env GOPATH)/bin:$PATH"
 
