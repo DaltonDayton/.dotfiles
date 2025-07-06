@@ -28,6 +28,8 @@ MODULES=(
   "git"
   "tmux"
   "shell"
+  "asdf"
+  "claude-code"
 )
 
 for module in "${MODULES[@]}"; do
