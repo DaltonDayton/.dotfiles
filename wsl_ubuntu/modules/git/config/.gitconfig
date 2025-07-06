@@ -6,7 +6,7 @@
 [core]
 	editor = vim
 	autocrlf = false
-	pager = bat
+	pager = batcat
 [push]
 	autoSetupRemote = true
 [pull]
