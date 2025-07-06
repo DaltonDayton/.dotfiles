@@ -26,6 +26,7 @@ echo "Starting WSL Ubuntu dotfiles installation..."
 
 MODULES=(
   "git"
+  "tmux"
 )
 
 for module in "${MODULES[@]}"; do
