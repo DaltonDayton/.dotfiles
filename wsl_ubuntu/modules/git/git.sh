@@ -4,14 +4,14 @@
 function install_git() {
   # Ensure GitHub CLI PPA is added before installing
   ensure_github_cli_ppa
-  
+
   # Define the list of packages required for this module
   local packages=(
     "git"
-    "gh"              # GitHub CLI (from PPA)
-    "openssh-client"  # SSH client for Ubuntu
-    "bat"             # bat command for paging
-    "man-db"          # Manual pages
+    "gh"             # GitHub CLI (from PPA)
+    "openssh-client" # SSH client for Ubuntu
+    "bat"            # bat command for paging
+    "man-db"         # Manual pages
   )
 
   # Install the packages using the install_packages function
@@ -52,9 +52,9 @@ function configure_git() {
   fi
 
   if [ "$config_changed" = true ]; then
-    echo "[user]" > "$user_config"
-    echo "  name = $GIT_NAME" >> "$user_config"
-    echo "  email = $GIT_EMAIL" >> "$user_config"
+    echo "[user]" >"$user_config"
+    echo "  name = $GIT_NAME" >>"$user_config"
+    echo "  email = $GIT_EMAIL" >>"$user_config"
     echo "Updated Git user configuration."
   else
     echo "Git user configuration is already correct."

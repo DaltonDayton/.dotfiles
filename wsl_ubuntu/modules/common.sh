@@ -94,7 +94,7 @@ function ensure_github_cli_ppa() {
   if [ ! -f /etc/apt/sources.list.d/github-cli.list ]; then
     echo "Adding GitHub CLI PPA..."
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
     sudo apt update
     echo "GitHub CLI PPA added successfully."
   else
@@ -109,43 +109,43 @@ function install_github_deb() {
   local deb_pattern="$3"
   local retry_count=0
   local max_retries=3
-  
+
   # Check if already installed
-  if command -v "$package_name" &> /dev/null; then
+  if command -v "$package_name" &>/dev/null; then
     echo "$package_name is already installed."
     return 0
   fi
-  
+
   echo "Installing $package_name from GitHub releases..."
-  
+
   # Get latest release download URL
-  local download_url=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | \
-    grep "browser_download_url.*$deb_pattern" | \
+  local download_url=$(curl -s "https://api.github.com/repos/$repo/releases/latest" |
+    grep "browser_download_url.*$deb_pattern" |
     cut -d '"' -f 4 | head -1)
-  
+
   if [ -z "$download_url" ]; then
     echo "Failed to find download URL for $package_name"
     exit 1
   fi
-  
+
   # Download and install
   local temp_dir=$(mktemp -d)
   local deb_file="$temp_dir/$package_name.deb"
-  
+
   while [ $retry_count -lt $max_retries ]; do
     if curl -L "$download_url" -o "$deb_file" && sudo dpkg -i "$deb_file"; then
       echo "$package_name installed successfully."
       rm -rf "$temp_dir"
       return 0
     fi
-    
+
     retry_count=$((retry_count + 1))
     if [ $retry_count -lt $max_retries ]; then
       echo "Installation failed. Retrying in 5 seconds..."
       sleep 5
     fi
   done
-  
+
   echo "Failed to install $package_name after $max_retries attempts."
   rm -rf "$temp_dir"
   exit 1
@@ -153,11 +153,11 @@ function install_github_deb() {
 
 # Function to install starship prompt
 function install_starship() {
-  if command -v starship &> /dev/null; then
+  if command -v starship &>/dev/null; then
     echo "starship is already installed."
     return 0
   fi
-  
+
   echo "Installing starship prompt..."
   curl -sS https://starship.rs/install.sh | sh -s -- --yes
   echo "starship installed successfully."
@@ -167,7 +167,7 @@ function install_starship() {
 function validate_installation() {
   local components=("$@")
   for component in "${components[@]}"; do
-    if ! command -v "$component" &> /dev/null; then
+    if ! command -v "$component" &>/dev/null; then
       echo "Error: $component is not installed or not in PATH."
       exit 1
     fi

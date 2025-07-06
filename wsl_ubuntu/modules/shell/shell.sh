@@ -2,11 +2,11 @@
 
 # Function to install eza via its PPA
 function install_eza() {
-  if command -v eza &> /dev/null; then
+  if command -v eza &>/dev/null; then
     echo "eza is already installed."
     return 0
   fi
-  
+
   echo "Installing eza from PPA..."
   sudo apt update
   sudo apt install -y gpg
@@ -21,11 +21,11 @@ function install_eza() {
 
 # Function to install yazi via snap
 function install_yazi() {
-  if command -v yazi &> /dev/null; then
+  if command -v yazi &>/dev/null; then
     echo "yazi is already installed."
     return 0
   fi
-  
+
   echo "Installing yazi via snap..."
   sudo snap install yazi --classic
   echo "yazi installed successfully."
@@ -39,19 +39,19 @@ function install_shell() {
     "bat"
     "less"
     "fzf"
-    "curl"  # Required for GitHub installations
-    "wget"  # Required for eza installation
-    "gpg"   # Required for eza PPA
+    "curl" # Required for GitHub installations
+    "wget" # Required for eza installation
+    "gpg"  # Required for eza PPA
   )
-  
+
   install_packages "${apt_packages[@]}"
-  
+
   # Install packages from custom sources
   install_starship
   install_eza
   install_github_deb "ajeetdsouza/zoxide" "zoxide" "zoxide.*amd64.deb"
   install_yazi
-  
+
   # Proceed to configuration
   configure_shell
 }
@@ -69,9 +69,9 @@ function configure_shell() {
   CONFIG_SOURCE="$MODULES_DIR/shell/config/yazi"
   CONFIG_DEST="$HOME/.config/yazi"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
-  
+
   # Update yazi packages if yazi is available
-  if command -v ya &> /dev/null; then
+  if command -v ya &>/dev/null; then
     ya pkg upgrade
   fi
 
