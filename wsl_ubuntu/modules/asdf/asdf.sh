@@ -83,7 +83,7 @@ function configure_shell_integration() {
       cat >>~/.bashrc <<'EOF'
 
 # asdf version manager
-export PATH="$(go env GOPATH)/bin:$PATH"
+export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$(go env GOPATH)/bin:$PATH"
 source <(asdf completion bash)
 EOF
     else
@@ -91,14 +91,13 @@ EOF
     fi
   fi
 
-  # Configuration for .zshrc
+  # Note: .zshrc already has proper asdf PATH configuration, so we only add completion
   if [ -f ~/.zshrc ]; then
     if ! grep -q "asdf completion" ~/.zshrc; then
-      echo "Adding asdf to ~/.zshrc..."
+      echo "Adding asdf completion to ~/.zshrc..."
       cat >>~/.zshrc <<'EOF'
 
-# asdf version manager
-export PATH="$(go env GOPATH)/bin:$PATH"
+# asdf completion
 source <(asdf completion zsh)
 EOF
     else

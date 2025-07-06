@@ -25,9 +25,16 @@ function configure_claude-code() {
     exit 1
   fi
 
+  # Ensure asdf shims are prioritized in PATH (critical for avoiding Windows npm)
+  if [ -d "$HOME/.asdf/shims" ]; then
+    export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+    echo "Added asdf shims to PATH with priority"
+  fi
+
   # Display environment info for debugging
   echo "Environment check:"
   echo "  asdf version: $(asdf --version 2>/dev/null || echo 'unknown')"
+  echo "  Current PATH: $PATH"
   echo "  Node.js path: $(which node 2>/dev/null || echo 'not found')"
   echo "  npm path: $(which npm 2>/dev/null || echo 'not found')"
 
@@ -64,6 +71,28 @@ function configure_claude-code() {
 
   echo "Using Node.js: $(node --version 2>/dev/null || echo 'version unknown')"
   echo "Using npm: $(npm --version 2>/dev/null || echo 'version unknown')"
+
+  # Verify we're using asdf-managed versions, not Windows versions
+  node_path=$(which node 2>/dev/null)
+  npm_path=$(which npm 2>/dev/null)
+  
+  if [[ "$node_path" != *".asdf/shims"* ]]; then
+    echo "Warning: Node.js path ($node_path) is not from asdf shims!"
+    echo "This may cause npm conflicts. Attempting to fix PATH..."
+    export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+    hash -r
+    node_path=$(which node 2>/dev/null)
+    echo "Updated Node.js path: $node_path"
+  fi
+  
+  if [[ "$npm_path" != *".asdf/shims"* ]]; then
+    echo "Warning: npm path ($npm_path) is not from asdf shims!"
+    echo "This may cause the call stack overflow error."
+    export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH"
+    hash -r
+    npm_path=$(which npm 2>/dev/null)
+    echo "Updated npm path: $npm_path"
+  fi
 
   # Check if Claude Code is already installed
   if command -v claude-code &>/dev/null; then
