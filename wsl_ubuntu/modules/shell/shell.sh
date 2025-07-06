@@ -66,6 +66,7 @@ function install_shell() {
     "curl" # Required for GitHub installations
     "wget" # Required for eza installation
     "gpg"  # Required for eza PPA
+    "build-essential" # Required for cargo compilation
   )
 
   install_packages "${apt_packages[@]}"
