@@ -19,15 +19,39 @@ function install_eza() {
   echo "eza installed successfully."
 }
 
-# Function to install yazi via snap
+# Function to install rust and cargo
+function install_rust() {
+  if command -v cargo &>/dev/null; then
+    echo "Rust/cargo is already installed."
+    return 0
+  fi
+
+  echo "Installing Rust via rustup..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  
+  # Source cargo environment for current session
+  source "$HOME/.cargo/env"
+  
+  echo "Rust installed successfully."
+}
+
+# Function to install yazi via cargo
 function install_yazi() {
+  # Ensure rust is installed first
+  install_rust
+  
+  # Source cargo environment to ensure cargo is available
+  if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+  fi
+  
   if command -v yazi &>/dev/null; then
     echo "yazi is already installed."
     return 0
   fi
 
-  echo "Installing yazi via snap..."
-  sudo snap install yazi --classic
+  echo "Installing yazi via cargo..."
+  cargo install yazi-fm yazi-cli
   echo "yazi installed successfully."
 }
 
@@ -70,9 +94,17 @@ function configure_shell() {
   CONFIG_DEST="$HOME/.config/yazi"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
-  # Update yazi packages if yazi is available
+  # Source cargo environment to ensure ya is available
+  if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+  fi
+  
+  # Update yazi packages if ya is available
   if command -v ya &>/dev/null; then
+    echo "Updating yazi packages..."
     ya pkg upgrade
+  else
+    echo "Warning: ya command not found. Yazi packages will not be updated."
   fi
 
   # Additional configuration steps can be added here
