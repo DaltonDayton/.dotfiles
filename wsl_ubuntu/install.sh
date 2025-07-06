@@ -42,9 +42,6 @@ for module in "${MODULES[@]}"; do
     source "$MODULE_SCRIPT"
     "install_$module"
     echo ""
-    
-    # Note: If the shell module switches to zsh, this script will terminate here
-    # and continue execution in the new zsh environment with remaining modules
   else
     echo "Warning: Module script $MODULE_SCRIPT not found!"
   fi
