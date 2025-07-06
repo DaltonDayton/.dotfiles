@@ -29,6 +29,7 @@ MODULES=(
   "tmux"
   "shell"
   "asdf"
+  "neovim"
   "claude-code"
 )
 
