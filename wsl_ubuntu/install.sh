@@ -42,6 +42,9 @@ for module in "${MODULES[@]}"; do
     source "$MODULE_SCRIPT"
     "install_$module"
     echo ""
+    
+    # Note: The shell module may switch to zsh and continue with remaining modules
+    # If this happens, execution will not return here - it continues in the zsh environment
   else
     echo "Warning: Module script $MODULE_SCRIPT not found!"
   fi
@@ -50,5 +53,3 @@ done
 echo "====================="
 echo "Installation complete!"
 echo "====================="
-echo "Environment: $ENVIRONMENT"
-echo "Context: $CONTEXT"
