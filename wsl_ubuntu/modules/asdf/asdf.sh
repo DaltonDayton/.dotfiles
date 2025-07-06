@@ -38,13 +38,10 @@ function configure_asdf() {
     fi
   fi
 
-  # Ensure Go bin directory is in PATH for shell configuration
-  go_bin_path="$(go env GOPATH)/bin"
-
-  # Configure shell integration
-  configure_shell_integration "$go_bin_path"
+  # Note: Shell integration (PATH and completion) is handled by the shell module's .zshrc config
 
   # Source asdf for current session if available
+  local go_bin_path="$(go env GOPATH)/bin"
   if [ -f "$go_bin_path/asdf" ]; then
     export PATH="$go_bin_path:$PATH"
   fi
@@ -72,36 +69,3 @@ function configure_asdf() {
   echo "Note: You may need to restart your terminal to use asdf commands."
 }
 
-# Function to configure shell integration
-function configure_shell_integration() {
-  local go_bin_path="$1"
-
-  # Configuration for .bashrc
-  if [ -f ~/.bashrc ]; then
-    if ! grep -q "asdf completion" ~/.bashrc; then
-      echo "Adding asdf to ~/.bashrc..."
-      cat >>~/.bashrc <<'EOF'
-
-# asdf version manager
-export PATH="$HOME/.asdf/shims:$HOME/.asdf/bin:$(go env GOPATH)/bin:$PATH"
-source <(asdf completion bash)
-EOF
-    else
-      echo "asdf already configured in ~/.bashrc"
-    fi
-  fi
-
-  # Note: .zshrc already has proper asdf PATH configuration, so we only add completion
-  if [ -f ~/.zshrc ]; then
-    if ! grep -q "asdf completion" ~/.zshrc; then
-      echo "Adding asdf completion to ~/.zshrc..."
-      cat >>~/.zshrc <<'EOF'
-
-# asdf completion
-source <(asdf completion zsh)
-EOF
-    else
-      echo "asdf already configured in ~/.zshrc"
-    fi
-  fi
-}
