@@ -42,7 +42,7 @@ for module in "${MODULES[@]}"; do
     source "$MODULE_SCRIPT"
     "install_$module"
     echo ""
-    
+
     # Note: The shell module may switch to zsh and continue with remaining modules
     # If this happens, execution will not return here - it continues in the zsh environment
   else
@@ -53,3 +53,6 @@ done
 echo "====================="
 echo "Installation complete!"
 echo "====================="
+echo ""
+echo "IMPORTANT: Restart your terminal (or start a new WSL session)"
+echo ""

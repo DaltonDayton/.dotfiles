@@ -61,12 +61,7 @@ function configure_claude-code() {
   # Verify npm is available
   if ! command -v npm &>/dev/null; then
     echo "Error: npm not available. Node.js installation may have failed."
-    echo "Attempting to refresh asdf environment..."
-    asdf reshim nodejs
-    if ! command -v npm &>/dev/null; then
-      echo "Error: npm still not available after reshim. Please check asdf configuration."
-      exit 1
-    fi
+    exit 1
   fi
 
   echo "Using Node.js: $(node --version 2>/dev/null || echo 'version unknown')"
@@ -114,14 +109,8 @@ function configure_claude-code() {
       if command -v claude-code &>/dev/null; then
         echo "Claude Code version: $(claude-code --version)"
       else
-        echo "Warning: Installation completed but claude-code command not found. Trying reshim..."
-        asdf reshim nodejs
-        if command -v claude-code &>/dev/null; then
-          echo "Claude Code version: $(claude-code --version)"
-        else
-          echo "Error: Claude Code command not available after installation and reshim."
-          echo "Try restarting your terminal or running 'source ~/.bashrc' (or ~/.zshrc)"
-        fi
+        echo "Error: Claude Code command not available after installation."
+        echo "Try restarting your terminal or running 'source ~/.bashrc' (or ~/.zshrc)"
       fi
     else
       echo "Error: Claude Code installation failed."

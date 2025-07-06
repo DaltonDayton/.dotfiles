@@ -23,8 +23,6 @@ function install_packages() {
 function ensure_package_installed() {
   local package="$1"
   local version="${2:-latest}"
-  local retry_count=0
-  local max_retries=3
 
   # Check if the package is installed
   if dpkg -l | grep -q "^ii  $package "; then
@@ -40,31 +38,24 @@ function ensure_package_installed() {
       echo "$package is already installed."
     fi
   else
-    # Package is not installed - attempt installation with retry logic
-    while [ $retry_count -lt $max_retries ]; do
-      if [ "$version" == "latest" ]; then
-        echo "Installing $package... (attempt $((retry_count + 1))/$max_retries)"
-        if sudo apt install -y "$package"; then
-          echo "$package installed successfully."
-          return 0
-        fi
+    # Package is not installed - single installation attempt
+    if [ "$version" == "latest" ]; then
+      echo "Installing $package..."
+      if sudo apt install -y "$package"; then
+        echo "$package installed successfully."
       else
-        echo "Installing $package version $version... (attempt $((retry_count + 1))/$max_retries)"
-        if sudo apt install -y "$package=$version"; then
-          echo "$package version $version installed successfully."
-          return 0
-        fi
+        echo "Failed to install $package."
+        exit 1
       fi
-
-      retry_count=$((retry_count + 1))
-      if [ $retry_count -lt $max_retries ]; then
-        echo "Installation failed. Retrying in 5 seconds..."
-        sleep 5
+    else
+      echo "Installing $package version $version..."
+      if sudo apt install -y "$package=$version"; then
+        echo "$package version $version installed successfully."
+      else
+        echo "Failed to install $package version $version."
+        exit 1
       fi
-    done
-
-    echo "Failed to install $package after $max_retries attempts."
-    exit 1
+    fi
   fi
 }
 
@@ -107,8 +98,6 @@ function install_github_deb() {
   local repo="$1"
   local package_name="$2"
   local deb_pattern="$3"
-  local retry_count=0
-  local max_retries=3
 
   # Check if already installed
   if command -v "$package_name" &>/dev/null; then
@@ -132,23 +121,14 @@ function install_github_deb() {
   local temp_dir=$(mktemp -d)
   local deb_file="$temp_dir/$package_name.deb"
 
-  while [ $retry_count -lt $max_retries ]; do
-    if curl -L "$download_url" -o "$deb_file" && sudo dpkg -i "$deb_file"; then
-      echo "$package_name installed successfully."
-      rm -rf "$temp_dir"
-      return 0
-    fi
-
-    retry_count=$((retry_count + 1))
-    if [ $retry_count -lt $max_retries ]; then
-      echo "Installation failed. Retrying in 5 seconds..."
-      sleep 5
-    fi
-  done
-
-  echo "Failed to install $package_name after $max_retries attempts."
-  rm -rf "$temp_dir"
-  exit 1
+  if curl -L "$download_url" -o "$deb_file" && sudo dpkg -i "$deb_file"; then
+    echo "$package_name installed successfully."
+    rm -rf "$temp_dir"
+  else
+    echo "Failed to install $package_name."
+    rm -rf "$temp_dir"
+    exit 1
+  fi
 }
 
 # Function to install starship prompt
