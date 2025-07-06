@@ -102,6 +102,67 @@ function ensure_github_cli_ppa() {
   fi
 }
 
+# Function to install packages from GitHub releases (deb packages)
+function install_github_deb() {
+  local repo="$1"
+  local package_name="$2"
+  local deb_pattern="$3"
+  local retry_count=0
+  local max_retries=3
+  
+  # Check if already installed
+  if command -v "$package_name" &> /dev/null; then
+    echo "$package_name is already installed."
+    return 0
+  fi
+  
+  echo "Installing $package_name from GitHub releases..."
+  
+  # Get latest release download URL
+  local download_url=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | \
+    grep "browser_download_url.*$deb_pattern" | \
+    cut -d '"' -f 4 | head -1)
+  
+  if [ -z "$download_url" ]; then
+    echo "Failed to find download URL for $package_name"
+    exit 1
+  fi
+  
+  # Download and install
+  local temp_dir=$(mktemp -d)
+  local deb_file="$temp_dir/$package_name.deb"
+  
+  while [ $retry_count -lt $max_retries ]; do
+    if curl -L "$download_url" -o "$deb_file" && sudo dpkg -i "$deb_file"; then
+      echo "$package_name installed successfully."
+      rm -rf "$temp_dir"
+      return 0
+    fi
+    
+    retry_count=$((retry_count + 1))
+    if [ $retry_count -lt $max_retries ]; then
+      echo "Installation failed. Retrying in 5 seconds..."
+      sleep 5
+    fi
+  done
+  
+  echo "Failed to install $package_name after $max_retries attempts."
+  rm -rf "$temp_dir"
+  exit 1
+}
+
+# Function to install starship prompt
+function install_starship() {
+  if command -v starship &> /dev/null; then
+    echo "starship is already installed."
+    return 0
+  fi
+  
+  echo "Installing starship prompt..."
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes
+  echo "starship installed successfully."
+}
+
 # Function to validate installation of critical components
 function validate_installation() {
   local components=("$@")
