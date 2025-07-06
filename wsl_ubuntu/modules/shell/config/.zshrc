@@ -175,5 +175,10 @@ eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+# asdf completion (if asdf is available)
+if command -v asdf >/dev/null 2>&1; then
+  source <(asdf completion zsh)
+fi
+
 # opencode
 export PATH=/home/dalton/.opencode/bin:$PATH
