@@ -87,7 +87,7 @@ function configure_shell() {
 
   if [ "$SHELL" != "$zsh_path" ]; then
     echo "Setting zsh as the default shell ($zsh_path)..."
-    chsh -s "$zsh_path"
+    sudo chsh -s "$zsh_path" "$USER"
   else
     echo "zsh is already the default shell."
   fi
