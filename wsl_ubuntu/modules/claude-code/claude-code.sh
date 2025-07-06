@@ -43,7 +43,7 @@ function configure_claude-code() {
   # Refresh environment for asdf shims
   hash -r
 
-  # Verify npm is available and using correct Node.js
+  # Verify npm is available
   if ! command -v npm &>/dev/null; then
     echo "Error: npm not available. Node.js installation may have failed."
     echo "Attempting to refresh asdf environment..."
