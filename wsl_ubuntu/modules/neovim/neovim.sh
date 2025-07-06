@@ -4,27 +4,27 @@
 function version_compare() {
   local version1=$1
   local version2=$2
-  
+
   # Remove 'v' prefix if present
   version1=${version1#v}
   version2=${version2#v}
-  
+
   # Compare versions using sort -V
   if [ "$(printf '%s\n' "$version1" "$version2" | sort -V | head -n1)" = "$version1" ]; then
     if [ "$version1" = "$version2" ]; then
-      return 0  # Equal
+      return 0 # Equal
     else
-      return 1  # version1 < version2
+      return 1 # version1 < version2
     fi
   else
-    return 2    # version1 > version2
+    return 2 # version1 > version2
   fi
 }
 
 # Function to install neovim from source with version checking
 function install_neovim_from_source() {
   echo "Checking neovim versions..."
-  
+
   # Get current installed version
   local current_version=""
   if command -v nvim &>/dev/null; then
@@ -33,47 +33,47 @@ function install_neovim_from_source() {
   else
     echo "Neovim not currently installed"
   fi
-  
+
   # Get latest version from GitHub
   echo "Fetching latest neovim version from GitHub..."
   local latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep '"tag_name"' | cut -d '"' -f 4)
-  
+
   if [ -z "$latest_version" ]; then
     echo "Error: Could not fetch latest neovim version"
     exit 1
   fi
-  
+
   echo "Latest neovim version: $latest_version"
-  
+
   # Compare versions - only build if we need to
   if [ -n "$current_version" ]; then
     version_compare "$current_version" "$latest_version"
     local result=$?
-    
+
     case $result in
-      0)
-        echo "Neovim is already up to date ($current_version)"
-        return 0
-        ;;
-      2)
-        echo "Current version ($current_version) is newer than latest release ($latest_version)"
-        return 0
-        ;;
-      1)
-        echo "Newer version available ($latest_version), building from source..."
-        ;;
+    0)
+      echo "Neovim is already up to date ($current_version)"
+      return 0
+      ;;
+    2)
+      echo "Current version ($current_version) is newer than latest release ($latest_version)"
+      return 0
+      ;;
+    1)
+      echo "Newer version available ($latest_version), building from source..."
+      ;;
     esac
   else
     echo "Installing neovim $latest_version from source..."
   fi
-  
+
   # Build dependencies
   local build_deps=(
     "ninja-build"
     "gettext"
     "libtool"
     "libtool-bin"
-    "autoconf" 
+    "autoconf"
     "automake"
     "cmake"
     "g++"
@@ -84,47 +84,52 @@ function install_neovim_from_source() {
     "git"
     "build-essential"
   )
-  
+
   echo "Installing build dependencies..."
   install_packages "${build_deps[@]}"
-  
+
   # Create build directory
   local build_dir="/tmp/neovim-build"
   rm -rf "$build_dir"
   mkdir -p "$build_dir"
-  
-  echo "Cloning neovim repository..."
-  cd "$build_dir"
-  git clone https://github.com/neovim/neovim.git
-  cd neovim
-  
-  echo "Checking out version $latest_version..."
-  git checkout "$latest_version"
-  
-  echo "Building neovim (this may take several minutes)..."
-  make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr/local
-  
+
+  # Use subshell to contain working directory changes
+  (
+    echo "Cloning neovim repository..."
+    cd "$build_dir"
+    git clone https://github.com/neovim/neovim.git
+    cd neovim
+
+    echo "Checking out version $latest_version..."
+    git checkout "$latest_version"
+
+    echo "Building neovim (this may take several minutes)..."
+    make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr/local
+
+    if [ $? -ne 0 ]; then
+      echo "Error: Neovim build failed"
+      exit 1
+    fi
+
+    echo "Installing neovim to /usr/local..."
+    sudo make install
+
+    if [ $? -ne 0 ]; then
+      echo "Error: Neovim installation failed"
+      exit 1
+    fi
+  )
+
+  # Check if build/install succeeded (subshell exit codes)
   if [ $? -ne 0 ]; then
-    echo "Error: Neovim build failed"
-    cd /
+    echo "Error: Neovim build or installation failed"
     rm -rf "$build_dir"
     exit 1
   fi
-  
-  echo "Installing neovim to /usr/local..."
-  sudo make install
-  
-  if [ $? -ne 0 ]; then
-    echo "Error: Neovim installation failed"
-    cd /
-    rm -rf "$build_dir"
-    exit 1
-  fi
-  
-  # Cleanup
-  cd /
+
+  # Cleanup (working directory automatically restored by subshell)
   rm -rf "$build_dir"
-  
+
   # Verify installation
   if command -v nvim &>/dev/null; then
     echo "Neovim installed successfully: $(nvim --version | head -1)"
@@ -146,22 +151,22 @@ function install_lazygit() {
 
   # Get latest release download URL
   local latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep '"tag_name"' | cut -d '"' -f 4)
-  
+
   if [ -z "$latest_version" ]; then
     echo "Error: Could not fetch latest lazygit version"
     exit 1
   fi
-  
+
   # Remove 'v' prefix for download URL
   local version_number=${latest_version#v}
   local download_url="https://github.com/jesseduffield/lazygit/releases/download/${latest_version}/lazygit_${version_number}_Linux_x86_64.tar.gz"
-  
+
   echo "Downloading lazygit $latest_version..."
-  
+
   # Download and install
   local temp_dir=$(mktemp -d)
   local tar_file="$temp_dir/lazygit.tar.gz"
-  
+
   if curl -L "$download_url" -o "$tar_file"; then
     cd "$temp_dir"
     tar xf lazygit.tar.gz lazygit
@@ -173,7 +178,7 @@ function install_lazygit() {
     rm -rf "$temp_dir"
     exit 1
   fi
-  
+
   # Verify installation
   if command -v lazygit &>/dev/null; then
     echo "Lazygit version: $(lazygit --version)"
@@ -189,7 +194,7 @@ function install_neovim() {
   local packages=(
     "ripgrep"
     "unzip"
-    "git"  # Should already be installed from git module
+    "git" # Should already be installed from git module
   )
 
   # Install runtime packages
