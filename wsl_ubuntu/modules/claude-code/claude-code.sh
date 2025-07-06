@@ -36,14 +36,6 @@ function configure_claude-code() {
     echo "Installing latest Node.js via asdf..."
     asdf install nodejs latest
     asdf set -u nodejs latest
-    
-    # Reinitialize shell environment after asdf installation
-    echo "Reinitializing shell environment..."
-    if [ -f ~/.zshrc ]; then
-      source ~/.zshrc
-    elif [ -f ~/.bashrc ]; then
-      source ~/.bashrc
-    fi
   else
     echo "Node.js already available via asdf: $(asdf current nodejs)"
   fi
