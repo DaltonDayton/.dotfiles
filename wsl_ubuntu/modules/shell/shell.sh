@@ -100,11 +100,11 @@ function configure_shell() {
     echo "→ Creating continuation script for remaining modules..."
     
     cat > "$continue_script" << EOF
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 set -e
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
-echo "🐚 Now running under zsh v\${ZSH_VERSION}, continuing installation..."
+echo "🐚 Continuing installation with proper zsh environment configured..."
 
 # Get the directory of the original script  
 SCRIPT_DIR="$SCRIPT_DIR"
@@ -156,9 +156,11 @@ EOF
     
     chmod +x "$continue_script"
     
-    echo "→ Re-launching remaining installation under login zsh..."
-    # Re-exec under login zsh so ~/.zshrc is sourced and OMZP runs
-    exec zsh -l "$continue_script"
+    echo "→ Initializing zsh environment and continuing installation..."
+    # First trigger zsh initialization, then continue with bash script
+    zsh -l -c "echo 'Zsh environment initialized!'"
+    echo "→ Continuing installation with remaining modules..."
+    exec bash "$continue_script"
   else
     echo "✓ Already running in zsh v$ZSH_VERSION"
     # Set zsh as default if not already set
