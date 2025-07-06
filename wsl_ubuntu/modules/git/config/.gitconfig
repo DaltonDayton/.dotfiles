@@ -1,0 +1,13 @@
+[include]
+	path = ~/.gitconfig_default_user
+
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
+	autocrlf = false
+	pager = bat
+[push]
+	autoSetupRemote = true
+[pull]
+	rebase = true

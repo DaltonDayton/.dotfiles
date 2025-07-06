@@ -25,21 +25,27 @@ The main dotfiles system is located in `arch/` and contains a complete modular c
 ```bash
 # Setup and installation (run from arch/ directory)
 cd arch/
-cp .env_default .env    # Configure environment
+cp .env_default .env    # Configure environment variables
 ./install.sh           # Run full installation
 
 # Development and testing
-shellcheck install.sh  # Validate shell script syntax
+shellcheck install.sh                    # Validate main script syntax
+shellcheck modules/*/**.sh               # Validate all module scripts
+./install.sh                            # Re-run installation (idempotent)
+
+# Individual module testing
+source modules/common.sh && source modules/git/git.sh && install_git
 ```
 
 ### Architecture Overview
 
 The Arch system uses a modular approach where:
-- `install.sh` orchestrates the installation of enabled modules
+- `install.sh` orchestrates the installation of enabled modules (defined in MODULES array)
 - Each module in `modules/` handles a specific tool/application
 - Modules implement `install_<name>()` and `configure_<name>()` functions
 - Configuration files are symlinked from `modules/<name>/config/` to system locations
 - `modules/common.sh` provides shared utilities for package management and symlinking
+- `.env` file provides environment-specific configuration (ENVIRONMENT, CONTEXT, GIT_NAME, GIT_EMAIL)
 
 ### Current Active Modules
 
@@ -56,10 +62,11 @@ The Arch system uses a modular approach where:
 ### Key Architectural Patterns
 
 - **Idempotent Operations**: All scripts can be run multiple times safely
-- **Non-destructive Symlinks**: Uses `symlink_config()` utility that won't overwrite existing files
+- **Non-destructive Symlinks**: Uses `symlink_config()` utility that creates/updates symlinks safely
 - **Package Version Pinning**: Supports `package=version` syntax for specific versions
 - **Environment-based Configuration**: Uses `.env` file for context-specific settings
 - **Module Independence**: Each module manages its own dependencies and configuration
+- **Retry Logic**: Package installation includes retry mechanisms with validation
 
 ### Safety Features
 
@@ -71,10 +78,12 @@ The Arch system uses a modular approach where:
 ## Working with This Repository
 
 ### Adding New Modules
-1. Copy `arch/modules/_example_module/` template
-2. Implement installation and configuration functions
-3. Add configuration files to module's `config/` directory
-4. Add module name to `MODULES` array in `arch/install.sh`
+1. Copy `arch/modules/_example_module/` template to `modules/<name>/`
+2. Rename `example_module.sh` to `<name>.sh` and replace `exampleModule` with actual name
+3. Implement `install_<name>()` function with package list and configuration call
+4. Implement `configure_<name>()` function with symlink operations
+5. Add configuration files to module's `config/` directory
+6. Add module name to `MODULES` array in `arch/install.sh`
 
 ### Modifying Existing Configurations
 - Configuration files live in `modules/<name>/config/`
@@ -86,6 +95,7 @@ The Arch system uses a modular approach where:
 2. Test with `shellcheck` for shell scripts
 3. Run individual module or full `install.sh` to apply changes
 4. Verify symlinks and configurations are properly deployed
+5. Test installation on clean system or container when possible
 
 ## Important Notes
 
