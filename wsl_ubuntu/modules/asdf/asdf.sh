@@ -68,4 +68,3 @@ function configure_asdf() {
   echo "Node.js version: $(asdf current nodejs 2>/dev/null || echo 'Not set')"
   echo "Note: You may need to restart your terminal to use asdf commands."
 }
-

@@ -73,7 +73,7 @@ function configure_claude-code() {
   # Verify we're using asdf-managed versions, not Windows versions
   node_path=$(which node 2>/dev/null)
   npm_path=$(which npm 2>/dev/null)
-  
+
   if [[ "$node_path" != *".asdf/shims"* ]]; then
     echo "Warning: Node.js path ($node_path) is not from asdf shims!"
     echo "This may cause npm conflicts. Attempting to fix PATH..."
@@ -82,7 +82,7 @@ function configure_claude-code() {
     node_path=$(which node 2>/dev/null)
     echo "Updated Node.js path: $node_path"
   fi
-  
+
   if [[ "$npm_path" != *".asdf/shims"* ]]; then
     echo "Warning: npm path ($npm_path) is not from asdf shims!"
     echo "This may cause the call stack overflow error."
