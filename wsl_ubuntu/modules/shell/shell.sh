@@ -28,10 +28,10 @@ function install_rust() {
 
   echo "Installing Rust via rustup..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-  
+
   # Source cargo environment for current session
   source "$HOME/.cargo/env"
-  
+
   echo "Rust installed successfully."
 }
 
@@ -39,12 +39,12 @@ function install_rust() {
 function install_yazi() {
   # Ensure rust is installed first
   install_rust
-  
+
   # Source cargo environment to ensure cargo is available
   if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
   fi
-  
+
   if command -v yazi &>/dev/null; then
     echo "yazi is already installed."
     return 0
@@ -63,9 +63,9 @@ function install_shell() {
     "bat"
     "less"
     "fzf"
-    "curl" # Required for GitHub installations
-    "wget" # Required for eza installation
-    "gpg"  # Required for eza PPA
+    "curl"            # Required for GitHub installations
+    "wget"            # Required for eza installation
+    "gpg"             # Required for eza PPA
     "build-essential" # Required for cargo compilation
   )
 
@@ -99,7 +99,7 @@ function configure_shell() {
   if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
   fi
-  
+
   # Update yazi packages if ya is available
   if command -v ya &>/dev/null; then
     echo "Updating yazi packages..."
