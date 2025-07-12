@@ -55,6 +55,34 @@ function install_yazi() {
   echo "yazi installed successfully."
 }
 
+# Function to install fzf from source
+function install_fzf() {
+  if command -v fzf &>/dev/null && [ -d "$HOME/.fzf" ]; then
+    echo "fzf is already installed from source."
+    return 0
+  fi
+
+  echo "Installing latest fzf from source..."
+
+  # Remove existing fzf installation if from apt
+  if command -v fzf &>/dev/null && [ ! -d "$HOME/.fzf" ]; then
+    echo "Removing apt-installed fzf..."
+    sudo apt remove -y fzf
+  fi
+
+  # Remove existing source installation if present
+  if [ -d "$HOME/.fzf" ]; then
+    echo "Updating existing fzf installation..."
+    rm -rf "$HOME/.fzf"
+  fi
+
+  # Clone and install from source
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --no-bash --no-zsh --no-fish --bin # Install binary only, no shell integration
+
+  echo "fzf installed successfully from source."
+}
+
 # Function to install the module
 function install_shell() {
   # Install packages available via apt
@@ -62,7 +90,6 @@ function install_shell() {
     "zsh"
     "bat"
     "less"
-    "fzf"
     "curl"            # Required for GitHub installations
     "wget"            # Required for eza installation
     "gpg"             # Required for eza PPA
@@ -75,6 +102,7 @@ function install_shell() {
   install_starship
   install_eza
   install_github_deb "ajeetdsouza/zoxide" "zoxide" "zoxide.*amd64.deb"
+  install_fzf
   install_yazi
 
   # Proceed to configuration

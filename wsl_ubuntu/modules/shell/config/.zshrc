@@ -2,7 +2,7 @@ export PATH="$HOME/.asdf/shims:$PATH"
 export PATH="$HOME/.asdf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
-export PATH="$HOME/fzf/bin:$PATH"
+export PATH="$HOME/.fzf/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export EDITOR=nvim
