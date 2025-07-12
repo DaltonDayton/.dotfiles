@@ -93,8 +93,8 @@ function configure_claude-code() {
   fi
 
   # Check if Claude Code is already installed
-  if command -v claude-code &>/dev/null; then
-    echo "Claude Code is already installed: $(claude-code --version)"
+  if command -v claude &>/dev/null; then
+    echo "Claude Code is already installed: $(claude --version)"
   else
     # Clear npm cache to prevent stack overflow issues
     echo "Clearing npm cache to prevent installation issues..."
@@ -109,10 +109,10 @@ function configure_claude-code() {
       asdf reshim nodejs
 
       # Verify installation
-      if command -v claude-code &>/dev/null; then
-        echo "Claude Code version: $(claude-code --version)"
+      if command -v claude &>/dev/null; then
+        echo "Claude Code version: $(claude --version)"
       else
-        echo "Error: Claude Code command not available after installation."
+        echo "Error: Claude command not available after installation."
         echo "Try restarting your terminal or running 'source ~/.bashrc' (or ~/.zshrc)"
       fi
     else
