@@ -1,132 +1,300 @@
-# README
+# Arch Linux Dotfiles System
 
-This repository contains my personal dotfiles and scripts to automate the setup of my development environment. The goal is to streamline the installation and configuration of the tools and applications I use regularly.
+Comprehensive modular configuration management system for Arch Linux development environments.
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Usage](#usage)
-- [Modules](#modules)
+- [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [Available Modules](#available-modules)
+- [Installation Process](#installation-process)
 - [Customization](#customization)
-  - [Adding a New Module](#adding-a-new-module)
-  - [Modifying Existing Modules](#modifying-existing-modules)
-  - [Running Specific Modules](#running-specific-modules)
-- [Notes](#notes)
+- [Development Workflow](#development-workflow)
 - [Troubleshooting](#troubleshooting)
 
 ## Overview
 
-This repository contains my personal dotfiles and scripts to automate the setup of my development environment. The goal is to streamline the installation and configuration of the tools and applications I use regularly.
+This Arch Linux dotfiles system provides automated installation and configuration of development tools through a modular architecture. Each tool is encapsulated in its own module, allowing for selective installation and easy customization.
 
-Key Features:
+### Key Features
 
-- **Modular Design**: Each tool or application is encapsulated in its own module for easier management and customization.
-- **Idempotent**: The scripts are designed to run multiple times without causing unintended side effects.
-- **Environment-Specific Configurations**: Easily adaptable for different setups, such as Arch Linux or WSL.
+- **Modular Design**: Independent modules for each tool/application
+- **Idempotent Operations**: Safe to run multiple times without side effects
+- **Symlink-based Configuration**: Non-destructive deployment of configuration files
+- **Package Version Pinning**: Support for specific package versions
+- **AUR Integration**: Automatic yay installation and AUR package support
+- **Error Handling**: Robust error handling with immediate exit on failures
+- **Environment Awareness**: Context-specific configurations via .env file
 
-## Usage
+## Quick Start
 
-1. **Create a `.env` file**:
+```bash
+# Navigate to arch directory
+cd arch/
 
-   Copy the provided `.env_default` to `.env` and edit it to specify your environment:
+# Configure environment
+cp .env_default .env
+# Edit .env with your details (GIT_NAME, GIT_EMAIL, etc.)
 
-   ```bash
-   cp .env_default .env
-   ```
+# Run installation
+./install.sh
+```
 
-   The `.env` file defines the environment (e.g., `arch` or `wsl`) and is required for the scripts to function correctly.
+## Architecture
 
-2. **Make the `install.sh` script executable**:
+### Module System
 
-   ```bash
-   chmod +x install.sh
-   ```
+Each module follows a consistent structure:
 
-3. **Run the installation script**:
+```
+modules/<module_name>/
+├── <module_name>.sh    # Installation and configuration script
+└── config/             # Configuration files to be symlinked
+    ├── file1.conf
+    └── file2.toml
+```
 
-   ```bash
-   ./install.sh
-   ```
+### Core Functions
 
-   This script will:
+Every module implements two main functions:
+- `install_<module_name>()` - Handles package installation
+- `configure_<module_name>()` - Manages configuration deployment
 
-   - Ensure that `yay` (an AUR helper) is installed.
-   - Synchronize package databases.
-   - Install and configure each module listed in the `MODULES` array within `install.sh`.
+### Common Utilities (modules/common.sh)
 
-4. Close the terminal completely (or exit WSL)
-5. Reopen and allow the new shell to install
-6. (Optional) Exit and restart the terminal one last time
+- `install_packages()` - Batch package installation with version support
+- `ensure_package_installed()` - Individual package installation with retry logic
+- `symlink_config()` - Safe symlink creation without destructive operations
+- `ensure_yay_installed()` - Automatic AUR helper installation
 
-## Modules
+## Available Modules
 
-The installation and configuration are organized into modules for better modularity and maintainability.
+### Core Development Tools
+
+- **git** - Git and GitHub CLI with optimized configuration
+- **shell** - Zsh with Zinit plugin manager, Starship prompt
+- **neovim** - LazyVim-based configuration with extensive plugin ecosystem
+- **tmux** - Terminal multiplexer with custom key bindings
+- **asdf** - Version manager for multiple programming languages
+
+### CLI Enhancement Tools
+
+- **shell** includes:
+  - `eza` - Modern replacement for ls
+  - `bat` - Syntax-highlighted cat alternative
+  - `fzf` - Fuzzy finder for files and command history
+  - `yazi` - Terminal file manager
+
+### Development Environment
+
+- **python** - Python development environment setup
+- **kitty** - GPU-accelerated terminal emulator
+
+### System Tools
+
+- **misc** - Additional utilities and system enhancements
+- **solaar** - Logitech device management
+
+## Installation Process
+
+### Prerequisites
+
+- Arch Linux or Arch-based distribution
+- Git (for repository cloning)
+- Base development tools (`base-devel` package group)
+- Internet connection for package downloads
+
+### Environment Configuration
+
+Create and customize the `.env` file:
+
+```bash
+# Copy default template
+cp .env_default .env
+
+# Required variables
+ENVIRONMENT=arch
+CONTEXT=personal
+GIT_NAME="Your Full Name"
+GIT_EMAIL="your.email@example.com"
+```
+
+### Installation Steps
+
+1. **Package Database Sync**: Updates Arch package databases
+2. **yay Installation**: Installs AUR helper if not present
+3. **Module Processing**: Iterates through enabled modules in MODULES array
+4. **Package Installation**: Downloads and installs required packages
+5. **Configuration Deployment**: Creates symlinks for configuration files
 
 ## Customization
 
-### Adding a New Module
+### Enabling/Disabling Modules
 
-1. Copy the `_example_module` directory:
+Edit the `MODULES` array in `install.sh`:
 
+```bash
+MODULES=(
+  "git"
+  "shell"
+  "tmux"
+  "asdf"
+  "python"
+  "neovim"
+  "misc"
+  "kitty"
+  "solaar"
+  # "hyprland"  # Commented out modules are disabled
+)
+```
+
+### Adding New Modules
+
+1. **Copy Template**:
    ```bash
-   cp -r modules/_example_module modules/<new_module_name>
+   cp -r modules/_example_module modules/your_module
    ```
 
-2. Edit the `example_module.sh` script and rename it to `<new_module_name>.sh`.
-3. Add any necessary configuration files under a `config/` directory within the module.
-4. Update the `MODULES` array in `install.sh` to include `<new_module_name>`.
+2. **Edit Module Script**:
+   ```bash
+   # Rename and edit the script
+   mv modules/your_module/example_module.sh modules/your_module/your_module.sh
+   ```
 
-### Modifying Existing Modules
+3. **Implement Functions**:
+   ```bash
+   install_your_module() {
+     local packages=(
+       "package1"
+       "package2=1.2.3"  # Version pinning
+     )
+     install_packages "${packages[@]}"
+     configure_your_module
+   }
 
-- Edit the corresponding `module_name.sh` script to change installation steps.
-- Update configuration files in the `config/` directory as needed.
+   configure_your_module() {
+     symlink_config "$HOME/.dotfiles/arch/modules/your_module/config/config.conf" "$HOME/.config/app/config.conf"
+   }
+   ```
 
-### Running Specific Modules
+4. **Add Configuration Files**:
+   Place configuration files in `modules/your_module/config/`
 
-- Edit the `MODULES` array in `install.sh` to include only the modules you want to install or configure.
+5. **Enable Module**:
+   Add `"your_module"` to the MODULES array
 
-## Notes
+### Modifying Existing Configurations
 
-- **Idempotency**: The scripts are designed to be idempotent. Running them multiple times should not cause unintended side effects.
-- **Dependencies**:
-  - The scripts assume an Arch Linux or Arch-based distribution due to the use of `pacman` and `yay`.
-  - Ensure that `git` is installed, or the git module is enabled at the top of the list, before running `install.sh` since it's required for cloning repositories.
-- **Permissions**:
-  - Some scripts may require `sudo` privileges, especially when installing packages or modifying system configurations.
-  - The `install.sh` script will prompt for your password when necessary.
+- Configuration files are located in `modules/<name>/config/`
+- Edit files directly in the module's config directory
+- Run `./install.sh` or individual module function to deploy changes
+- Symlinks automatically update to reflect changes
+
+## Development Workflow
+
+### Testing Changes
+
+```bash
+# Validate shell script syntax
+shellcheck install.sh
+shellcheck modules/*/**.sh
+
+# Test individual modules
+source modules/common.sh
+source modules/git/git.sh
+install_git
+
+# Re-run full installation (idempotent)
+./install.sh
+```
+
+### Debugging
+
+```bash
+# Check package installation
+yay -Q | grep <package_name>
+pacman -Qq <package_name>
+
+# Verify symlinks
+ls -la ~/.config/
+ls -la ~/
+
+# Check module function availability
+declare -f install_git
+declare -f configure_git
+```
+
+### Safety Features
+
+- **Error Handling**: Scripts use `set -e` with error trapping
+- **Non-destructive Symlinks**: `symlink_config()` safely manages symlinks
+- **Package Validation**: `ensure_package_installed()` validates installation
+- **Retry Logic**: Package installation includes retry mechanisms
+- **Idempotent Operations**: Can be run multiple times safely
 
 ## Troubleshooting
 
-- **Common Issues**:
+### Common Issues
 
-  - **Error: "Command not found" when running `install.sh`**:
+#### Script Execution Errors
 
-    - Ensure the script is executable:
-      ```bash
-      chmod +x install.sh
-      ```
-    - Verify that your shell can locate the script:
-      ```bash
-      ./install.sh
-      ```
+```bash
+# Make script executable
+chmod +x install.sh
 
-  - **Error: "Package not found"**:
+# Check for syntax errors
+shellcheck install.sh
+```
 
-    - Check if the package is available in the official repositories or AUR.
-    - Update your package databases:
-      ```bash
-      sudo pacman -Sy
-      ```
+#### Package Installation Failures
 
-  - **Environment variable-related errors**:
-    - Ensure the `.env` file exists and is correctly configured:
-      ```bash
-      ENVIRONMENT=arch  # Example value
-      ```
-    - If `.env` is missing, recreate it from `.env_default`:
-      ```bash
-      cp .env_default .env
-      ```
+```bash
+# Update package databases
+sudo pacman -Sy
 
-- **Module-Specific Issues**:
-  - Check the corresponding `module_name.sh` script and logs for any errors during installation or configuration.
+# Manual package installation
+yay -S <package_name>
+
+# Check AUR package availability
+yay -Ss <package_name>
+```
+
+#### Environment Configuration
+
+```bash
+# Verify .env file exists and is correct
+cat .env
+
+# Recreate from template if needed
+cp .env_default .env
+```
+
+#### Module-Specific Issues
+
+- Check individual module scripts for errors
+- Verify configuration file paths and permissions
+- Test module functions individually
+- Review symlink destinations for conflicts
+
+### Post-Installation Steps
+
+1. **Terminal Restart**: Close and reopen terminal completely
+2. **Shell Reload**: Allow new shell configuration to load
+3. **Plugin Installation**: Some tools may need additional setup on first run
+4. **Verification**: Test key tools and configurations
+
+### Getting Help
+
+- Review module-specific documentation in script comments
+- Check the main repository README for general guidance
+- Consult tool-specific documentation for configuration options
+- Use `--help` flags with installed CLI tools
+
+## Notes
+
+- **Target Platform**: Designed specifically for Arch Linux
+- **Package Manager**: Uses `yay` for both official and AUR packages
+- **Configuration Strategy**: Symlink-based for easy maintenance
+- **Module Independence**: Each module manages its own dependencies
+- **Version Control**: Git-based configuration management

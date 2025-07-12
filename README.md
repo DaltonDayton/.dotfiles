@@ -5,7 +5,7 @@ Personal dotfiles and development environment configuration management system.
 ## Quick Start
 
 ```bash
-git clone <this-repo> ~/.dotfiles
+git clone https://github.com/username/dotfiles ~/.dotfiles
 cd ~/.dotfiles/arch
 cp .env_default .env
 ./install.sh
@@ -13,7 +13,7 @@ cp .env_default .env
 
 ## Overview
 
-This repository contains modular dotfiles configurations for different environments, with the primary focus on Arch Linux systems. The configuration system is designed to be idempotent, safe, and easily customizable.
+This repository contains a modular dotfiles configuration system designed specifically for Arch Linux environments. The system automates the setup and configuration of development tools through independent, reusable modules that can be safely run multiple times.
 
 ### Repository Structure
 
@@ -21,10 +21,14 @@ This repository contains modular dotfiles configurations for different environme
 .
 ├── arch/               # Arch Linux configuration system (primary)
 │   ├── modules/        # Modular tool configurations
+│   │   ├── git/        # Git and GitHub CLI setup
+│   │   ├── shell/      # Zsh, Starship, CLI tools
+│   │   ├── neovim/     # LazyVim configuration
+│   │   ├── tmux/       # Terminal multiplexer
+│   │   └── ...         # Additional modules
 │   ├── install.sh      # Main installation script
 │   └── README.md       # Detailed arch-specific documentation
 ├── other_configs/      # Standalone configuration files
-├── scripts/           # Utility scripts
 └── CLAUDE.md          # Development guidance for AI assistants
 ```
 
