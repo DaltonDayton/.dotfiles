@@ -35,6 +35,9 @@ shellcheck modules/*/**.sh               # Validate all module scripts
 
 # Individual module testing
 source modules/common.sh && source modules/git/git.sh && install_git
+
+# Testing individual components
+chmod +x install.sh                      # Make script executable if needed
 ```
 
 ### Architecture Overview
@@ -97,9 +100,22 @@ The Arch system uses a modular approach where:
 4. Verify symlinks and configurations are properly deployed
 5. Test installation on clean system or container when possible
 
+### Common Debugging Commands
+```bash
+# Check symlink status
+ls -la ~/.config/                        # Verify config symlinks
+ls -la ~/                               # Verify home directory symlinks
+
+# Module-specific testing
+yay -Q | grep <package>                  # Check if package is installed
+pacman -Qq <package>                     # Verify package installation
+```
+
 ## Important Notes
 
 - **Always work from the `arch/` directory** when making dotfiles changes
 - The system is designed for Arch Linux but modules can be adapted for other distributions
 - Configuration changes should be made in module config directories, not in system locations directly
 - The repository supports multiple environments but Arch is the primary maintained system
+- **Package Manager**: Uses `yay` (AUR helper) which gets auto-installed if missing
+- **Error Handling**: Scripts use `set -e` and error trapping - expect immediate exit on failures
