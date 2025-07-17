@@ -100,6 +100,7 @@ alias poetryactivate='source "$(poetry env info --path)/bin/activate"'
 alias pa='poetryactivate && export PYTHONPATH=$(pwd)'
 alias pd='deactivate'
 alias lg='lazygit'
+alias bat='batcat'
 
 # Function to record screen with a specified filename
 record_screen() {
