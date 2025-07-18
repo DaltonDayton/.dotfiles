@@ -4,22 +4,46 @@
 function install_hyprland() {
   # Define the list of packages required for this module
   local packages=(
+    # Core Hyprland packages
     "hyprland"
     "xdg-desktop-portal"
     "xdg-desktop-portal-hyprland"
+    "xdg-desktop-portal-gtk"
+
+    # Essential utilities
     "wl-clipboard"
     "waybar"
-    "wofi"
     "kitty"
-    "dunst"
     "polkit-gnome"
+    "network-manager-applet"
+    "jq" # JSON processor for scripts
+
+    # Enhanced tools and utilities
+    "rofi-wayland" # Application launcher (better than wofi)
+    "swaync"       # Notification center
+    "cliphist"     # Clipboard manager
+    "hyprshade"    # Blue light filter and screen effects
+    "hypridle"     # Idle daemon
+    "hyprlock"     # Screen locker
+    "hyprpicker"   # Color picker
+
+    # Screenshot and media tools
+    "grim"  # Screenshot utility
+    "slurp" # Region selector for screenshots
+    "satty" # Screenshot annotation tool
+    "swww"  # Wallpaper daemon
+
+    # System utilities
+    "playerctl"     # Media player control
+    "brightnessctl" # Brightness control
+    "pamixer"       # Audio control
+    "pavucontrol"   # Audio control GUI
+
+    # NVIDIA specific packages
     "linux-headers"
     "nvidia-dkms"
     "nvidia-utils"
     "lib32-nvidia-utils"
-    "network-manager-applet"
-    # "swayidle"
-    # "sway-audio-idle-inhibit-git"
   )
 
   # Install the packages using the install_packages function
