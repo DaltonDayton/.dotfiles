@@ -26,16 +26,16 @@ echo "Synchronizing package databases..."
 yay -Sy --noconfirm
 
 MODULES=(
-  "git"
-  "shell"
-  "tmux"
-  "asdf"
-  "python"
-  "neovim"
-  "misc"
-  "kitty"
-  "solaar"
-
+  # "git"
+  # "shell"
+  # "tmux"
+  # "asdf"
+  # "python"
+  # "neovim"
+  # "misc"
+  # "kitty"
+  # "solaar"
+  #
   # "hyprland"
 )
 
