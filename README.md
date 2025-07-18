@@ -64,6 +64,7 @@ cp .env_default .env    # Edit as needed
 ### Adding Custom Modules
 
 1. Copy the example module:
+
    ```bash
    cp -r arch/modules/_example_module arch/modules/your_module
    ```

@@ -163,9 +163,9 @@ return {
           -- Ruby
           -- "ruby_lsp",
           -- Typescript
-          -- "ts_ls",
+          "ts_ls",
           -- Emmet (html)
-          -- "emmet_language_server",
+          "emmet_language_server",
         },
         handlers = {
           -- this first function is the "default handler"
