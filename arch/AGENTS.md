@@ -3,28 +3,28 @@
 ## Build/Test Commands
 - **Install all modules**: `./install.sh` (requires `.env` file)
 - **Install specific module**: Edit `MODULES` array in `install.sh` and run
-- **Test module**: Source module script and call `install_<module_name>` function
-- **Validate shell scripts**: Use `shellcheck` on `.sh` files
+- **Test single module**: `source modules/common.sh && source modules/<name>/<name>.sh && install_<name>`
+- **Validate shell scripts**: `shellcheck install.sh modules/*/*.sh`
+- **Test module function**: `bash -c "source modules/common.sh && source modules/<name>/<name>.sh && configure_<name>"`
+- **Lint Lua files**: `stylua --check modules/neovim/nvim/` (format: `stylua modules/neovim/nvim/`)
 
 ## Code Style Guidelines
 
 ### Shell Scripts (.sh files)
-- Use `#!/usr/bin/bash` shebang
-- Set `set -e` for error handling
-- Use `trap 'echo "An error occurred. Exiting..."; exit 1;' ERR`
+- Use `#!/usr/bin/bash` shebang with `set -e` and error trap
 - Function naming: `install_<module_name>()` and `configure_<module_name>()`
-- Variable naming: UPPERCASE for globals, lowercase for locals
-- Quote variables: `"$variable"` not `$variable`
-- Use `local` for function variables
-- Array syntax: `packages=("item1" "item2")`
+- Variable naming: UPPERCASE for globals, lowercase with `local` for function vars
+- Always quote variables: `"$variable"` and use arrays: `packages=("item1" "item2")`
+- Package installation: Use `install_packages "${packages[@]}"` with version pinning support
+- Configuration: Use `symlink_config "$source" "$dest"` for safe symlinking
+- Error handling: Include retry logic and validation via `ensure_package_installed()`
 
 ### Lua (Neovim config)
-- Indent: 2 spaces (configured in `.stylua.toml`)
-- Use stylua for formatting
+- Indent: 2 spaces (enforced by `.stylua.toml`)
+- Use stylua for formatting, follow LazyVim plugin structure
 
-### General Conventions
-- Modular design: Each tool gets its own module directory
-- Idempotent scripts: Safe to run multiple times
-- Use `symlink_config()` function for config file linking
-- Package installation via `install_packages()` function
-- Environment variables in `.env` file (copy from `.env_default`)
+### Module Architecture
+- Each module: `modules/<name>/<name>.sh` with `config/` subdirectory
+- Idempotent operations, environment-based config via `.env` file
+- Source `modules/common.sh` for shared utilities (`install_packages`, `symlink_config`)
+- Test individual modules before adding to `MODULES` array in `install.sh`
