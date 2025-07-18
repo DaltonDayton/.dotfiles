@@ -62,10 +62,14 @@ function install_hyprland() {
 function configure_hyprland() {
   # set -euo pipefail
 
-  # Symlink custom userprefs.conf
+  # hypr
   CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr"
   CONFIG_DEST="$HOME/.config/hypr"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
+  # waybar
+  CONFIG_SOURCE="$MODULES_DIR/hyprland/waybar"
+  CONFIG_DEST="$HOME/.config/waybar"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Additional configuration steps can be added here
