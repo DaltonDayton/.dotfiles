@@ -44,6 +44,11 @@ function install_hyprland() {
     "nvidia-dkms"
     "nvidia-utils"
     "lib32-nvidia-utils"
+
+    # ===== Start Review =====
+    # "swayidle"
+    # "sway-audio-idle-inhibit-git"
+    # ===== End Review =====
   )
 
   # Install the packages using the install_packages function
