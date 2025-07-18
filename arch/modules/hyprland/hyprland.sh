@@ -45,6 +45,10 @@ function install_hyprland() {
     "nvidia-utils"
     "lib32-nvidia-utils"
 
+    # Themes and appearance
+    "catppuccin-gtk-theme-mocha" # GTK theme
+    "nwg-look"                   # Run nwg-look to configure themes
+
     # ===== Start Review =====
     # "swayidle"
     # "sway-audio-idle-inhibit-git"
