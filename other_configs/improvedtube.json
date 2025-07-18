@@ -5,11 +5,12 @@
   "disable_thumbnail_playback": false,
   "duration_with_speed": true,
   "forced_theater_mode": true,
+  "lastDarkTheme": "black",
   "player_autoplay": false,
   "player_color": "pink",
   "player_forced_playback_speed": true,
   "player_forced_volume": true,
-  "player_playback_speed": 1.5,
+  "player_playback_speed": 2,
   "player_remaining_duration": true,
   "player_volume": 75,
   "remove_history_shorts": true,
@@ -23,3 +24,4 @@
   "up_next_autoplay": false,
   "youtube_home_page": "/feed/subscriptions"
 }
+
