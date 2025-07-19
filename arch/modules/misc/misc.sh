@@ -10,6 +10,7 @@ function install_misc() {
       # Fonts
       "noto-fonts-emoji" # adds icons to browser
       "ttf-cascadia-code-nerd"
+      "inter-font"
     )
   fi
 
