@@ -52,15 +52,21 @@ The Arch system uses a modular approach where:
 
 ### Current Active Modules
 
+Currently enabled in install.sh:
 - **git**: Git and GitHub CLI configuration
 - **shell**: Zsh with Zinit, Starship prompt, modern CLI tools (eza, bat, fzf, yazi)
 - **tmux**: Terminal multiplexer setup
 - **asdf**: Development tool version management
 - **neovim**: LazyVim-based editor with extensive plugin configuration
 - **kitty**: Terminal emulator
-- **python**: Python development environment
 - **misc**: Additional utilities and tools
 - **solaar**: Logitech device management
+- **hyprland**: Wayland compositor with complete desktop environment (waybar, cursors, window management)
+
+Available but not currently enabled:
+- **python**: Python development environment
+- **gaming**: Gaming packages (Steam, Lutris, Wine, Discord, etc.)
+- **insync**: Google Drive synchronization client
 
 ### Key Architectural Patterns
 
