@@ -77,13 +77,18 @@ function configure_hyprland() {
   CONFIG_DEST="$HOME/.config/waybar"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
+  # wallpapers
+  CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
+  CONFIG_DEST="$HOME/.config/wallpapers"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 
   # Copy Bibata cursor themes from local dotfiles
   local bibata_source="$MODULES_DIR/hyprland/Bibata-Cursors"
   local icons_dest="$HOME/.local/share/icons"
-  
+
   # Ensure icons directory exists
   mkdir -p "$icons_dest"
 
