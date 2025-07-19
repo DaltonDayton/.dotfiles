@@ -36,8 +36,6 @@ function install_packages() {
 function ensure_package_installed() {
   local package="$1"
   local version="${2:-latest}"
-  local retry_count=0
-  local max_retries=3
 
   # Check if the package is installed
   if pacman -Qq "$package" &>/dev/null; then
@@ -55,37 +53,28 @@ function ensure_package_installed() {
       echo "$package is already installed."
     fi
   else
-    # Package is not installed - attempt installation with retry logic
-    while [ $retry_count -lt $max_retries ]; do
-      if [ "$version" == "latest" ]; then
-        echo "Installing $package... (attempt $((retry_count + 1))/$max_retries)"
-        if yay -S --needed --noconfirm "$package"; then
-          echo "$package installed successfully."
-          return 0
-        fi
-      else
-        echo "Installing $package version $version... (attempt $((retry_count + 1))/$max_retries)"
-        if yay -S --noconfirm "$package=$version"; then
-          echo "$package version $version installed successfully."
-          return 0
-        fi
-      fi
-
-      retry_count=$((retry_count + 1))
-      if [ $retry_count -lt $max_retries ]; then
-        echo "Installation failed. Retrying in 5 seconds..."
-        sleep 5
-      fi
-    done
-
-    # All retries failed
+    # Package is not installed - attempt installation
     if [ "$version" == "latest" ]; then
-      echo "Failed to install $package after $max_retries attempts."
+      echo "Installing $package..."
+      if yay -S --needed --noconfirm "$package"; then
+        echo "$package installed successfully."
+        return 0
+      else
+        echo "Failed to install $package."
+        echo "Please install it manually."
+        return 1
+      fi
     else
-      echo "Failed to install $package version $version after $max_retries attempts."
+      echo "Installing $package version $version..."
+      if yay -S --noconfirm "$package=$version"; then
+        echo "$package version $version installed successfully."
+        return 0
+      else
+        echo "Failed to install $package version $version."
+        echo "Please install it manually."
+        return 1
+      fi
     fi
-    echo "Please install it manually."
-    return 1
   fi
 }
 

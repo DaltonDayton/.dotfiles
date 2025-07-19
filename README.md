@@ -8,23 +8,9 @@ Personal dotfiles and configuration management for multiple development environm
 .
 ├── arch/               # Arch Linux (primary)
 ├── wsl_ubuntu/         # WSL Ubuntu
-├── shared_configs/     # Cross-platform configurations  
+├── shared_configs/     # Cross-platform configurations
 ├── other_configs/      # Standalone config files
-└── scripts/           # Utility scripts
-```
-
-## Quick Start
-
-**Arch Linux:**
-```bash
-cd arch/
-./install.sh
-```
-
-**WSL Ubuntu:**
-```bash
-cd wsl_ubuntu/
-# See wsl_ubuntu/README.md for setup
+└── scripts/            # Utility scripts
 ```
 
 ## Features
@@ -37,5 +23,6 @@ cd wsl_ubuntu/
 ## Documentation
 
 - `arch/README.md` - Comprehensive Arch Linux setup
-- `wsl_ubuntu/` - WSL Ubuntu environment docs  
+- `wsl_ubuntu/` - WSL Ubuntu environment docs
 - `CLAUDE.md` - Development guidance for AI assistants
+

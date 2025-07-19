@@ -43,6 +43,7 @@ chmod +x install.sh                      # Make script executable if needed
 ### Architecture Overview
 
 The Arch system uses a modular approach where:
+
 - `install.sh` orchestrates the installation of enabled modules (defined in MODULES array)
 - Each module in `modules/` handles a specific tool/application
 - Modules implement `install_<name>()` and `configure_<name>()` functions
@@ -53,6 +54,7 @@ The Arch system uses a modular approach where:
 ### Current Active Modules
 
 Currently enabled in install.sh:
+
 - **git**: Git and GitHub CLI configuration
 - **shell**: Zsh with Zinit, Starship prompt, modern CLI tools (eza, bat, fzf, yazi)
 - **tmux**: Terminal multiplexer setup
@@ -64,6 +66,7 @@ Currently enabled in install.sh:
 - **hyprland**: Wayland compositor with complete desktop environment (waybar, cursors, window management)
 
 Available but not currently enabled:
+
 - **python**: Python development environment
 - **gaming**: Gaming packages (Steam, Lutris, Wine, Discord, etc.)
 - **insync**: Google Drive synchronization client
@@ -75,7 +78,6 @@ Available but not currently enabled:
 - **Package Version Pinning**: Supports `package=version` syntax for specific versions
 - **Environment-based Configuration**: Uses `.env` file for context-specific settings
 - **Module Independence**: Each module manages its own dependencies and configuration
-- **Retry Logic**: Package installation includes retry mechanisms with validation
 
 ### Safety Features
 
@@ -87,6 +89,7 @@ Available but not currently enabled:
 ## Working with This Repository
 
 ### Adding New Modules
+
 1. Copy `arch/modules/_example_module/` template to `modules/<name>/`
 2. Rename `example_module.sh` to `<name>.sh` and replace `exampleModule` with actual name
 3. Implement `install_<name>()` function with package list and configuration call
@@ -95,11 +98,13 @@ Available but not currently enabled:
 6. Add module name to `MODULES` array in `arch/install.sh`
 
 ### Modifying Existing Configurations
+
 - Configuration files live in `modules/<name>/config/`
 - Changes are deployed via symlinks to system locations
 - Test changes by running individual module functions
 
 ### Development Workflow
+
 1. Make changes in appropriate module's config directory
 2. Test with `shellcheck` for shell scripts
 3. Run individual module or full `install.sh` to apply changes
@@ -107,6 +112,7 @@ Available but not currently enabled:
 5. Test installation on clean system or container when possible
 
 ### Common Debugging Commands
+
 ```bash
 # Check symlink status
 ls -la ~/.config/                        # Verify config symlinks
@@ -125,3 +131,4 @@ pacman -Qq <package>                     # Verify package installation
 - The repository supports multiple environments but Arch is the primary maintained system
 - **Package Manager**: Uses `yay` (AUR helper) which gets auto-installed if missing
 - **Error Handling**: Scripts use `set -e` and error trapping - expect immediate exit on failures
+
