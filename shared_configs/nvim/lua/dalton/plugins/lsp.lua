@@ -22,10 +22,10 @@ return {
     event = "InsertEnter",
     dependencies = {
       {
-        "hrsh7th/cmp-buffer",           -- source for text in buffer
-        "hrsh7th/cmp-path",             -- source for file system paths
+        "hrsh7th/cmp-buffer", -- source for text in buffer
+        "hrsh7th/cmp-path", -- source for file system paths
         "rafamadriz/friendly-snippets", -- useful snippets
-        "onsails/lspkind-nvim",         -- vs-code like pictograms
+        "onsails/lspkind-nvim", -- vs-code like pictograms
         {
           "L3MON4D3/LuaSnip",
           -- follow latest release.
@@ -84,7 +84,7 @@ return {
           fields = { "abbr", "kind", "menu" },
           format = require("lspkind").cmp_format({
             mode = "symbol_text", -- show only symbol annotations
-            maxwidth = 50,        -- prevent the popup from showing more than provided characters
+            maxwidth = 50, -- prevent the popup from showing more than provided characters
             symbol_map = {
               -- Augment = "🤖",
               -- Copilot = "",
@@ -159,7 +159,7 @@ return {
           -- C#
           -- "csharp_ls",
           -- Python
-          -- "pyright",
+          "pyright",
           -- Ruby
           -- "ruby_lsp",
           -- Typescript
@@ -188,10 +188,10 @@ return {
 
           -- clangd config
           clangd = function()
-            require('lspconfig').clangd.setup({
+            require("lspconfig").clangd.setup({
               capabilities = {
-                offsetEncoding = { "utf-16" }
-              }
+                offsetEncoding = { "utf-16" },
+              },
             })
           end,
 
@@ -209,7 +209,7 @@ return {
           -- C#
           -- "coreclr", -- netcoredbg
           -- Python
-          -- "python", -- debugpy
+          "python", -- debugpy
         },
         handlers = {
           function(config)
