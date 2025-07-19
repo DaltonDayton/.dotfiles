@@ -42,14 +42,20 @@ This repository contains a modular dotfiles configuration system designed specif
 
 ## Current Modules
 
+### Currently Enabled
 - **Git & GitHub CLI**: Version control and collaboration tools
-- **Shell Environment**: Zsh with Zinit, Starship prompt, modern CLI tools
+- **Shell Environment**: Zsh with Zinit, Starship prompt, modern CLI tools (eza, bat, fzf, yazi)
 - **Terminal**: Kitty terminal emulator with optimized configuration
 - **Editor**: Neovim with LazyVim and extensive plugin ecosystem
-- **Development Tools**: asdf version manager, Python environment
+- **Development Tools**: asdf version manager for multiple languages
 - **Multiplexer**: tmux for session management
-- **File Management**: Modern replacements (eza, bat, fzf, yazi)
+- **Desktop Environment**: Hyprland Wayland compositor with waybar, cursors, and window management
 - **System Tools**: Logitech device management and utilities
+
+### Available Modules
+- **Python Environment**: Python development setup with package management
+- **Gaming Setup**: Steam, Lutris, Wine, Discord, and gaming utilities
+- **Cloud Sync**: Insync for Google Drive synchronization
 
 ## Usage
 
