@@ -54,13 +54,14 @@ modules/<module_name>/
 ### Core Functions
 
 Every module implements two main functions:
+
 - `install_<module_name>()` - Handles package installation
 - `configure_<module_name>()` - Manages configuration deployment
 
 ### Common Utilities (modules/common.sh)
 
 - `install_packages()` - Batch package installation with version support
-- `ensure_package_installed()` - Individual package installation with retry logic
+- `ensure_package_installed()` - Individual package installation with validation
 - `symlink_config()` - Safe symlink creation without destructive operations
 - `ensure_yay_installed()` - Automatic AUR helper installation
 
@@ -153,17 +154,20 @@ MODULES=(
 ### Adding New Modules
 
 1. **Copy Template**:
+
    ```bash
    cp -r modules/_example_module modules/your_module
    ```
 
 2. **Edit Module Script**:
+
    ```bash
    # Rename and edit the script
    mv modules/your_module/example_module.sh modules/your_module/your_module.sh
    ```
 
 3. **Implement Functions**:
+
    ```bash
    install_your_module() {
      local packages=(
@@ -231,7 +235,7 @@ declare -f configure_git
 - **Error Handling**: Scripts use `set -e` with error trapping
 - **Non-destructive Symlinks**: `symlink_config()` safely manages symlinks
 - **Package Validation**: `ensure_package_installed()` validates installation
-- **Retry Logic**: Package installation includes retry mechanisms
+- **Fast Failure**: Package installation fails immediately on issues for quick debugging
 - **Idempotent Operations**: Can be run multiple times safely
 
 ## Troubleshooting
@@ -299,3 +303,4 @@ ls -la ~/.config/
 - **Configuration Strategy**: Symlink-based for easy maintenance
 - **Module Independence**: Each module manages its own dependencies
 - **Version Control**: Git-based configuration management
+

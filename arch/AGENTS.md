@@ -17,7 +17,7 @@
 - Always quote variables: `"$variable"` and use arrays: `packages=("item1" "item2")`
 - Package installation: Use `install_packages "${packages[@]}"` with version pinning support
 - Configuration: Use `symlink_config "$source" "$dest"` for safe symlinking
-- Error handling: Include retry logic and validation via `ensure_package_installed()`
+- Error handling: Use `ensure_package_installed()` for validation and fast failure
 
 ### Lua (Neovim config)
 - Indent: 2 spaces (enforced by `.stylua.toml`)
