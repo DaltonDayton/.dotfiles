@@ -1,30 +1,20 @@
 #!/usr/bin/bash
 
-# Function to install the module
 function install_misc() {
-  # Define the list of packages required for this module
-  local packages=()
+  local packages=(
+    # Fonts
+    "noto-fonts-emoji"       # adds icons to browser
+    "ttf-cascadia-code-nerd" # good for terminals/editors
+    "inter-font"             # good for system
 
-  if [[ "$ENVIRONMENT" == "arch" || "$ENVIRONMENT" == "wsl" ]]; then
-    packages+=(
-      # Fonts
-      "noto-fonts-emoji" # adds icons to browser
-      "ttf-cascadia-code-nerd"
-      "inter-font"
-    )
-  fi
+    # Browser
+    # NOTE: set about:config -> gfx.canvas.accelerated = false
+    "firefox-developer-edition"
 
-  if [[ "$ENVIRONMENT" == "arch" ]]; then
-    packages+=(
-      # Browser
-      # NOTE: set about:config -> gfx.canvas.accelerated = false
-      "firefox-developer-edition"
-
-      # Notes
-      # TODO: Move to a module and git clone personal_notes?
-      # "obsidian"
-    )
-  fi
+    # Notes
+    # TODO: Move to a module and git clone personal_notes?
+    # "obsidian"
+  )
 
   # Install the packages using the install_packages function
   install_packages "${packages[@]}"

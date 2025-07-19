@@ -11,14 +11,6 @@ MODULES_DIR="$SCRIPT_DIR/modules"
 # shellcheck source=modules/common.sh
 source "$MODULES_DIR/common.sh"
 
-# Load environment variables
-if [ -f "$SCRIPT_DIR/.env" ]; then
-  source "$SCRIPT_DIR/.env"
-else
-  echo "Error: .env file not found!"
-  exit 1
-fi
-
 # Ensure 'yay' is installed
 ensure_yay_installed
 

@@ -10,9 +10,6 @@ This is a modular Arch Linux dotfiles system that manages system configuration t
 
 ### Installation and Setup
 ```bash
-# Initial setup (copy environment template)
-cp .env_default .env
-
 # Run full installation
 ./install.sh
 
@@ -43,10 +40,10 @@ shellcheck install.sh
 - `symlink_config()` - Safely creates symlinks without destructive rm -rf
 - `ensure_package_installed()` - Individual package installation with validation
 
-### Environment Configuration
-- `.env` file defines: ENVIRONMENT, CONTEXT, GIT_NAME, GIT_EMAIL
-- Git configuration automatically generated from environment variables
-- System designed for arch/personal context
+### Module Configuration
+- Git configuration automatically handled with hardcoded values
+- System optimized for Arch Linux personal use
+- All configuration deployed via symlinks to appropriate system locations
 
 ## Current Active Modules
 - `git` - Git and GitHub CLI setup
