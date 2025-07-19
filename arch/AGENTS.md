@@ -1,7 +1,7 @@
 # AGENTS.md - Dotfiles Repository Guide
 
 ## Build/Test Commands
-- **Install all modules**: `./install.sh` (requires `.env` file)
+- **Install all modules**: `./install.sh`
 - **Install specific module**: Edit `MODULES` array in `install.sh` and run
 - **Test single module**: `source modules/common.sh && source modules/<name>/<name>.sh && install_<name>`
 - **Validate shell scripts**: `shellcheck install.sh modules/*/*.sh`
@@ -25,6 +25,6 @@
 
 ### Module Architecture
 - Each module: `modules/<name>/<name>.sh` with `config/` subdirectory
-- Idempotent operations, environment-based config via `.env` file
+- Idempotent operations, automated configuration deployment
 - Source `modules/common.sh` for shared utilities (`install_packages`, `symlink_config`)
 - Test individual modules before adding to `MODULES` array in `install.sh`

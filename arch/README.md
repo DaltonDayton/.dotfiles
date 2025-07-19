@@ -25,17 +25,13 @@ This Arch Linux dotfiles system provides automated installation and configuratio
 - **Package Version Pinning**: Support for specific package versions
 - **AUR Integration**: Automatic yay installation and AUR package support
 - **Error Handling**: Robust error handling with immediate exit on failures
-- **Environment Awareness**: Context-specific configurations via .env file
+- **Automated Setup**: No manual configuration required
 
 ## Quick Start
 
 ```bash
 # Navigate to arch directory
 cd arch/
-
-# Configure environment
-cp .env_default .env
-# Edit .env with your details (GIT_NAME, GIT_EMAIL, etc.)
 
 # Run installation
 ./install.sh
@@ -122,21 +118,6 @@ Every module implements two main functions:
 - Git (for repository cloning)
 - Base development tools (`base-devel` package group)
 - Internet connection for package downloads
-
-### Environment Configuration
-
-Create and customize the `.env` file:
-
-```bash
-# Copy default template
-cp .env_default .env
-
-# Required variables
-ENVIRONMENT=arch
-CONTEXT=personal
-GIT_NAME="Your Full Name"
-GIT_EMAIL="your.email@example.com"
-```
 
 ### Installation Steps
 
@@ -280,14 +261,14 @@ yay -S <package_name>
 yay -Ss <package_name>
 ```
 
-#### Environment Configuration
+#### Configuration Issues
 
 ```bash
-# Verify .env file exists and is correct
-cat .env
+# Check module-specific configuration files
+ls -la modules/*/config/
 
-# Recreate from template if needed
-cp .env_default .env
+# Verify symlinks are properly created
+ls -la ~/.config/
 ```
 
 #### Module-Specific Issues
