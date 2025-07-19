@@ -4,33 +4,37 @@
 function install_python() {
   # Define the list of packages required for this module
   local packages=(
-    # "python"
-    # "python-poetry"
+    "uv"
   )
 
   # Install the packages using the install_packages function
   install_packages "${packages[@]}"
 
   # Proceed to configuration
-  # configure_python
+  configure_python
 }
 
 # Function to configure the module
-# function configure_python() {
-# These can be duplicated if multiple iterations need to be symlinked
-# CONFIG_SOURCE="$MODULES_DIR/python/config/files"
-# CONFIG_DEST="$HOME/.config/python"
-#
-# symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+function configure_python() {
+  # Install latest stable Python if not already installed
+  if ! uv python list | grep -q "python"; then
+    echo "Installing latest stable Python with uv..."
+    uv python install
+  else
+    echo "Python is already installed via uv."
+  fi
 
-# Additional configuration steps can be added here
-# For example, setting environment variables, running setup scripts, etc.
+  # Set up uv shell completion for zsh if shell module is enabled
+  if [ -f "$HOME/.zshrc" ]; then
+    if ! grep -q "uv generate-shell-completion zsh" "$HOME/.zshrc"; then
+      echo "Adding uv shell completion to .zshrc..."
+      echo 'eval "$(uv generate-shell-completion zsh)"' >> "$HOME/.zshrc"
+    else
+      echo "uv shell completion already configured."
+    fi
+  fi
 
-# Check if the virtualenvs.in-project is already set to true
-# if ! poetry config --list | grep -q 'virtualenvs.in-project = true'; then
-#   poetry config virtualenvs.in-project true
-#   echo "Virtualenvs are now set to be created in the project directory."
-# else
-#   echo "Virtualenvs are already set to be created in the project directory."
-# fi
-# }
+  echo "uv Python management is configured."
+  echo "Use 'uv python install <version>' to install specific Python versions."
+  echo "Use 'uv python pin <version>' in projects to set project Python version."
+}

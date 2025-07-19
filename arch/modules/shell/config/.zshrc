@@ -177,3 +177,4 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # opencode
 export PATH=/home/dalton/.opencode/bin:$PATH
+eval "$(uv generate-shell-completion zsh)"
