@@ -91,10 +91,28 @@ Every module implements two main functions:
 - **python** - Python development environment setup
 - **kitty** - GPU-accelerated terminal emulator
 
+### Desktop Environment
+
+- **hyprland** - Wayland compositor with complete desktop environment
+  - Comprehensive window management and workspace features
+  - Waybar status bar with custom styling
+  - Cursor themes (Bibata variants)
+  - Integration with hypridle, hyprlock, hyprshade
+  - NVIDIA support and optimizations
+
 ### System Tools
 
 - **misc** - Additional utilities and system enhancements
 - **solaar** - Logitech device management
+- **insync** - Google Drive synchronization client
+
+### Gaming
+
+- **gaming** - Complete gaming setup
+  - Steam and Lutris game managers
+  - Wine compatibility layer
+  - Discord for gaming communication
+  - Supporting gaming utilities and libraries
 
 ## Installation Process
 
@@ -140,12 +158,14 @@ MODULES=(
   "shell"
   "tmux"
   "asdf"
-  "python"
   "neovim"
   "misc"
   "kitty"
   "solaar"
-  # "hyprland"  # Commented out modules are disabled
+  "hyprland"
+  # "python"    # Available but disabled
+  # "gaming"    # Available but disabled
+  # "insync"    # Available but disabled
 )
 ```
 
