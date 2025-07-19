@@ -48,6 +48,7 @@ function install_hyprland() {
     # Themes and appearance
     "catppuccin-gtk-theme-mocha" # GTK theme
     "nwg-look"                   # Run nwg-look to configure themes
+    "hyprcursor"
 
     # ===== Start Review =====
     # "swayidle"
@@ -78,4 +79,12 @@ function configure_hyprland() {
 
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
+
+  # Clone cursor theme if not already present
+  if [ ! -d "$HOME/.local/share/icons/Bibata-Modern-Ice" ]; then
+    git clone https://github.com/LOSEARDES77/Bibata-Cursor-hyprcursor ~/.local/share/icons/Bibata-Modern-Ice
+  else
+    echo "Bibata-Modern-Ice cursor theme is already installed."
+  fi
+
 }
