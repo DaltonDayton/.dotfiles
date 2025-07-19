@@ -80,11 +80,25 @@ function configure_hyprland() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 
-  # Clone cursor theme if not already present
-  if [ ! -d "$HOME/.local/share/icons/Bibata-Modern-Ice" ]; then
-    git clone https://github.com/LOSEARDES77/Bibata-Cursor-hyprcursor ~/.local/share/icons/Bibata-Modern-Ice
-  else
-    echo "Bibata-Modern-Ice cursor theme is already installed."
-  fi
+  # Copy Bibata cursor themes from local dotfiles
+  local bibata_source="$MODULES_DIR/hyprland/Bibata-Cursors"
+  local icons_dest="$HOME/.local/share/icons"
+  
+  # Ensure icons directory exists
+  mkdir -p "$icons_dest"
+
+  # Copy each Bibata theme
+  for theme in "Bibata-Modern-Amber" "Bibata-Modern-Classic" "Bibata-Modern-Ice"; do
+    if [ -d "$bibata_source/$theme" ]; then
+      if [ ! -d "$icons_dest/$theme" ]; then
+        echo "Installing $theme cursor theme..."
+        cp -r "$bibata_source/$theme" "$icons_dest/"
+      else
+        echo "$theme cursor theme is already installed."
+      fi
+    else
+      echo "Warning: $theme not found in $bibata_source"
+    fi
+  done
 
 }
