@@ -2,11 +2,6 @@
 
 function install_misc() {
   local packages=(
-    # Fonts
-    "noto-fonts-emoji"       # adds icons to browser
-    "ttf-cascadia-code-nerd" # good for terminals/editors
-    "inter-font"             # good for system
-
     # Browser
     # NOTE: set about:config -> gfx.canvas.accelerated = false
     "firefox-developer-edition"
