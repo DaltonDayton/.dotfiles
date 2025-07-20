@@ -32,4 +32,10 @@ function configure_obsidian() {
   else
     echo "Work vault directory already exists: $work_vault"
   fi
+
+  # Personal Notes setup
+  # Remove the empty Personal directory. Log in to sync and set the workspace to ~/vaults.
+  # Obsidian will create /Personal in vaults.
+  # Clone personal_notes from github. Copy the .git directory to ~/vaults/Personal/
+  # Remove personal_notes
 }
