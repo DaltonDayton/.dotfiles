@@ -38,6 +38,7 @@ function install_hyprland() {
     "brightnessctl" # Brightness control
     "pamixer"       # Audio control
     "pavucontrol"   # Audio control GUI
+    "btop"          # Enhanced system monitor
 
     # NVIDIA specific packages
     "linux-headers"
