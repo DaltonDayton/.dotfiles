@@ -5,10 +5,6 @@ function install_misc() {
     # Browser
     # NOTE: set about:config -> gfx.canvas.accelerated = false
     "firefox-developer-edition"
-
-    # Notes
-    # TODO: Move to a module and git clone personal_notes?
-    # "obsidian"
   )
 
   # Install the packages using the install_packages function

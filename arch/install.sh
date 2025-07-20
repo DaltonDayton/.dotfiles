@@ -63,6 +63,7 @@ MODULES=(
   # "kitty"
   # "solaar"
   # "fonts"
+  # "obsidian"
   # "hyprland"
 )
 
