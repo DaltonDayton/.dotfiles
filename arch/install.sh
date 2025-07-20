@@ -62,7 +62,7 @@ MODULES=(
   # "misc"
   # "kitty"
   # "solaar"
-  #
+  # "fonts"
   # "hyprland"
 )
 
