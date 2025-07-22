@@ -1,6 +1,10 @@
 [include]
 	path = ~/.gitconfig_default_user
 
+# Override for dotfiles directory only
+[includeIf "gitdir:~/.dotfiles/"]
+	path = ~/.gitconfig-personal
+
 [init]
 	defaultBranch = main
 [core]
