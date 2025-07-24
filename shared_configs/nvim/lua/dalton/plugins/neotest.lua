@@ -1,6 +1,7 @@
 return {
   "nvim-neotest/neotest",
   dependencies = {
+    "nvim-telescope/telescope.nvim",
     "nvim-neotest/nvim-nio",
     "nvim-neotest/neotest-vim-test",
     "vim-test/vim-test",
@@ -8,6 +9,7 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-python",
+    "thenbe/neotest-playwright",
   },
   config = function()
     require("neotest").setup({
@@ -38,8 +40,15 @@ return {
           pytest_discover_instances = true,
         }),
 
+        require("neotest-playwright").adapter({
+          options = {
+            persist_project_selection = true,
+            enable_dynamic_test_discovery = true,
+          },
+        }),
+
         -- neotest-vim-test for test runners not available by default neotest
-        require("neotest-vim-test")({ ignore_filetypes = { "python", "lua" } }),
+        require("neotest-vim-test")({ ignore_filetypes = { "python", "lua", "typescript", "javascript" } }),
         -- Or to only allow specified file types
         -- require("neotest-vim-test")({ allow_file_types = { "csharp" } }),
       },
