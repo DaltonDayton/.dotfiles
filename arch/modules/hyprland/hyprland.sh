@@ -50,6 +50,7 @@ function install_hyprland() {
     "catppuccin-gtk-theme-mocha" # GTK theme
     "nwg-look"                   # Run nwg-look to configure themes
     "hyprcursor"
+    "bibata-cursor-theme-bin"
 
     # ===== Start Review =====
     # "swayidle"
@@ -86,25 +87,26 @@ function configure_hyprland() {
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
 
-  # Copy Bibata cursor themes from local dotfiles
-  local bibata_source="$MODULES_DIR/hyprland/Bibata-Cursors"
-  local icons_dest="$HOME/.local/share/icons"
-
-  # Ensure icons directory exists
-  mkdir -p "$icons_dest"
-
-  # Copy each Bibata theme
-  for theme in "Bibata-Modern-Amber" "Bibata-Modern-Classic" "Bibata-Modern-Ice"; do
-    if [ -d "$bibata_source/$theme" ]; then
-      if [ ! -d "$icons_dest/$theme" ]; then
-        echo "Installing $theme cursor theme..."
-        cp -r "$bibata_source/$theme" "$icons_dest/"
-      else
-        echo "$theme cursor theme is already installed."
-      fi
-    else
-      echo "Warning: $theme not found in $bibata_source"
-    fi
-  done
+  # May not be needed with hyprland.conf update and bibata-cursor-theme-bin
+  # # Copy Bibata cursor themes from local dotfiles
+  # local bibata_source="$MODULES_DIR/hyprland/Bibata-Cursors"
+  # local icons_dest="$HOME/.local/share/icons"
+  #
+  # # Ensure icons directory exists
+  # mkdir -p "$icons_dest"
+  #
+  # # Copy each Bibata theme
+  # for theme in "Bibata-Modern-Amber" "Bibata-Modern-Classic" "Bibata-Modern-Ice"; do
+  #   if [ -d "$bibata_source/$theme" ]; then
+  #     if [ ! -d "$icons_dest/$theme" ]; then
+  #       echo "Installing $theme cursor theme..."
+  #       cp -r "$bibata_source/$theme" "$icons_dest/"
+  #     else
+  #       echo "$theme cursor theme is already installed."
+  #     fi
+  #   else
+  #     echo "Warning: $theme not found in $bibata_source"
+  #   fi
+  # done
 
 }
