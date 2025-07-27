@@ -2,7 +2,7 @@
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["network", "pulseaudio", "battery", "clock"],
+  "modules-right": ["bluetooth", "network", "pulseaudio", "battery", "clock"],
   "clock": {
     "format": "<span foreground='#f5c2e7'>   </span>{:%a %d %H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
@@ -36,5 +36,16 @@
           "default": ["", "", " "]
       },
       "on-click": "pavucontrol"
+  },
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲", 
+    "format-connected": "󰂱 {device_alias}",
+    "format-discoverable": "󰂰",
+    "tooltip-format": "Controller: {controller_alias}\nAddress: {controller_address}\nPowered: {controller_powered}",
+    "tooltip-format-connected": "Controller: {controller_alias}\nConnected devices:\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "• {device_alias} ({device_address})",
+    "on-click": "blueman-manager"
   }
 }
