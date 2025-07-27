@@ -40,6 +40,11 @@ function install_hyprland() {
     "pavucontrol"   # Audio control GUI
     "btop"          # Enhanced system monitor
 
+    # Bluetooth utilities
+    "bluez"         # Bluetooth protocol stack
+    "bluez-utils"   # Bluetooth utilities
+    "blueman"       # Bluetooth manager GUI
+
     # NVIDIA specific packages
     "linux-headers"
     "nvidia-dkms"
@@ -83,6 +88,17 @@ function configure_hyprland() {
   CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
   CONFIG_DEST="$HOME/.config/wallpapers"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+
+  # Enable and start bluetooth service if not already enabled/running
+  if ! systemctl is-enabled bluetooth.service >/dev/null 2>&1; then
+    echo "Enabling bluetooth service..."
+    sudo systemctl enable bluetooth.service
+  fi
+  
+  if ! systemctl is-active bluetooth.service >/dev/null 2>&1; then
+    echo "Starting bluetooth service..."
+    sudo systemctl start bluetooth.service
+  fi
 
   # Additional configuration steps can be added here
   # For example, setting environment variables, running setup scripts, etc.
