@@ -44,6 +44,7 @@ return {
           options = {
             persist_project_selection = true,
             enable_dynamic_test_discovery = true,
+            preset = "none", -- Can be "none", "headed", or "debug"
           },
         }),
 
@@ -65,6 +66,28 @@ return {
     { "<leader>nO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
     { "<leader>nS", function() require("neotest").run.stop() end, desc = "Stop" },
     { "<leader>nw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Toggle Watch" },
-    { "<leader>nd", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Run with DAP" },
+    { "<leader>nd", function() 
+        -- Check if current file is a playwright test
+        local file_path = vim.fn.expand("%:p")
+        if string.match(file_path, "%.spec%.") or string.match(file_path, "%.test%.") then
+          -- For playwright tests, run normally (no DAP support)
+          require("neotest").run.run()
+        else
+          -- For other tests (like Python), use DAP
+          require("neotest").run.run({strategy = "dap"})
+        end
+      end, desc = "Run with DAP (or normal for Playwright)" },
+    { "<leader>npd", function() 
+        -- Run with debug flags for playwright
+        require("neotest").run.run({
+          extra_args = {"--debug"}
+        })
+      end, desc = "Run Playwright with Debug" },
+    { "<leader>nph", function()
+        -- Run with headed mode for playwright  
+        require("neotest").run.run({
+          extra_args = {"--headed", "--retries", "0", "--timeout", "0", "--workers", "1", "--max-failures", "0"}
+        })
+      end, desc = "Run Playwright Headed" },
   },
 }

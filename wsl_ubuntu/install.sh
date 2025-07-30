@@ -46,13 +46,6 @@ source "$MODULES_DIR/common.sh"
 parse_arguments "$@"
 initialize_logging
 
-# Load environment variables
-if [ -f "$SCRIPT_DIR/.env" ]; then
-  log_info "Loading environment variables from .env"
-  source "$SCRIPT_DIR/.env"
-else
-  log_warn ".env file not found - using defaults"
-fi
 
 # Ensure apt is updated
 ensure_apt_updated
