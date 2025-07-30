@@ -157,7 +157,7 @@ return {
         ensure_installed = {
           "lua_ls",
           -- C#
-          -- "csharp_ls",
+          "csharp_ls",
           -- Python
           "pyright",
           -- Ruby
@@ -207,9 +207,11 @@ return {
           -- C
           -- "codelldb",
           -- C#
-          -- "coreclr", -- netcoredbg
+          "coreclr", -- netcoredbg
           -- Python
           "python", -- debugpy
+          -- Node.js/JavaScript
+          "node2", -- node-debug2-adapter
         },
         handlers = {
           function(config)

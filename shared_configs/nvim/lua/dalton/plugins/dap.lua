@@ -51,6 +51,73 @@ return {
       dap.listeners.before.event_exited.dapui_config = function()
         ui.close()
       end
+      --
+      -- Node.js/Playwright debugging
+      dap.adapters.node2 = {
+        type = "executable",
+        command = "node",
+        args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+      }
+
+      dap.configurations.javascript = {
+        {
+          name = "Launch",
+          type = "node2",
+          request = "launch",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+        },
+        {
+          name = "Playwright Debug",
+          type = "node2",
+          request = "launch",
+          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+          args = { "test", "--debug", "${relativeFile}" },
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+          env = {
+            PWDEBUG = "1",
+          },
+        },
+        {
+          name = "Playwright Debug (Headed)",
+          type = "node2",
+          request = "launch",
+          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+          args = { "test", "--debug", "--headed", "${relativeFile}" },
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+          env = {
+            PWDEBUG = "1",
+          },
+        },
+        {
+          name = "Playwright Debug (Current Test)",
+          type = "node2",
+          request = "launch",
+          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+          args = function()
+            local line = vim.fn.line(".")
+            return { "test", "--debug", "${relativeFile}:" .. line }
+          end,
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+          env = {
+            PWDEBUG = "1",
+          },
+        },
+      }
+
+      dap.configurations.typescript = dap.configurations.javascript
     end,
   },
 }
