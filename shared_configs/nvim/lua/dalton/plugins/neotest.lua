@@ -70,13 +70,15 @@ return {
         -- Check if current file is a playwright test
         local file_path = vim.fn.expand("%:p")
         if string.match(file_path, "%.spec%.") or string.match(file_path, "%.test%.") then
-          -- For playwright tests, run normally (no DAP support)
-          require("neotest").run.run()
+          -- For playwright tests, use built-in debug mode
+          require("neotest").run.run({
+            extra_args = {"--debug"}
+          })
         else
           -- For other tests (like Python), use DAP
           require("neotest").run.run({strategy = "dap"})
         end
-      end, desc = "Run with DAP (or normal for Playwright)" },
+      end, desc = "Run with Debug" },
     { "<leader>npd", function() 
         -- Run with debug flags for playwright
         require("neotest").run.run({
