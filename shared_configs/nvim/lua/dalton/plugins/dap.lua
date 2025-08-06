@@ -53,64 +53,60 @@ return {
       end
       --
       -- Node.js/Playwright debugging
-      dap.adapters.node2 = {
-        type = "executable",
-        command = "node",
-        args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
+        }
       }
 
       dap.configurations.javascript = {
         {
           name = "Launch",
-          type = "node2",
+          type = "pwa-node",
           request = "launch",
           program = "${file}",
-          cwd = vim.fn.getcwd(),
+          cwd = "${workspaceFolder}",
           sourceMaps = true,
-          protocol = "inspector",
-          console = "integratedTerminal",
         },
         {
           name = "Playwright Debug",
-          type = "node2",
+          type = "pwa-node",
           request = "launch",
           program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
           args = { "test", "--debug", "${relativeFile}" },
-          cwd = vim.fn.getcwd(),
+          cwd = "${workspaceFolder}",
           sourceMaps = true,
-          protocol = "inspector",
-          console = "integratedTerminal",
           env = {
             PWDEBUG = "1",
           },
         },
         {
           name = "Playwright Debug (Headed)",
-          type = "node2",
+          type = "pwa-node",
           request = "launch",
           program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
           args = { "test", "--debug", "--headed", "${relativeFile}" },
-          cwd = vim.fn.getcwd(),
+          cwd = "${workspaceFolder}",
           sourceMaps = true,
-          protocol = "inspector",
-          console = "integratedTerminal",
           env = {
             PWDEBUG = "1",
           },
         },
         {
           name = "Playwright Debug (Current Test)",
-          type = "node2",
+          type = "pwa-node",
           request = "launch",
           program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
           args = function()
             local line = vim.fn.line(".")
             return { "test", "--debug", "${relativeFile}:" .. line }
           end,
-          cwd = vim.fn.getcwd(),
+          cwd = "${workspaceFolder}",
           sourceMaps = true,
-          protocol = "inspector",
-          console = "integratedTerminal",
           env = {
             PWDEBUG = "1",
           },

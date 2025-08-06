@@ -211,7 +211,7 @@ return {
           -- Python
           "python", -- debugpy
           -- Node.js/JavaScript
-          "node2", -- node-debug2-adapter
+          "js",
         },
         handlers = {
           function(config)
