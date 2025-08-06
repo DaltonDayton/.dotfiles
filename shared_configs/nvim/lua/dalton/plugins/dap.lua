@@ -54,13 +54,9 @@ return {
       --
       -- Node.js/Playwright debugging
       dap.adapters["pwa-node"] = {
-        type = "server",
-        host = "localhost",
-        port = "${port}",
-        executable = {
-          command = "node",
-          args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
-        }
+        type = "executable",
+        command = "node",
+        args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js" },
       }
 
       dap.configurations.javascript = {
