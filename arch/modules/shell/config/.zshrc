@@ -3,6 +3,7 @@ export PATH="$HOME/.asdf/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/fzf/bin:$PATH"
+export PATH="/opt/cuda/bin:$PATH"
 
 export EDITOR=nvim
 
@@ -174,6 +175,7 @@ fd()
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(atuin init zsh)"
 
 # opencode
 export PATH=/home/dalton/.opencode/bin:$PATH

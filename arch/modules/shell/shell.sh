@@ -12,6 +12,7 @@ function install_shell() {
     "less"
     "fzf"
     "yazi"
+    "atuin"
   )
 
   # Install the packages using the install_packages function
