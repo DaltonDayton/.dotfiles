@@ -164,6 +164,8 @@ return {
           -- "ruby_lsp",
           -- Typescript
           "ts_ls",
+          -- ESLint
+          "eslint",
           -- Emmet (html)
           "emmet_language_server",
         },
