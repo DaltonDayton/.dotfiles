@@ -85,6 +85,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'bat.exe {-l} --color=always'
 
 # Aliases
+alias  cd='z' # cd to zoxide
 alias  c='clear' # clear terminal
 alias  l='eza -lh  --icons=auto' # long list
 alias ls='eza -1   --icons=auto' # short list
@@ -174,27 +175,8 @@ fd()
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
 eval "$(atuin init zsh)"
-
-# Zoxide integration
-if command -v zoxide &>/dev/null && [[ "$CLAUDECODE" != "1" ]]; then
-  eval "$(zoxide init --cmd cd zsh)"
-
-  # Ensure __zoxide_z function exists
-  if ! type __zoxide_z &>/dev/null; then
-    function __zoxide_z() {
-      if [[ "$#" -eq 0 ]]; then
-        builtin cd ~
-      elif [[ "$#" -eq 1 ]] && { [[ -d "$1" ]] || [[ "$1" = '-' ]] || [[ "$1" =~ ^[-+][0-9]$ ]]; }; then
-        builtin cd "$1"
-      else
-        local result
-        result="$(command zoxide query --exclude "$(pwd)" -- "$@")" && builtin cd "${result}"
-      fi
-    }
-  fi
-fi
+eval "$(zoxide init zsh)"
 
 # opencode
 export PATH=/home/dalton/.opencode/bin:$PATH
