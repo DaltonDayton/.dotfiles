@@ -10,6 +10,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-python",
     "thenbe/neotest-playwright",
+    "nsidorenco/neotest-vstest",
   },
   config = function()
     require("neotest").setup({
@@ -46,6 +47,21 @@ return {
             enable_dynamic_test_discovery = true,
             preset = "none", -- Can be "none", "headed", or "debug"
           },
+        }),
+
+        require("neotest-vstest")({
+          -- Path to dotnet sdk path.
+          -- Used in cases where the sdk path cannot be auto discovered.
+          -- sdk_path = "/usr/local/dotnet/sdk/9.0.101/",
+          -- table is passed directly to DAP when debugging tests.
+          dap_settings = {
+            type = "coreclr",
+          },
+          -- If multiple solutions exists the adapter will ask you to choose one.
+          -- If you have a different heuristic for choosing a solution you can provide a function here.
+          solution_selector = function(solutions)
+            return nil -- return the solution you want to use or nil to let the adapter choose.
+          end,
         }),
 
         -- neotest-vim-test for test runners not available by default neotest
