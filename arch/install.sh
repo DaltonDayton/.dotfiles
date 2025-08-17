@@ -65,6 +65,7 @@ MODULES=(
   # "fonts"
   # "obsidian"
   # "hyprland"
+  # "gaming"
 )
 
 # Process all modules

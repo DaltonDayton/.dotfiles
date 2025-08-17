@@ -5,19 +5,21 @@ function install_gaming() {
   # Define the list of packages required for this module
   local packages=(
     # Core
+    "ttf-ms-win11-auto"
     "wine"
     "winetricks"
 
     # Launcher
     "lutris"
+    "bottles"
     "steam"
 
     # Communication
-    "discord-canary"
+    "discord"
 
     # WoW
-    "curseforge"
-    "weakauras-companion-bin"
+    # "curseforge"
+    # "weakauras-companion-bin"
   )
 
   # Install the packages using the install_packages function
