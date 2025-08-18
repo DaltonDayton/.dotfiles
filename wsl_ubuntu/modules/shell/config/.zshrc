@@ -175,6 +175,7 @@ fd()
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
+eval "$(atuin init zsh)"
 # eval "$(zoxide init --cmd cd zsh)"
 
 if command -v zoxide &>/dev/null && [[ "$CLAUDECODE" != "1" ]]; then
