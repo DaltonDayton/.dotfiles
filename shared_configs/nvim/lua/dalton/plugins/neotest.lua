@@ -9,8 +9,8 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-python",
-    "thenbe/neotest-playwright",
     "nsidorenco/neotest-vstest",
+    "thenbe/neotest-playwright",
   },
   config = function()
     require("neotest").setup({
@@ -45,7 +45,57 @@ return {
           options = {
             persist_project_selection = true,
             enable_dynamic_test_discovery = true,
-            preset = "none", -- Can be "none", "headed", or "debug"
+            preset = "none", -- "none" | "headed" | "debug"
+
+            get_playwright_binary = function()
+              return vim.fn.getcwd() .. "/node_modules/.bin/playwright"
+            end,
+
+            get_playwright_config = function()
+              return vim.fn.getcwd() .. "/playwright.config.ts"
+            end,
+
+            -- Controls the location of the spawned test process. Has no affect on
+            -- neither the location of the binary nor the location of the playwright
+            -- config file.
+
+            get_cwd = function()
+              return vim.fn.getcwd()
+            end,
+
+            env = {},
+
+            -- Extra args to always passed to playwright. These are merged with any
+            -- extra_args passed to neotest's run command.
+            extra_args = {},
+
+            -- Filter directories when searching for test files. Useful in large
+            -- projects (see performance notes).
+            filter_dir = function(name, rel_path, root)
+              return name ~= "node_modules"
+            end,
+
+            -- Custom criteria for a file path to be a test file. Useful in large
+            -- projects or projects with peculiar tests folder structure. IMPORTANT:
+            -- When setting this option, make sure to be as strict as possible. For
+            -- example, the pattern should not return true for jpg files that may end up
+            -- in your test directory.
+            is_test_file = function(file_path)
+              -- Match .spec.ts and .test.ts files (which covers your test files)
+              local result = file_path:find("%.test%.[tj]sx?$") ~= nil or file_path:find("%.spec%.[tj]sx?$") ~= nil
+              return result
+            end,
+
+            experimental = {
+              telescope = {
+                -- If true, a telescope picker will be used for `:NeotestPlaywrightProject`.
+                -- Otherwise, `vim.ui.select` is used.
+                -- In normal mode, `<Tab>` toggles the project under the cursor.
+                -- `<CR>` (enter key) applies the selection.
+                enabled = false,
+                opts = {},
+              },
+            },
           },
         }),
 
@@ -78,10 +128,11 @@ return {
     { "<leader>nr", function() require("neotest").run.run() end, desc = "Run Nearest" },
     { "<leader>nl", function() require("neotest").run.run_last() end, desc = "Run Last" },
     { "<leader>ns", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
-    { "<leader>no", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
+    { "<leader>no", function() require("neotest").output.open({ enter = true, auto_close = false }) end, desc = "Show Output" },
     { "<leader>nO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
     { "<leader>nS", function() require("neotest").run.stop() end, desc = "Stop" },
     { "<leader>nw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Toggle Watch" },
+    { "<leader>nR", function() vim.cmd("NeotestPlaywrightRefresh") end, desc = "Refresh Playwright" },
     { "<leader>nd", function() 
         -- Check if current file is a playwright test
         local file_path = vim.fn.expand("%:p")
@@ -95,7 +146,7 @@ return {
           require("neotest").run.run({strategy = "dap"})
         end
       end, desc = "Run with Debug" },
-    { "<leader>npd", function() 
+    { "<leader>npd", function()
         -- Run with debug flags for playwright
         require("neotest").run.run({
           extra_args = {"--debug"}
