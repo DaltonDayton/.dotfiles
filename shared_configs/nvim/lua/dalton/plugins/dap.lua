@@ -51,13 +51,6 @@ return {
       dap.listeners.before.event_exited.dapui_config = function()
         ui.close()
       end
-      --
-      -- Node.js/Playwright debugging
-      dap.adapters["pwa-node"] = {
-        type = "executable",
-        command = "node",
-        args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js" },
-      }
 
       dap.configurations.javascript = {
         {
@@ -67,45 +60,6 @@ return {
           program = "${file}",
           cwd = "${workspaceFolder}",
           sourceMaps = true,
-        },
-        {
-          name = "Playwright Debug",
-          type = "pwa-node",
-          request = "launch",
-          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-          args = { "test", "--debug", "${relativeFile}" },
-          cwd = "${workspaceFolder}",
-          sourceMaps = true,
-          env = {
-            PWDEBUG = "1",
-          },
-        },
-        {
-          name = "Playwright Debug (Headed)",
-          type = "pwa-node",
-          request = "launch",
-          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-          args = { "test", "--debug", "--headed", "${relativeFile}" },
-          cwd = "${workspaceFolder}",
-          sourceMaps = true,
-          env = {
-            PWDEBUG = "1",
-          },
-        },
-        {
-          name = "Playwright Debug (Current Test)",
-          type = "pwa-node",
-          request = "launch",
-          program = "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-          args = function()
-            local line = vim.fn.line(".")
-            return { "test", "--debug", "${relativeFile}:" .. line }
-          end,
-          cwd = "${workspaceFolder}",
-          sourceMaps = true,
-          env = {
-            PWDEBUG = "1",
-          },
         },
       }
 
