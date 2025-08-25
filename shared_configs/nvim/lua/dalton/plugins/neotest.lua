@@ -13,7 +13,16 @@ return {
     "thenbe/neotest-playwright",
   },
   config = function()
+    -- Override subprocess functionality to avoid module loading issues with playwright
+    local lib = require("neotest.lib")
+    lib.subprocess.enabled = function()
+      return false -- Disable subprocess to avoid playwright adapter issues
+    end
+
     require("neotest").setup({
+      discovery = {
+        concurrent = 1, -- Use single-threaded parsing to avoid subprocess issues
+      },
       adapters = {
         require("neotest-python")({
           -- Extra arguments for nvim-dap configuration
