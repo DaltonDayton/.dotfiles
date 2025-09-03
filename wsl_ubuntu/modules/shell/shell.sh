@@ -55,6 +55,26 @@ function install_yazi() {
   echo "yazi installed successfully."
 }
 
+# Function to install atuin via cargo
+function install_atuin() {
+  # Ensure rust is installed first
+  install_rust
+
+  # Source cargo environment to ensure cargo is available
+  if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+  fi
+
+  if command -v atuin &>/dev/null; then
+    echo "atuin is already installed."
+    return 0
+  fi
+
+  echo "Installing atuin via cargo..."
+  cargo install atuin
+  echo "atuin installed successfully."
+}
+
 # Function to install fzf from source
 function install_fzf() {
   if command -v fzf &>/dev/null && [ -d "$HOME/.fzf" ]; then
@@ -104,6 +124,7 @@ function install_shell() {
   install_github_deb "ajeetdsouza/zoxide" "zoxide" "zoxide.*amd64.deb"
   install_fzf
   install_yazi
+  install_atuin
 
   # Proceed to configuration
   configure_shell
