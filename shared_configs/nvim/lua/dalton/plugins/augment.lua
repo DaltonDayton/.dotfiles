@@ -3,7 +3,6 @@ return {
   event = "InsertEnter",
   config = function()
     -- vim.g.augment_workspace_folders = { "/home/dalton/.dotfiles/" }
-    -- vim.g.augment_workspace_folders = { "/home/dalton/repos" }
     local root_dir = vim.lsp.buf.list_workspace_folders()[1] or vim.fn.getcwd()
     vim.g.augment_workspace_folders = { root_dir }
 
