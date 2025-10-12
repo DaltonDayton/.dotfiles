@@ -85,7 +85,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'bat.exe {-l} --color=always'
 
 # Aliases
-alias  cd='z' # cd to zoxide
+# alias  cd='z' # cd to zoxide
 alias  c='clear' # clear terminal
 alias  l='eza -lh  --icons=auto' # long list
 alias ls='eza -1   --icons=auto' # short list
@@ -101,6 +101,8 @@ alias poetryactivate='source "$(poetry env info --path)/bin/activate"'
 alias pa='poetryactivate && export PYTHONPATH=$(pwd)'
 alias pd='deactivate'
 alias lg='lazygit'
+
+alias nvimtest='NVIM_APPNAME="nvimtest" nvim'
 
 # Function to record screen with a specified filename
 record_screen() {
@@ -176,7 +178,10 @@ fd()
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh)"
-eval "$(zoxide init zsh)"
+# eval "$(zoxide init zsh)"
+if [[ "$CLAUDECODE" != "1" ]]; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
 
 # opencode
 export PATH=/home/dalton/.opencode/bin:$PATH
