@@ -1,5 +1,5 @@
 [include]
-	path = ~/.gitconfig_default_user
+	path = ~/.gitconfig-default
 
 # Override for dotfiles directory only
 [includeIf "gitdir:~/.dotfiles/"]
