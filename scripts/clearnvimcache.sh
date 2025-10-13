@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
-rm -rf ~/.local/share/nvim/
-rm -rf ~/.local/state/nvim/
-rm -rf ~/.cache/nvim/
+APP=${1:-nvim}
+
+rm -rf ~/.local/share/$APP/
+rm -rf ~/.local/state/$APP/
+rm -rf ~/.cache/$APP/
