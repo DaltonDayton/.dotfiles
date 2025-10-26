@@ -34,6 +34,8 @@ return {
       { "<leader>h_", hidden = true },
       { "<leader>m", group = "[M]ake Pretty" },
       { "<leader>m_", hidden = true },
+      { "<leader>n", group = "[N]eotest" },
+      { "<leader>n_", hidden = true },
       { "<leader>s", group = "[S]earch" },
       { "<leader>s_", hidden = true },
       { "<leader>t", group = "[T]oggle" },
