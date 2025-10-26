@@ -23,7 +23,7 @@ vim.keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decr
 -- vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Buffer Delete" })
+-- vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Buffer Delete" })
 
 -- Core
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move text down" })

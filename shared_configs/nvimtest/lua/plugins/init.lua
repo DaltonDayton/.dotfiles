@@ -1,6 +1,5 @@
 return {
   "christoomey/vim-tmux-navigator",
-  "folke/which-key.nvim",
   "tpope/vim-sleuth",
 
   { "nvim-tree/nvim-web-devicons", opts = {} },
