@@ -17,10 +17,6 @@ return {
       output = {
         open_on_run = true,
       },
-      output_panel = {
-        enabled = true,
-        open = "botright split | resize 15",
-      },
       floating = {
         border = "rounded",
         max_height = 0.8,
