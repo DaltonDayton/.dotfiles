@@ -27,6 +27,7 @@ vim.opt.cursorline = true -- Highlight the current line
 vim.opt.termguicolors = true -- Enable 24-bit RGB color in the TUI
 vim.opt.background = "dark" -- Use dark background
 vim.opt.signcolumn = "yes" -- Always show the sign column
+vim.opt.cmdheight = 0 -- Auto-hide command line when not in use
 
 -- Backspace behavior
 vim.opt.backspace = "indent,eol,start" -- Allow backspace on indent, end of line, or insert mode start position
