@@ -48,8 +48,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- opts.desc = "Show buffer diagnostics"
     -- keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
     --
-    -- opts.desc = "Show line diagnostics"
-    -- keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+    opts.desc = "Show line diagnostics"
+    keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
     --
     -- opts.desc = "Go to previous diagnostic"
     -- keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts) -- jump to previous diagnostic in buffer
@@ -78,4 +78,19 @@ vim.diagnostic.config({
       [severity.INFO] = " ",
     },
   },
+  float = { border = "rounded" },
 })
+
+-- Rounded borders for LSP floating windows
+-- This sets the default for all LSP floating windows including hover
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "rounded",
+})
+
+-- Also set via lspconfig for compatibility
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or "rounded"
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end

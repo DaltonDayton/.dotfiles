@@ -61,3 +61,23 @@ vim.api.nvim_create_user_command("FormatToggle", function()
 end, {
   desc = "Toggle autoformat-on-save using existing enable/disable commands",
 })
+-- Auto-close some filetypes with 'q'
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "qf", "help", "man", "lspinfo", "checkhealth" },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = event.buf, silent = true })
+  end,
+  desc = "Close certain filetypes with q",
+})
+
+-- Restore cursor position
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then
+      vim.api.nvim_win_set_cursor(0, mark)
+    end
+  end,
+  desc = "Restore cursor position when reopening files",
+})
