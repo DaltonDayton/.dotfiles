@@ -1,7 +1,12 @@
 return {
   "christoomey/vim-tmux-navigator",
   "folke/which-key.nvim",
+  "tpope/vim-sleuth",
+
+  { "nvim-tree/nvim-web-devicons", opts = {} },
+  { "nvim-mini/mini.icons", version = false },
   { "folke/neoconf.nvim", cmd = "Neoconf" },
+
   {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
