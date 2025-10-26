@@ -2,7 +2,6 @@ return {
   "christoomey/vim-tmux-navigator",
   "tpope/vim-sleuth",
 
-  { "nvim-tree/nvim-web-devicons", opts = {} },
   { "folke/neoconf.nvim", cmd = "Neoconf" },
 
   {
