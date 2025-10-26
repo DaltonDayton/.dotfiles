@@ -1,3 +1,20 @@
+-- ============================================================================
+-- Global LSP Configuration
+-- ============================================================================
+-- This file handles LSP settings that apply to ALL servers:
+-- - Keymaps (via LspAttach autocmd)
+-- - Diagnostic configuration (icons, signs, float behavior)
+-- - Handlers (hover, signature help)
+-- - UI customization (borders, etc.)
+--
+-- This runs during init.lua, before plugins load.
+--
+-- DO NOT put server-specific configs here. Those go in:
+-- - lua/plugins/lsp/mason.lua (auto-install & auto-config with defaults)
+-- - lua/plugins/lsp/lsp.lua (manually enable servers not auto-configured)
+-- - after/lsp/{server_name}.lua (custom per-server config)
+-- ============================================================================
+
 local keymap = vim.keymap -- for conciseness
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -35,14 +52,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
     opts.desc = "Go to previous diagnostic"
-    keymap.set("n", "[d", function()
-      vim.diagnostic.jump({ count = -1, float = true })
-    end, opts) -- jump to previous diagnostic in buffer
+    keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts) -- jump to previous diagnostic in buffer
     --
     opts.desc = "Go to next diagnostic"
-    keymap.set("n", "]d", function()
-      vim.diagnostic.jump({ count = 1, float = true })
-    end, opts) -- jump to next diagnostic in buffer
+    keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts) -- jump to next diagnostic in buffer
 
     opts.desc = "Show documentation for what is under cursor"
     keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor

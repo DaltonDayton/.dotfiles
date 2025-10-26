@@ -1,3 +1,19 @@
+-- ============================================================================
+-- Mason: LSP/Formatter/Linter Installation & Auto-configuration
+-- ============================================================================
+-- This file handles:
+-- 1. Installing LSP servers via Mason
+-- 2. Auto-configuring installed servers with their DEFAULT configs
+-- 3. Installing formatters and linters
+--
+-- mason-lspconfig automatically calls lspconfig.{server}.setup() for all
+-- servers listed in ensure_installed, using their default configurations.
+--
+-- If a server needs CUSTOM configuration, you have two options:
+-- 1. Use lua/lsp.lua for manual vim.lsp.config() setup (runs during init)
+-- 2. Use after/plugin/lsp/{server_name}.lua for overrides (runs after plugins load)
+-- ============================================================================
+
 return {
   {
     "mason-org/mason-lspconfig.nvim",
