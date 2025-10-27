@@ -60,4 +60,26 @@ return {
       "williamboman/mason.nvim",
     },
   },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    config = function()
+      require("mason-nvim-dap").setup({
+        ensure_installed = {
+          "python",
+        },
+        handlers = {
+          function(config)
+            -- all sources with no handler get passed here
+            -- Keep original functionality
+            require("mason-nvim-dap").default_setup(config)
+          end,
+          --Add custom handlers for specific DAPs
+          --https://github.com/jay-babu/mason-nvim-dap.nvim?tab=readme-ov-file#advanced-customization
+        },
+      })
+    end,
+    dependencies = {
+      "williamboman/mason.nvim",
+    },
+  },
 }
