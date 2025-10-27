@@ -2,7 +2,7 @@ return {
   "nvim-neotest/neotest",
   dependencies = {
     -- Core
-    "nvim-neotest/nvim-nio",
+    -- "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -10,6 +10,7 @@ return {
     "nvim-neotest/neotest-python",
     "nvim-neotest/neotest-plenary",
     "nvim-neotest/neotest-vim-test",
+    "nsidorenco/neotest-vstest",
   },
   config = function()
     local neotest = require("neotest")
@@ -28,6 +29,25 @@ return {
           -- !!EXPERIMENTAL!! Enable shelling out to `pytest` to discover test
           -- instances for files containing a parametrize mark (default: false)
           pytest_discover_instances = true,
+        }),
+
+        require("neotest-vstest")({
+          -- Path to dotnet sdk path.
+          -- Used in cases where the sdk path cannot be auto discovered.
+          -- sdk_path = "/usr/local/dotnet/sdk/9.0.101/",
+          -- table is passed directly to DAP when debugging tests.
+          dap_settings = {
+            type = "coreclr",
+          },
+          -- If multiple solutions exists the adapter will ask you to choose one.
+          -- If you have a different heuristic for choosing a solution you can provide a function here.
+          solution_selector = function(solutions)
+            return nil -- return the solution you want to use or nil to let the adapter choose.
+          end,
+          build_opts = {
+            -- Arguments that will be added to all `dotnet build` and `dotnet msbuild` commands
+            additional_args = {},
+          },
         }),
 
         -- neotest-vim-test for test runners not available by default neotest

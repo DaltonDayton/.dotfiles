@@ -66,6 +66,7 @@ return {
       require("mason-nvim-dap").setup({
         ensure_installed = {
           "python",
+          "coreclr",
         },
         handlers = {
           function(config)
