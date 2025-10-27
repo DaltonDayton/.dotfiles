@@ -102,6 +102,24 @@ alias pd='deactivate'
 alias lg='lazygit'
 alias bat='batcat'
 
+# nvim appname function
+# Usage: nv [config_name] [args...]
+# Examples:
+#   nv .           -> opens default nvim in current dir
+#   nv test .      -> opens nvimtest config in current dir
+#   nv minimal foo -> opens nvimminimal config editing foo
+nv() {
+    # Check if first arg looks like a config name (not a flag, file, or path)
+    if [[ -n "$1" && ! "$1" =~ ^[-.+/] && ! -e "$1" ]]; then
+        local config_name="$1"
+        shift
+        NVIM_APPNAME="nvim${config_name}" nvim "$@"
+    else
+        nvim "$@"
+    fi
+}
+
+
 # Function to record screen with a specified filename
 record_screen() {
     local filename=$1
