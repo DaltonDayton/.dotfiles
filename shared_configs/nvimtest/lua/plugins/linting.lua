@@ -4,6 +4,26 @@ return {
   config = function()
     local lint = require("lint")
 
+    -- Configure pylint to use .venv python if available
+    local function get_python_path()
+      local venv_python = vim.fn.getcwd() .. "/.venv/bin/python"
+      if vim.fn.executable(venv_python) == 1 then return venv_python end
+      return "python" -- fallback to system python
+    end
+
+    -- Override pylint command to use correct python
+    lint.linters.pylint.cmd = get_python_path()
+    lint.linters.pylint.args = {
+      "-m",
+      "pylint",
+      "--output-format",
+      "text",
+      "--msg-template",
+      "{path}:{line}:{column}:{C}: [{symbol}] {msg}",
+      "--reports",
+      "no",
+    }
+
     lint.linters_by_ft = {
       python = { "pylint" },
     }
@@ -47,10 +67,10 @@ return {
       -- Conditionally disable linters if their config files are missing.
       -- This prevents noisy linting errors in projects that don't use specific linters.
       -- Uncomment to only run linters when their config files exist in the project.
-      -- if linters then
-      --   -- remove_linter_if_missing_config_file(linters, "eslint_d", ".eslintrc.cjs")
-      --   remove_linter_if_missing_config_file(linters, "eslint_d", "eslint.config.js")
-      -- end
+      if linters then
+        -- remove_linter_if_missing_config_file(linters, "eslint_d", ".eslintrc.cjs")
+        remove_linter_if_missing_config_file(linters, "eslint_d", "eslint.config.js")
+      end
 
       lint.try_lint(linters)
     end
