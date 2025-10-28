@@ -11,6 +11,7 @@ return {
     "nvim-neotest/neotest-plenary",
     "nvim-neotest/neotest-vim-test",
     "nsidorenco/neotest-vstest",
+    "thenbe/neotest-playwright",
   },
   config = function()
     local neotest = require("neotest")
@@ -24,6 +25,7 @@ return {
         max_width = 0.8,
       },
       adapters = {
+        -- Python
         require("neotest-python")({
           dap = { justMyCode = false },
           -- !!EXPERIMENTAL!! Enable shelling out to `pytest` to discover test
@@ -31,6 +33,7 @@ return {
           pytest_discover_instances = true,
         }),
 
+        -- C# / dotnet
         require("neotest-vstest")({
           -- Path to dotnet sdk path.
           -- Used in cases where the sdk path cannot be auto discovered.
@@ -47,6 +50,16 @@ return {
           build_opts = {
             -- Arguments that will be added to all `dotnet build` and `dotnet msbuild` commands
             additional_args = {},
+          },
+        }),
+
+        -- Playwright
+        require("neotest-playwright").adapter({
+          options = {
+            persist_project_selection = true,
+            enable_dynamic_test_discovery = true,
+            preset = "none", -- "none" | "headed" | "debug"
+            get_cwd = function() return vim.fn.getcwd() end,
           },
         }),
 
