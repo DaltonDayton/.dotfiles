@@ -5,7 +5,21 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    indent = { enabled = true },
+    indent = {
+      enabled = true,
+      indent = {
+        -- Make indent lines more subtle
+        hl = "SnacksIndent", -- Use custom highlight group
+        char = "│", -- Vertical line character
+        blank = " ", -- Space for blank lines
+      },
+      scope = {
+        -- Make scope highlight less prominent
+        hl = "SnacksIndentScope", -- Use custom highlight group
+        char = "│", -- Vertical line character
+        blank = " ", -- Space for blank lines
+      },
+    },
     input = { enabled = true },
     notifier = {
       enabled = true,

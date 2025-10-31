@@ -7,6 +7,13 @@ return {
     config = function()
       require("catppuccin").setup({
         transparent_background = true,
+        custom_highlights = function(colors)
+          return {
+            -- Pink indent lines
+            SnacksIndent = { fg = colors.surface0 },
+            SnacksIndentScope = { fg = colors.pink },
+          }
+        end,
       })
       vim.cmd("colorscheme catppuccin")
     end,
