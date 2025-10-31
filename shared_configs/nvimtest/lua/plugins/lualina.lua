@@ -23,6 +23,18 @@ return {
       sections = {
         lualine_c = {
           { macro_recording },
+          {
+            "filename",
+            path = 1, -- Show relative path (0 = just filename, 1 = relative path, 2 = absolute path)
+            file_status = true, -- Shows file modification status
+            newfile_status = true, -- Shows if file is new
+            symbols = {
+              modified = "[+]", -- Symbol for modified files
+              readonly = "[-]", -- Symbol for readonly files
+              unnamed = "[No Name]", -- Symbol for unnamed buffers
+              newfile = "[New]", -- Symbol for new files
+            },
+          },
         },
         lualine_x = {
           {
