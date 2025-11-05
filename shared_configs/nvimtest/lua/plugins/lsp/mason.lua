@@ -67,6 +67,7 @@ return {
         ensure_installed = {
           "python",
           "coreclr",
+          "js", -- Modern Node.js debugger for JavaScript/TypeScript (includes Playwright)
         },
         handlers = {
           function(config)
@@ -74,8 +75,8 @@ return {
             -- Keep original functionality
             require("mason-nvim-dap").default_setup(config)
           end,
-          --Add custom handlers for specific DAPs
-          --https://github.com/jay-babu/mason-nvim-dap.nvim?tab=readme-ov-file#advanced-customization
+          -- Note: js-debug-adapter is manually configured in dap.lua
+          -- mason-nvim-dap doesn't auto-setup it properly
         },
       })
     end,

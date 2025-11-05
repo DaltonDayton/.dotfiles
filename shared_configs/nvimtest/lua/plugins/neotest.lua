@@ -60,6 +60,15 @@ return {
             enable_dynamic_test_discovery = true,
             preset = "none", -- "none" | "headed" | "debug"
             get_cwd = function() return vim.fn.getcwd() end,
+            -- Additional Playwright options for better debugging
+            get_playwright_binary = function() return vim.loop.cwd() .. "/node_modules/.bin/playwright" end,
+            -- Custom environment variables for debugging
+            env = {
+              -- Enable trace on first retry for debugging
+              PWDEBUG = "0", -- Set to "1" for playwright inspector
+            },
+            -- Filter test files
+            filter_dir = function(name) return name ~= "node_modules" and name ~= ".git" end,
           },
         }),
 
@@ -86,5 +95,52 @@ return {
     vim.keymap.set("n", "<leader>nw", function() neotest.watch.toggle(vim.fn.expand("%")) end, { desc = "Toggle Watch" })
     vim.keymap.set("n", "[t", function() neotest.jump.prev({ status = "failed" }) end, { desc = "Previous failed test" })
     vim.keymap.set("n", "]t", function() neotest.jump.next({ status = "failed" }) end, { desc = "Next failed test" })
+
+    -- Playwright-specific keybindings
+    vim.keymap.set(
+      "n",
+      "<leader>nph",
+      function()
+        neotest.run.run({
+          extra_args = { "--headed" },
+          env = { PWDEBUG = "0" },
+        })
+      end,
+      { desc = "Run Nearest (Headed)" }
+    )
+
+    vim.keymap.set("n", "<leader>npi", function()
+      neotest.run.run({
+        env = { PWDEBUG = "1" }, -- Opens Playwright Inspector
+      })
+    end, { desc = "Run with Playwright Inspector" })
+
+    vim.keymap.set("n", "<leader>npt", function()
+      neotest.run.run({
+        extra_args = { "--trace", "on" },
+      })
+      vim.notify("Test run with trace recording. Use 'npx playwright show-trace' to view.", vim.log.levels.INFO)
+    end, { desc = "Run with Trace" })
+
+    vim.keymap.set("n", "<leader>npd", function()
+      neotest.run.run({
+        extra_args = { "--debug" }, -- Uses Playwright's native debugger
+      })
+    end, { desc = "Debug with Playwright Debugger" })
+
+    -- Playwright CLI shortcuts
+    vim.keymap.set(
+      "n",
+      "<leader>npc",
+      function() vim.cmd("terminal npx playwright codegen") end,
+      { desc = "Open Playwright Codegen" }
+    )
+
+    vim.keymap.set(
+      "n",
+      "<leader>npv",
+      function() vim.cmd("terminal npx playwright show-trace") end,
+      { desc = "Open Trace Viewer" }
+    )
   end,
 }
