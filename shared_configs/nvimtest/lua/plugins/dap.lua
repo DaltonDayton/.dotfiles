@@ -13,56 +13,99 @@ return {
     ui.setup()
     virtual_text.setup({})
 
-    -- Manually register js-debug-adapter (pwa-node) since mason-nvim-dap doesn't do it automatically
-    dap.adapters["pwa-node"] = {
-      type = "server",
-      host = "localhost",
-      port = "${port}",
-      executable = {
-        command = "node",
-        args = {
-          vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
-          "${port}",
+    -- ========================================================================
+    -- SECURITY: Validate and Register js-debug-adapter (pwa-node)
+    -- ========================================================================
+    local js_debug_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js"
+
+    if vim.fn.filereadable(js_debug_path) == 1 then
+      -- Manually register js-debug-adapter (pwa-node) since mason-nvim-dap doesn't do it automatically
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          args = { js_debug_path, "${port}" },
         },
-      },
-    }
+      }
 
-    -- Register aliases for compatibility
-    dap.adapters["pwa-chrome"] = dap.adapters["pwa-node"]
-    dap.adapters["node"] = dap.adapters["pwa-node"]
+      -- Register aliases for compatibility
+      dap.adapters["pwa-chrome"] = dap.adapters["pwa-node"]
+      dap.adapters["node"] = dap.adapters["pwa-node"]
+    else
+      vim.notify(
+        "js-debug-adapter not found at: "
+          .. js_debug_path
+          .. "\nRun :MasonInstall js-debug-adapter to enable JavaScript/TypeScript debugging",
+        vim.log.levels.WARN
+      )
+    end
 
-    -- Add Playwright test configurations
-    dap.configurations.typescript = dap.configurations.typescript or {}
-    dap.configurations.javascript = dap.configurations.javascript or {}
+    -- ========================================================================
+    -- Playwright Test Configurations
+    -- ========================================================================
+    local function setup_playwright_configs()
+      if not dap.adapters["pwa-node"] then
+        return -- Skip if adapter not available
+      end
 
-    table.insert(dap.configurations.typescript, {
-      type = "pwa-node",
-      request = "launch",
-      name = "Debug Playwright Test (File)",
-      runtimeExecutable = "npx",
-      runtimeArgs = { "playwright", "test", "--headed", "--timeout", "0" },
-      args = { "${file}" },
-      cwd = "${workspaceFolder}",
-      console = "integratedTerminal",
-      internalConsoleOptions = "neverOpen",
-    })
+      dap.configurations.typescript = dap.configurations.typescript or {}
+      dap.configurations.javascript = dap.configurations.javascript or {}
 
-    table.insert(dap.configurations.javascript, {
-      type = "pwa-node",
-      request = "launch",
-      name = "Debug Playwright Test (File)",
-      runtimeExecutable = "npx",
-      runtimeArgs = { "playwright", "test", "--headed", "--timeout", "0" },
-      args = { "${file}" },
-      cwd = "${workspaceFolder}",
-      console = "integratedTerminal",
-      internalConsoleOptions = "neverOpen",
-    })
+      local playwright_config = {
+        type = "pwa-node",
+        request = "launch",
+        name = "Debug Playwright Test (File)",
+        runtimeExecutable = "npx",
+        runtimeArgs = { "playwright", "test", "--headed", "--timeout", "0" },
+        args = { "${file}" },
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal",
+        internalConsoleOptions = "neverOpen",
+      }
+
+      table.insert(dap.configurations.typescript, playwright_config)
+      table.insert(dap.configurations.javascript, vim.deepcopy(playwright_config))
+    end
+
+    setup_playwright_configs()
 
     vim.fn.sign_define(
       "DapBreakpoint",
       { text = "", texthl = "DapBreakpoint", linehl = "DapBreakpoint", numhl = "DapBreakpoint" }
     )
+
+    -- ========================================================================
+    -- SECURITY: Log Point Message Sanitization
+    -- ========================================================================
+    local function sanitize_log_message(message)
+      if not message or type(message) ~= "string" then return nil end
+
+      -- SECURITY: Length validation
+      if #message > 500 then
+        vim.notify("Log message too long (max 500 chars)", vim.log.levels.ERROR)
+        return nil
+      end
+
+      -- SECURITY: Reject messages with code injection patterns
+      local dangerous_patterns = {
+        { pattern = "%${", name = "template literal" },
+        { pattern = "process%.env", name = "environment access" },
+        { pattern = "require%(", name = "module loading" },
+        { pattern = "eval%(", name = "code evaluation" },
+        { pattern = "Function%(", name = "constructor injection" },
+      }
+
+      for _, check in ipairs(dangerous_patterns) do
+        if message:match(check.pattern) then
+          vim.notify("Log message contains potentially dangerous pattern: " .. check.name, vim.log.levels.ERROR)
+          return nil
+        end
+      end
+
+      return message
+    end
 
     -- Keybinds
     vim.keymap.set("n", "<F5>", function() require("dap").continue() end, { desc = "Continue" })
@@ -70,12 +113,11 @@ return {
     vim.keymap.set("n", "<F8>", function() require("dap").step_into() end, { desc = "Step Into" })
     vim.keymap.set("n", "<F9>", function() require("dap").step_out() end, { desc = "Step Out" })
     vim.keymap.set("n", "<Leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Toggle Breakpoint" })
-    vim.keymap.set(
-      "n",
-      "<Leader>dL",
-      function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
-      { desc = "Set Log Point" }
-    )
+    vim.keymap.set("n", "<Leader>dL", function()
+      local input = vim.fn.input("Log point message: ")
+      local sanitized = sanitize_log_message(input)
+      if sanitized then require("dap").set_breakpoint(nil, nil, sanitized) end
+    end, { desc = "Set Log Point" })
 
     vim.keymap.set("n", "<Leader>dr", function() require("dap").repl.open() end, { desc = "Open REPL" })
     vim.keymap.set("n", "<Leader>dl", function() require("dap").run_last() end, { desc = "Run Last" })

@@ -61,12 +61,10 @@ return {
             preset = "none", -- "none" | "headed" | "debug"
             get_cwd = function() return vim.fn.getcwd() end,
             -- Additional Playwright options for better debugging
-            get_playwright_binary = function() return vim.loop.cwd() .. "/node_modules/.bin/playwright" end,
-            -- Custom environment variables for debugging
-            env = {
-              -- Enable trace on first retry for debugging
-              PWDEBUG = "0", -- Set to "1" for playwright inspector
-            },
+            get_playwright_binary = function()
+              local uv = vim.uv or vim.loop
+              return uv.cwd() .. "/node_modules/.bin/playwright"
+            end,
             -- Filter test files
             filter_dir = function(name) return name ~= "node_modules" and name ~= ".git" end,
           },
@@ -100,12 +98,7 @@ return {
     vim.keymap.set(
       "n",
       "<leader>nph",
-      function()
-        neotest.run.run({
-          extra_args = { "--headed" },
-          env = { PWDEBUG = "0" },
-        })
-      end,
+      function() neotest.run.run({ extra_args = { "--headed" } }) end,
       { desc = "Run Nearest (Headed)" }
     )
 
@@ -128,84 +121,25 @@ return {
       })
     end, { desc = "Debug with Playwright Debugger" })
 
-    -- Playwright CLI shortcuts
+    -- Playwright CLI shortcuts (secured with path validation)
+    local playwright = require("utils.playwright")
+
     vim.keymap.set(
       "n",
       "<leader>npc",
-      function() vim.cmd("terminal npx playwright codegen") end,
+      function() playwright.execute_playwright_command({ "codegen" }) end,
       { desc = "Open Playwright Codegen" }
     )
 
     vim.keymap.set(
       "n",
       "<leader>npv",
-      function() vim.cmd("terminal npx playwright show-trace") end,
+      function() playwright.execute_playwright_command({ "show-trace" }) end,
       { desc = "Open Trace Viewer" }
     )
 
-    -- Playwright DAP debugging (neotest-playwright doesn't support DAP strategy)
-    vim.keymap.set("n", "<leader>npd", function()
-      local file_path = vim.fn.expand("%:p")
-      local cursor_line = vim.fn.line(".")
-      local buf = vim.api.nvim_get_current_buf()
-
-      -- Find test name using Treesitter
-      local function find_test_name()
-        local ok, parser = pcall(vim.treesitter.get_parser, buf)
-        if not ok then return nil end
-
-        local tree = parser:parse()[1]
-        local root = tree:root()
-        local node = root:descendant_for_range(cursor_line - 1, 0, cursor_line - 1, 999)
-
-        while node do
-          if node:type() == "call_expression" then
-            local func_node = node:field("function")[1]
-            if func_node then
-              local func_text = vim.treesitter.get_node_text(func_node, buf)
-              if func_text and func_text:match("^test") then
-                local args = node:field("arguments")[1]
-                if args then
-                  local first_arg = args:field("0")[1]
-                  if not first_arg then
-                    for child in args:iter_children() do
-                      if child:type() == "string" or child:type() == "template_string" then
-                        first_arg = child
-                        break
-                      end
-                    end
-                  end
-                  if first_arg then
-                    local test_name = vim.treesitter.get_node_text(first_arg, buf)
-                    return test_name:gsub("^[\"']", ""):gsub("[\"']$", "")
-                  end
-                end
-              end
-            end
-          end
-          node = node:parent()
-        end
-        return nil
-      end
-
-      local test_name = find_test_name()
-      if not test_name then
-        vim.notify("No Playwright test found at cursor", vim.log.levels.WARN)
-        return
-      end
-
-      vim.notify("Debugging Playwright test: " .. test_name, vim.log.levels.INFO)
-      require("dap").run({
-        type = "pwa-node",
-        request = "launch",
-        name = "Debug Playwright Test",
-        runtimeExecutable = "npx",
-        runtimeArgs = { "playwright", "test", "--headed", "--timeout", "0", "-g", test_name },
-        args = { vim.fn.fnamemodify(file_path, ":.") },
-        cwd = vim.fn.getcwd(),
-        console = "integratedTerminal",
-        internalConsoleOptions = "neverOpen",
-      })
-    end, { desc = "Debug Playwright Test with DAP" })
+    -- Playwright DAP debugging with full security validation
+    -- Uses utils.playwright for secure test name extraction and command execution
+    vim.keymap.set("n", "<leader>npd", playwright.debug_test_at_cursor, { desc = "Debug Playwright Test with DAP" })
   end,
 }
