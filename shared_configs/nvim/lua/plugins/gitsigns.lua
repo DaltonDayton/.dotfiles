@@ -38,7 +38,7 @@ return {
     update_debounce = 100,
     max_file_length = 40000, -- Disable for files longer than this
     -- Word diff
-    word_diff = false, -- Toggle with <leader>tw
+    word_diff = false, -- Toggle with <leader>htw
     -- Keymaps
     on_attach = function(bufnr)
       local gs = package.loaded.gitsigns
@@ -84,10 +84,10 @@ return {
         vim.cmd("diffoff")
       end, { desc = "Quit diff mode" })
 
-      -- Toggles
-      map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle line blame" })
-      map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
-      map("n", "<leader>tw", gs.toggle_word_diff, { desc = "Toggle word diff" })
+      -- Toggles (git-specific, under hunk group)
+      map("n", "<leader>htb", gs.toggle_current_line_blame, { desc = "Toggle line blame" })
+      map("n", "<leader>htd", gs.toggle_deleted, { desc = "Toggle deleted" })
+      map("n", "<leader>htw", gs.toggle_word_diff, { desc = "Toggle word diff" })
 
       -- Text object
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })

@@ -47,13 +47,14 @@ return {
         "python",
         "regex",
       },
+      -- TODO: Ask AI what this is useful for
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<leader>fi",
-          node_incremental = "<leader>fn",
+          init_selection = "<leader>vi",
+          node_incremental = "<leader>vn",
           scope_incremental = false,
-          node_decremental = "<leader>fb",
+          node_decremental = "<leader>vb",
         },
       },
       textobjects = {

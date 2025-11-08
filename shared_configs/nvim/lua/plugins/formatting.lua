@@ -35,7 +35,7 @@ return {
 
     vim.keymap.set(
       { "n", "v" },
-      "<leader>mp",
+      "<leader>cf",
       function()
         conform.format({
           lsp_fallback = true,
@@ -43,8 +43,8 @@ return {
           timeout_ms = 1000,
         })
       end,
-      { desc = "Format file or range (in visual mode)" }
+      { desc = "Format file or range" }
     )
-    vim.keymap.set("n", "<leader>ma", function() vim.cmd("FormatToggle") end, { desc = "Toggle format on save" })
+    vim.keymap.set("n", "<leader>ct", function() vim.cmd("FormatToggle") end, { desc = "Toggle format on save" })
   end,
 }
