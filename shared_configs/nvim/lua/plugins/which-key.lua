@@ -20,6 +20,8 @@ return {
       { "ga", group = "LSP C[a]lls" },
 
       -- Leader groups
+      { "<leader>a", group = "[A]ugment" },
+      { "<leader>a_", hidden = true },
       { "<leader>b", group = "[B]uffer" },
       { "<leader>b_", hidden = true },
       { "<leader>c", group = "[C]ode" },

@@ -1,2 +1,5 @@
-require("dalton.core")
-require("dalton.lazy")
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+require("config.lazy")
+require("lsp")

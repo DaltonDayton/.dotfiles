@@ -78,9 +78,7 @@ return {
         local current_win = vim.api.nvim_get_current_win()
         -- Close all windows in diff mode except current
         for _, win in ipairs(vim.api.nvim_list_wins()) do
-          if win ~= current_win and vim.wo[win].diff then
-            vim.api.nvim_win_close(win, false)
-          end
+          if win ~= current_win and vim.wo[win].diff then vim.api.nvim_win_close(win, false) end
         end
         -- Turn off diff mode in current window
         vim.cmd("diffoff")
