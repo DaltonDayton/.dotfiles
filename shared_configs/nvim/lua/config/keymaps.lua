@@ -61,3 +61,24 @@ vim.keymap.set("v", "<leader>y", '"+y', { desc = "Yank selection to system clipb
 vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 vim.keymap.set("n", "<leader>D", '"_d', { desc = "Delete without yanking" })
 vim.keymap.set("v", "<leader>D", '"_d', { desc = "Delete selection without yanking" })
+
+-- Marks (vim marks, not Harpoon)
+-- Note: <leader>sm (search marks) is in lua/plugins/snacks.lua
+-- Note: <leader>ma (add to Harpoon) is in lua/plugins/harpoon.lua
+vim.keymap.set("n", "<leader>md", function()
+  local mark = vim.fn.input("Delete mark: ")
+  if mark ~= "" then
+    vim.cmd("delmarks " .. mark)
+    vim.notify("Deleted mark: " .. mark, vim.log.levels.INFO)
+  end
+end, { desc = "Delete mark" })
+
+vim.keymap.set("n", "<leader>mb", function()
+  vim.cmd("delmarks!")
+  vim.notify("Deleted all marks in current buffer", vim.log.levels.INFO)
+end, { desc = "Delete all marks (buffer)" })
+
+vim.keymap.set("n", "<leader>mx", function()
+  vim.cmd("delmarks A-Z")
+  vim.notify("Deleted all global marks (A-Z)", vim.log.levels.WARN)
+end, { desc = "Delete all global marks" })
