@@ -58,6 +58,8 @@ return {
     { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
     { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
     { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
+    { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
+    { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
     -- Grep
     { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
     { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
@@ -95,16 +97,18 @@ return {
     { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing" },
     { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
     { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+    -- Buffer operations
+    { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+    -- Code operations
+    { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
+    -- Window operations
+    { "<leader>wz", function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
     -- UI Toggles
     { "<leader>uz", function() Snacks.zen() end, desc = "Toggle Zen Mode" },
-    { "<leader>wz", function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
+    { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+    -- Other utilities
     { "<leader>.", function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
     { "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
-    { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-    { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
-    { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
-    { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-    { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
     { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
     { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore" },
     { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
