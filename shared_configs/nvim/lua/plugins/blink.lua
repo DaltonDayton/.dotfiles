@@ -1,7 +1,65 @@
 return {
   "saghen/blink.cmp",
   -- optional: provides snippets for the snippet source
-  dependencies = { "rafamadriz/friendly-snippets" },
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    {
+      "L3MON4D3/LuaSnip",
+      version = "v2.*",
+      build = "make install_jsregexp",
+      config = function()
+        local ls = require("luasnip")
+        local types = require("luasnip.util.types")
+
+        -- Load friendly-snippets
+        require("luasnip.loaders.from_vscode").lazy_load()
+
+        -- Load custom snippets from ~/.config/nvim/snippets/ (VS Code style JSON)
+        require("luasnip.loaders.from_vscode").lazy_load({
+          paths = { vim.fn.stdpath("config") .. "/snippets" },
+        })
+
+        -- Load custom Lua snippets from ~/.config/nvim/lua/snippets/
+        require("luasnip.loaders.from_lua").lazy_load({
+          paths = { vim.fn.stdpath("config") .. "/lua/snippets" },
+        })
+
+        -- LuaSnip configuration
+        ls.config.set_config({
+          -- Remember last snippet for jumping back
+          history = true,
+          -- Update dynamic snippets as you type
+          updateevents = "TextChanged,TextChangedI",
+          -- Enable autotrigger snippets
+          enable_autosnippets = true,
+          -- Show virtual text for snippet nodes
+          ext_opts = {
+            [types.choiceNode] = {
+              active = {
+                virt_text = { { "●", "GruvboxOrange" } },
+              },
+            },
+          },
+        })
+
+        -- Keymaps for snippet navigation
+        -- <C-l>: Expand or jump to next node
+        vim.keymap.set({ "i", "s" }, "<C-l>", function()
+          if ls.expand_or_jumpable() then ls.expand_or_jump() end
+        end, { silent = true, desc = "Expand or jump to next snippet node" })
+
+        -- <C-h>: Jump to previous node
+        vim.keymap.set({ "i", "s" }, "<C-h>", function()
+          if ls.jumpable(-1) then ls.jump(-1) end
+        end, { silent = true, desc = "Jump to previous snippet node" })
+
+        -- <C-j>: Cycle through choices
+        vim.keymap.set({ "i", "s" }, "<C-j>", function()
+          if ls.choice_active() then ls.change_choice(1) end
+        end, { silent = true, desc = "Cycle through snippet choices" })
+      end,
+    },
+  },
 
   -- use a release tag to download pre-built binaries
   version = "1.*",

@@ -23,6 +23,7 @@ return {
         "ts_ls",
         "html",
         "cssls",
+        "emmet_language_server",
         "pyright",
         "eslint",
       },
