@@ -19,6 +19,7 @@ vim.opt.wrap = false -- Disable line wrapping
 -- Search settings
 vim.opt.ignorecase = true -- Ignore case when searching
 vim.opt.smartcase = true -- Case-sensitive search when mixed case is used
+vim.opt.shortmess:remove("S") -- Show search count message when searching
 
 -- Cursor line
 vim.opt.cursorline = true -- Highlight the current line
