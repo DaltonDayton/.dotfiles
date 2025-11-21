@@ -49,7 +49,20 @@ crust = "#11111b"
 
 
 [aws]
-symbol = "  "
+disabled = true
+symbol = " "
+
+[custom.aws_project]
+command = "echo  $(aws configure get region)"
+when = '''
+    test -d .elasticbeanstalk ||
+    test -d terraform ||
+    test -d infra ||
+    test -d cdk ||
+    test -d deploy
+'''
+style = "bright-blue"
+format = "[$output]($style)"
 
 [buf]
 symbol = " "
