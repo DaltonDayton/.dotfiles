@@ -12,6 +12,7 @@ return {
     "nvim-neotest/neotest-vim-test",
     "nsidorenco/neotest-vstest",
     "thenbe/neotest-playwright",
+    "marilari88/neotest-vitest",
   },
   config = function()
     local neotest = require("neotest")
@@ -52,6 +53,9 @@ return {
             additional_args = {},
           },
         }),
+
+        -- Vitest (JavaScript / TypeScript)
+        require("neotest-vitest")({}),
 
         -- Playwright
         require("neotest-playwright").adapter({
