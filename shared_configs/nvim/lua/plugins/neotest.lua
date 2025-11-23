@@ -55,7 +55,28 @@ return {
         }),
 
         -- Vitest (JavaScript / TypeScript)
-        require("neotest-vitest")({}),
+        require("neotest-vitest")({
+          -- Walk up the directory tree to find the nearest vite.config.js or vitest.config.js
+          cwd = function(file)
+            if not file then return vim.uv.cwd() end
+            local dir = vim.fn.fnamemodify(file, ":h")
+            local vite_config = vim.fn.findfile("vite.config.js", dir .. ";")
+            if vite_config ~= "" then return vim.fn.fnamemodify(vite_config, ":p:h") end
+            local vitest_config = vim.fn.findfile("vitest.config.js", dir .. ";")
+            if vitest_config ~= "" then return vim.fn.fnamemodify(vitest_config, ":p:h") end
+            return vim.uv.cwd()
+          end,
+          vitestConfigFile = function(file)
+            if not file then return nil end
+            local dir = vim.fn.fnamemodify(file, ":h")
+            local vite_config = vim.fn.findfile("vite.config.js", dir .. ";")
+            if vite_config ~= "" then return vim.fn.fnamemodify(vite_config, ":p") end
+            local vitest_config = vim.fn.findfile("vitest.config.js", dir .. ";")
+            if vitest_config ~= "" then return vim.fn.fnamemodify(vitest_config, ":p") end
+            return nil
+          end,
+          filter_dir = function(name) return name ~= "e2e" and name ~= "node_modules" end,
+        }),
 
         -- Playwright
         require("neotest-playwright").adapter({
