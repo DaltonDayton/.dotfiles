@@ -43,22 +43,77 @@ return {
     end
 
     -- ========================================================================
-    -- Playwright Test Configurations
+    -- Node and Playwright Test Configurations
     -- ========================================================================
-    local function setup_playwright_configs()
-      if not dap.adapters["pwa-node"] then
-        return -- Skip if adapter not available
-      end
+    local function setup_node_configs()
+      if not dap.adapters["pwa-node"] then return end
 
       dap.configurations.typescript = dap.configurations.typescript or {}
       dap.configurations.javascript = dap.configurations.javascript or {}
+
+      local node_launch = {
+        type = "pwa-node",
+        request = "launch",
+        name = "Launch file (Node)",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal",
+        internalConsoleOptions = "neverOpen",
+        skipFiles = { "<node_internals>/**" },
+      }
+
+      local node_attach = {
+        type = "pwa-node",
+        request = "attach",
+        name = "Attach to process (Node)",
+        processId = require("dap.utils").pick_process,
+        cwd = "${workspaceFolder}",
+        skipFiles = { "<node_internals>/**" },
+      }
+
+      local node_attach_port = {
+        type = "pwa-node",
+        request = "attach",
+        name = "Attach to port 9229 (Node)",
+        address = "localhost",
+        port = 9229,
+        cwd = "${workspaceFolder}",
+        sourceMaps = true,
+        outFiles = { "${workspaceFolder}/**/*.js" },
+        skipFiles = { "<node_internals>/**" },
+      }
+
+      table.insert(dap.configurations.typescript, node_launch)
+      table.insert(dap.configurations.javascript, vim.deepcopy(node_launch))
+      table.insert(dap.configurations.typescript, node_attach)
+      table.insert(dap.configurations.javascript, vim.deepcopy(node_attach))
+      table.insert(dap.configurations.typescript, node_attach_port)
+      table.insert(dap.configurations.javascript, vim.deepcopy(node_attach_port))
+    end
+
+    local function setup_playwright_configs()
+      if not dap.adapters["pwa-node"] then return end
+
+      dap.configurations.typescript = dap.configurations.typescript or {}
+      dap.configurations.javascript = dap.configurations.javascript or {}
+
+      local cwd = vim.fn.getcwd()
+      local playwright_bin = cwd .. "/node_modules/.bin/playwright"
+
+      if vim.fn.executable(playwright_bin) ~= 1 then
+        vim.notify(
+          "Skipping Playwright DAP config: playwright not installed in this workspace",
+          vim.log.levels.DEBUG
+        )
+        return
+      end
 
       local playwright_config = {
         type = "pwa-node",
         request = "launch",
         name = "Debug Playwright Test (File)",
-        runtimeExecutable = "npx",
-        runtimeArgs = { "playwright", "test", "--headed", "--timeout", "0" },
+        runtimeExecutable = playwright_bin,
+        runtimeArgs = { "test", "--headed", "--timeout", "0" },
         args = { "${file}" },
         cwd = "${workspaceFolder}",
         console = "integratedTerminal",
@@ -69,6 +124,7 @@ return {
       table.insert(dap.configurations.javascript, vim.deepcopy(playwright_config))
     end
 
+    setup_node_configs()
     setup_playwright_configs()
 
     vim.fn.sign_define(
