@@ -5,17 +5,61 @@ function install_gaming() {
   # Define the list of packages required for this module
   local packages=(
     # Core
-    "ttf-ms-win11-auto"
     "wine"
     "winetricks"
+    # "wine-staging"  # Failing. Conflicts with 'wine'
+    "dxvk"
+    "vkd3d"
+    "lib32-alsa-lib"
+    "lib32-pipewire"
+    "lib32-libpulse"
+    "giflib"
+    "lib32-giflib"
+    "gnutls"
+    "lib32-gnutls"
+    "v4l-utils"
+    "lib32-v4l-utils"
+    "libxcomposite"
+    "lib32-libxcomposite"
+    "libxinerama"
+    "lib32-libxinerama"
+    "openal"
+    "lib32-openal"
+    "libxslt"
+    "lib32-libxslt"
+
+    # Vulkan & Performance Utilities
+    "vulkan-icd-loader"
+    "lib32-vulkan-icd-loader"
+    "gamemode"
+    "lib32-gamemode"
+    "gamescope"
+    "mangoh"
+    "lib32-mangohud"
+
+    # Launcher Dependencies?
+    "curl"
+    "cabextract"
+    "wget"
+    "unzip"
+    "zenity"
+    "xdg-utils"
+
+    # Fonts
+    # "ttf-ms-win11-auto" # Failing
+    "ttf-liberation"
+    "noto-fonts"
+    "noto-fonts-cjk"
+    "noto-fonts-emoji"
 
     # Launcher
-    "lutris"
-    "bottles"
+    # "lutris"
+    # "bottles"
     "steam"
+    "faugus-launcher"
 
     # Communication
-    "discord"
+    # "discord"
 
     # WoW
     # "curseforge"
