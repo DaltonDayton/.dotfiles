@@ -4,63 +4,90 @@
 function install_hyprland() {
   # Define the list of packages required for this module
   local packages=(
-    # Core Hyprland packages
-    "hyprland"
-    "xdg-desktop-portal"
-    "xdg-desktop-portal-hyprland"
-    "xdg-desktop-portal-gtk"
+    # Nvidia
+    nvidia-dkms
+    nvidia-open-dkms
+    linux-zen-headers
+    nvidia-utils
+    lib32-nvidia-utils
+    egl-wayland
 
-    # Essential utilities
-    "wl-clipboard"
-    "waybar"
-    "kitty"
-    "polkit-gnome"
-    "network-manager-applet"
-    "jq" # JSON processor for scripts
+    # Authentication Agent
+    hyprpolkitagent
 
-    # Enhanced tools and utilities
-    "rofi-wayland" # Application launcher (better than wofi)
-    "swaync"       # Notification center
-    "cliphist"     # Clipboard manager
-    "hyprshade"    # Blue light filter and screen effects
-    "hypridle"     # Idle daemon
-    "hyprlock"     # Screen locker
-    "hyprpicker"   # Color picker
+    # Qt Wayland Support
+    qt5-wayland qt6-wayland
 
-    # Screenshot and media tools
-    "grim"  # Screenshot utility
-    "slurp" # Region selector for screenshots
-    "satty" # Screenshot annotation tool
-    "swww"  # Wallpaper daemon
+    # Fonts
+    ttf-font-awesome
+    otf-font-awesome
+    noto-fonts
+    noto-fonts-emoji
 
-    # System utilities
-    "playerctl"     # Media player control
-    "brightnessctl" # Brightness control
-    "pamixer"       # Audio control
-    "pavucontrol"   # Audio control GUI
-    "btop"          # Enhanced system monitor
+    # Utilities
+    cliphist
+    waybar
+    hyprpaper
+    hyprlauncher
 
-    # Bluetooth utilities
+
+    # # Core Hyprland packages
+    # "hyprland"
+    # "xdg-desktop-portal"
+    # "xdg-desktop-portal-hyprland"
+    # "xdg-desktop-portal-gtk"
+    #
+    # # Essential utilities
+    # "wl-clipboard"
+    # "waybar"
+    # "kitty"
+    # "polkit-gnome"
+    # "network-manager-applet"
+    # "jq" # JSON processor for scripts
+    #
+    # # Enhanced tools and utilities
+    # "rofi-wayland" # Application launcher (better than wofi)
+    # "swaync"       # Notification center
+    # "cliphist"     # Clipboard manager
+    # "hyprshade"    # Blue light filter and screen effects
+    # "hypridle"     # Idle daemon
+    # "hyprlock"     # Screen locker
+    # "hyprpicker"   # Color picker
+    #
+    # # Screenshot and media tools
+    # "grim"  # Screenshot utility
+    # "slurp" # Region selector for screenshots
+    # "satty" # Screenshot annotation tool
+    # "swww"  # Wallpaper daemon
+    #
+    # # System utilities
+    # "playerctl"     # Media player control
+    # "brightnessctl" # Brightness control
+    # "pamixer"       # Audio control
+    # "pavucontrol"   # Audio control GUI
+    # "btop"          # Enhanced system monitor
+
+    # # Bluetooth utilities
     "bluez"         # Bluetooth protocol stack
     "bluez-utils"   # Bluetooth utilities
     "blueman"       # Bluetooth manager GUI
 
-    # NVIDIA specific packages
-    "linux-headers"
-    "nvidia-dkms"
-    "nvidia-utils"
-    "lib32-nvidia-utils"
-
-    # Themes and appearance
-    "catppuccin-gtk-theme-mocha" # GTK theme
-    "nwg-look"                   # Run nwg-look to configure themes
-    "hyprcursor"
-    "bibata-cursor-theme-bin"
-
-    # ===== Start Review =====
-    # "swayidle"
-    # "sway-audio-idle-inhibit-git"
-    # ===== End Review =====
+    # # NVIDIA specific packages
+    # "linux-headers"
+    # "nvidia-dkms"
+    # "nvidia-utils"
+    # "lib32-nvidia-utils"
+    #
+    # # Themes and appearance
+    # "catppuccin-gtk-theme-mocha" # GTK theme
+    # "nwg-look"                   # Run nwg-look to configure themes
+    # "hyprcursor"
+    # "bibata-cursor-theme-bin"
+    #
+    # # ===== Start Review =====
+    # # "swayidle"
+    # # "sway-audio-idle-inhibit-git"
+    # # ===== End Review =====
   )
 
   # Install the packages using the install_packages function
@@ -75,26 +102,26 @@ function configure_hyprland() {
   # set -euo pipefail
 
   # hypr
-  CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr"
-  CONFIG_DEST="$HOME/.config/hypr"
-  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  # CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr"
+  # CONFIG_DEST="$HOME/.config/hypr"
+  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # waybar
-  CONFIG_SOURCE="$MODULES_DIR/hyprland/waybar"
-  CONFIG_DEST="$HOME/.config/waybar"
-  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  # CONFIG_SOURCE="$MODULES_DIR/hyprland/waybar"
+  # CONFIG_DEST="$HOME/.config/waybar"
+  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # wallpapers
-  CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
-  CONFIG_DEST="$HOME/.config/wallpapers"
-  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  # CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
+  # CONFIG_DEST="$HOME/.config/wallpapers"
+  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Enable and start bluetooth service if not already enabled/running
   if ! systemctl is-enabled bluetooth.service >/dev/null 2>&1; then
     echo "Enabling bluetooth service..."
     sudo systemctl enable bluetooth.service
   fi
-  
+
   if ! systemctl is-active bluetooth.service >/dev/null 2>&1; then
     echo "Starting bluetooth service..."
     sudo systemctl start bluetooth.service
