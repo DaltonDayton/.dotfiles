@@ -101,10 +101,10 @@ return {
       local playwright_bin = cwd .. "/node_modules/.bin/playwright"
 
       if vim.fn.executable(playwright_bin) ~= 1 then
-        vim.notify(
-          "Skipping Playwright DAP config: playwright not installed in this workspace",
-          vim.log.levels.DEBUG
-        )
+        -- vim.notify(
+        --   "Skipping Playwright DAP config: playwright not installed in this workspace",
+        --   vim.log.levels.DEBUG
+        -- )
         return
       end
 
