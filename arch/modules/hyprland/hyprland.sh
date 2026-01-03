@@ -29,6 +29,7 @@ function install_hyprland() {
     waybar
     hyprpaper
     hyprlauncher
+    pavucontrol
 
 
     # # Core Hyprland packages
@@ -107,9 +108,9 @@ function configure_hyprland() {
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # waybar
-  # CONFIG_SOURCE="$MODULES_DIR/hyprland/waybar"
-  # CONFIG_DEST="$HOME/.config/waybar"
-  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  CONFIG_SOURCE="$MODULES_DIR/hyprland/waybar"
+  CONFIG_DEST="$HOME/.config/"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # wallpapers
   # CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
