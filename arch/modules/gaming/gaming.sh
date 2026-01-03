@@ -34,7 +34,7 @@ function install_gaming() {
     "gamemode"
     "lib32-gamemode"
     "gamescope"
-    "mangoh"
+    "mangohud"
     "lib32-mangohud"
 
     # Launcher Dependencies?
