@@ -32,6 +32,7 @@ function install_hyprland() {
     hypridle
     hyprlock
     pavucontrol
+    pipewire-pulse
     jq # JSON processor for scripts
 
     # Bluetooth utilities
