@@ -30,22 +30,17 @@ function install_hyprland() {
     hyprpaper
     hyprlauncher
     pavucontrol
+    jq # JSON processor for scripts
+
+    # Bluetooth utilities
+    bluez         # Bluetooth protocol stack
+    bluez-utils   # Bluetooth utilities
+    blueman       # Bluetooth manager GUI
 
 
-    # # Core Hyprland packages
-    # "hyprland"
-    # "xdg-desktop-portal"
-    # "xdg-desktop-portal-hyprland"
-    # "xdg-desktop-portal-gtk"
-    #
     # # Essential utilities
-    # "wl-clipboard"
-    # "waybar"
-    # "kitty"
-    # "polkit-gnome"
     # "network-manager-applet"
-    # "jq" # JSON processor for scripts
-    #
+
     # # Enhanced tools and utilities
     # "rofi-wayland" # Application launcher (better than wofi)
     # "swaync"       # Notification center
@@ -68,27 +63,14 @@ function install_hyprland() {
     # "pavucontrol"   # Audio control GUI
     # "btop"          # Enhanced system monitor
 
-    # # Bluetooth utilities
-    "bluez"         # Bluetooth protocol stack
-    "bluez-utils"   # Bluetooth utilities
-    "blueman"       # Bluetooth manager GUI
-
-    # # NVIDIA specific packages
-    # "linux-headers"
-    # "nvidia-dkms"
-    # "nvidia-utils"
-    # "lib32-nvidia-utils"
-    #
     # # Themes and appearance
     # "catppuccin-gtk-theme-mocha" # GTK theme
     # "nwg-look"                   # Run nwg-look to configure themes
     # "hyprcursor"
     # "bibata-cursor-theme-bin"
     #
-    # # ===== Start Review =====
     # # "swayidle"
     # # "sway-audio-idle-inhibit-git"
-    # # ===== End Review =====
   )
 
   # Install the packages using the install_packages function
