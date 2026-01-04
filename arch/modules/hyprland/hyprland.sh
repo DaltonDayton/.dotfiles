@@ -87,7 +87,9 @@ function install_hyprland() {
 function configure_hyprland() {
   # set -euo pipefail
 
-  hypr
+  # TODO: dunst config
+
+  # hypr
   CONFIG_SOURCE="$MODULES_DIR/hyprland/hypr"
   CONFIG_DEST="$HOME/.config/"
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
