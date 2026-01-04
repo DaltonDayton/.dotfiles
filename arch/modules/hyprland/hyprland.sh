@@ -29,6 +29,8 @@ function install_hyprland() {
     waybar
     hyprpaper
     hyprlauncher
+    hypridle
+    hyprlock
     pavucontrol
     jq # JSON processor for scripts
 
