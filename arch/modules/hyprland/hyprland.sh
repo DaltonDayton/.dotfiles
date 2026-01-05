@@ -100,9 +100,9 @@ function configure_hyprland() {
   symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # wallpapers
-  # CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
-  # CONFIG_DEST="$HOME/.config/wallpapers"
-  # symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
+  CONFIG_SOURCE="$MODULES_DIR/hyprland/wallpapers"
+  CONFIG_DEST="$HOME/.config/wallpapers"
+  symlink_config "$CONFIG_SOURCE" "$CONFIG_DEST"
 
   # Enable and start bluetooth service if not already enabled/running
   if ! systemctl is-enabled bluetooth.service >/dev/null 2>&1; then
