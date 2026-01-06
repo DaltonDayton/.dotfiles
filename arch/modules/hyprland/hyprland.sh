@@ -40,6 +40,12 @@ function install_hyprland() {
     bluez-utils   # Bluetooth utilities
     blueman       # Bluetooth manager GUI
 
+    # Screenshot Utilities
+    grim
+    slurp
+    satty
+    wl-clipboard
+
 
     # # Essential utilities
     # "network-manager-applet"
