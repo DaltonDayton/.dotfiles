@@ -42,6 +42,8 @@ function install_hyprland() {
 
     # Screenshot Utilities
     grim
+    grimblast-git
+    hyprpicker
     slurp
     satty
     wl-clipboard
