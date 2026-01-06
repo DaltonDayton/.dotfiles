@@ -48,6 +48,13 @@ function install_hyprland() {
     satty
     wl-clipboard
 
+    # gifs / mp4
+    wf-recorder
+
+    # OCR
+    tesseract
+    tesseract-data-eng
+
 
     # # Essential utilities
     # "network-manager-applet"
