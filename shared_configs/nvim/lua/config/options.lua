@@ -10,6 +10,8 @@ vim.opt.mouse = "a" -- Enable mouse support
 
 -- Tabs and indentation
 vim.opt.expandtab = true -- Expand tab to spaces
+vim.opt.shiftwidth = 4 -- Number of spaces to use for each step of (auto)indent
+vim.opt.softtabstop = 4 -- Number of spaces that a <Tab> counts for while editing
 vim.opt.autoindent = true -- Copy indent from current line when starting new one
 vim.opt.tabstop = 4 -- Number of spaces that a <Tab> in the file counts for
 
