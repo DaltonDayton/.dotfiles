@@ -32,6 +32,14 @@ SAVEHIST=1000
 setopt notify
 unsetopt beep
 bindkey -v
+# Fix special keys in vi mode
+bindkey '^[[3~' delete-char           # Delete key
+bindkey '^[[1;5D' backward-word       # Ctrl+Left
+bindkey '^[[1;5C' forward-word        # Ctrl+Right
+bindkey '^[[H' beginning-of-line      # Home
+bindkey '^[[F' end-of-line            # End
+bindkey '^[[1~' beginning-of-line     # Home (alternate)
+bindkey '^[[4~' end-of-line           # End (alternate)
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/dalton/.zshrc'
