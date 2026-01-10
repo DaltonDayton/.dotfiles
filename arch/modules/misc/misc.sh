@@ -4,7 +4,7 @@ function install_misc() {
   local packages=(
     # Browser
     # NOTE: set about:config -> gfx.canvas.accelerated = false
-    "firefox-developer-edition"
+    # "firefox-developer-edition"
   )
 
   # Install the packages using the install_packages function
