@@ -34,11 +34,13 @@ function install_hyprland() {
     pavucontrol
     pipewire-pulse
     jq # JSON processor for scripts
+    btop
+    spotify
 
     # Bluetooth utilities
-    bluez         # Bluetooth protocol stack
-    bluez-utils   # Bluetooth utilities
-    blueman       # Bluetooth manager GUI
+    bluez       # Bluetooth protocol stack
+    bluez-utils # Bluetooth utilities
+    blueman     # Bluetooth manager GUI
 
     # Screenshot Utilities
     grim
@@ -54,7 +56,6 @@ function install_hyprland() {
     # OCR
     tesseract
     tesseract-data-eng
-
 
     # # Essential utilities
     # "network-manager-applet"
