@@ -14,10 +14,10 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 # zinit plugins
-zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-syntax-highlighting
 
 # TODO: Look into moving starship to zinit?
 # https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#plugins-and-snippets
@@ -68,7 +68,7 @@ alias ld='eza -lhD --icons=auto' # long list dirs
 alias lt='eza --icons=auto --tree' # list folder as tree
 alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=short --date-order"
 alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --all --date=short --date-order"
-alias ff="fzf --preview 'batcat {-1} --color=always'"
+alias ff="fzf --preview 'bat {-1} --color=always'"
 alias sz="source ~/.zshrc"
 alias lg='lazygit'
 # Handy change dir shortcuts
