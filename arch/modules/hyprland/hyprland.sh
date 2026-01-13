@@ -37,6 +37,13 @@ function install_hyprland() {
     btop
     spotify
 
+    # File Extension Discovery
+    xdg-utils
+    desktop-file-utils
+    shared-mime-info
+    archlinux-xdg-menu
+    # Also ran this, but idk if it's needed: `sudo update-mime-database /usr/share/mime`
+
     # Bluetooth utilities
     bluez       # Bluetooth protocol stack
     bluez-utils # Bluetooth utilities
