@@ -2,7 +2,7 @@
   "position": "top",
   "modules-left": ["hyprland/workspaces", "custom/spacer", "tray"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["custom/notification", "custom/spacer", "bluetooth", "network", "pulseaudio", "battery", "clock"],
+  "modules-right": ["custom/notification", "custom/spacer", "bluetooth", "custom/cpu", "custom/gpu", "network", "pulseaudio", "battery", "clock"],
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
@@ -70,12 +70,24 @@
   "bluetooth": {
     "format": "󰂯",
     "format-disabled": "󰂲",
-    "format-off": "󰂲", 
+    "format-off": "󰂲",
     "format-connected": "󰂱 {device_alias}",
     "format-discoverable": "󰂰",
     "tooltip-format": "{controller_alias}",
     "tooltip-format-connected": "Controller: {controller_alias}\nConnected devices:\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "• {device_alias} ({device_address})",
     "on-click": "blueman-manager"
+  },
+  "custom/cpu": {
+    "interval": 2,
+    "exec": "$HOME/.config/waybar/scripts/cpu.sh",
+    "tooltip": false,
+    "on-click": "kitty -e htop"
+  },
+  "custom/gpu": {
+    "interval": 2,
+    "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu --format=csv,noheader,nounits | awk -F', ' '{printf \"<span size=\\\"13000\\\" foreground=\\\"#fab387\\\">󰓫</span> %3d%% %2d°C\", $1, $2}'",
+    "tooltip": false,
+    "on-click": "kitty -e nvtop"
   }
 }
