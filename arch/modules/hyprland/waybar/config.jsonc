@@ -1,8 +1,8 @@
 {
   "position": "top",
-  "modules-left": ["hyprland/workspaces", "custom/spacer", "tray"],
+  "modules-left": ["hyprland/workspaces", "custom/spacer", "tray", "custom/cpu", "custom/gpu"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["custom/notification", "custom/spacer", "bluetooth", "custom/cpu", "custom/gpu", "network", "pulseaudio", "battery", "clock"],
+  "modules-right": ["custom/notification", "custom/spacer", "bluetooth", "network", "pulseaudio", "battery", "clock"],
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
