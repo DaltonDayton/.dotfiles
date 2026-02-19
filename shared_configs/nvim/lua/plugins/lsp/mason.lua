@@ -26,6 +26,7 @@ return {
         "emmet_language_server",
         "pyright",
         "eslint",
+        "csharp_ls",
       },
     },
     dependencies = {
