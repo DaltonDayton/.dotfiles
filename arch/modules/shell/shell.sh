@@ -13,6 +13,7 @@ function install_shell() {
     "fzf"
     "yazi"
     "atuin"
+    "nvtop"
   )
 
   # Install the packages using the install_packages function
