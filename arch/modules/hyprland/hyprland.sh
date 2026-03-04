@@ -233,7 +233,8 @@ function configure_sddm() {
   # Install catppuccin SDDM theme from dotfiles
   if [ ! -d "$theme_dir" ]; then
     log_info "Installing catppuccin-mocha-pink SDDM theme..."
-    sudo cp -r "$MODULES_DIR/hyprland/sddm-theme" "$theme_dir"
+    sudo mkdir -p "$theme_dir"
+    sudo cp -r "$MODULES_DIR/hyprland/sddm-theme/." "$theme_dir/"
     log_success "catppuccin-mocha-pink SDDM theme installed"
   else
     log_info "catppuccin-mocha-pink SDDM theme already installed"
