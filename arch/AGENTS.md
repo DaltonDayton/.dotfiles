@@ -3,9 +3,10 @@
 ## Build/Test Commands
 - **Install all modules**: `./install.sh`
 - **Install specific module**: Edit `MODULES` array in `install.sh` and run
-- **Test single module**: `source modules/common.sh && source modules/<name>/<name>.sh && install_<name>`
+- **Test single module**: `bash -c "source /path/to/dotfiles/arch/modules/common.sh && MODULES_DIR=/path/to/dotfiles/arch/modules && source modules/<name>/<name>.sh && install_<name>"`
 - **Validate shell scripts**: `shellcheck install.sh modules/*/*.sh`
-- **Test module function**: `bash -c "source modules/common.sh && source modules/<name>/<name>.sh && configure_<name>"`
+- **Test module function**: `bash -c "source /path/to/dotfiles/arch/modules/common.sh && MODULES_DIR=/path/to/dotfiles/arch/modules && source modules/<name>/<name>.sh && configure_<name>"`
+- **Note**: Always use absolute paths when sourcing `common.sh` — relative paths break `BASH_SOURCE`-based resolution of `DOTFILES_DIR`
 - **Lint Lua files**: `stylua --check modules/neovim/nvim/` (format: `stylua modules/neovim/nvim/`)
 
 ## Code Style Guidelines

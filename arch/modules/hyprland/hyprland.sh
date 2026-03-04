@@ -122,10 +122,40 @@ function configure_hyprland() {
 
   # TODO: dunst config
 
+  # Load device identity (sets DEVICE_NAME from ~/.config/device.env)
+  load_device_env
+
   # hypr
   local config_source="$MODULES_DIR/hyprland/hypr"
   local config_dest="$HOME/.config/"
   symlink_config "$config_source" "$config_dest"
+
+  # Deploy device-specific monitors config as a relative symlink within the repo,
+  # falling back to default. Relative so the symlink is portable across machines.
+  local hypr_dir="$MODULES_DIR/hyprland/hypr"
+  local monitors_target
+  if [ -f "$hypr_dir/monitors/${DEVICE_NAME}.conf" ]; then
+    monitors_target="monitors/${DEVICE_NAME}.conf"
+    log_info "Using monitors config for device: $DEVICE_NAME"
+  else
+    monitors_target="monitors/default.conf"
+    log_warn "No monitors config found for '$DEVICE_NAME', falling back to default"
+  fi
+  ln -sfn "$monitors_target" "$hypr_dir/monitors.conf"
+  log_success "Set monitors.conf -> $monitors_target"
+
+  # Deploy device-specific hyprpaper config as a relative symlink within the repo,
+  # falling back to default.
+  local hyprpaper_target
+  if [ -f "$hypr_dir/hyprpaper/${DEVICE_NAME}.conf" ]; then
+    hyprpaper_target="hyprpaper/${DEVICE_NAME}.conf"
+    log_info "Using hyprpaper config for device: $DEVICE_NAME"
+  else
+    hyprpaper_target="hyprpaper/default.conf"
+    log_warn "No hyprpaper config found for '$DEVICE_NAME', falling back to default"
+  fi
+  ln -sfn "$hyprpaper_target" "$hypr_dir/hyprpaper.conf"
+  log_success "Set hyprpaper.conf -> $hyprpaper_target"
 
   # waybar
   config_source="$MODULES_DIR/hyprland/waybar"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Repo root — resolved at source time while BASH_SOURCE still points to common.sh
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # Logging configuration
 LOG_FILE="${LOG_FILE:-}"
 DEBUG_MODE="${DEBUG_MODE:-false}"
@@ -301,6 +304,26 @@ function ensure_package_installed() {
       fi
     fi
   fi
+}
+
+# Load device-specific environment variables from device.env in the repo root.
+# Sets DEVICE_NAME, falling back to "default" if the file is absent or DEVICE_NAME unset.
+# Copy device.env.example to device.env and set DEVICE_NAME for this machine.
+function load_device_env() {
+  local env_file="$DOTFILES_DIR/device.env"
+
+  if [ -f "$env_file" ]; then
+    # shellcheck disable=SC1090
+    source "$env_file"
+    log_debug "Loaded device env from $env_file"
+  else
+    log_warn "No device env file found at $env_file — using DEVICE_NAME=default"
+    log_warn "Copy $DOTFILES_DIR/device.env.example to $env_file to enable per-device config"
+  fi
+
+  DEVICE_NAME="${DEVICE_NAME:-default}"
+  export DEVICE_NAME
+  log_info "Device: $DEVICE_NAME"
 }
 
 # Function to symlink configuration files or directories without using rm -rf
