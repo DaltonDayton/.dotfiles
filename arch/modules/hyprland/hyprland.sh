@@ -44,6 +44,9 @@ function install_hyprland() {
     archlinux-xdg-menu
     # Also ran this, but idk if it's needed: `sudo update-mime-database /usr/share/mime`
 
+    # Display manager
+    sddm
+
     # Bluetooth utilities
     bluez       # Bluetooth protocol stack
     bluez-utils # Bluetooth utilities
@@ -145,6 +148,9 @@ function configure_hyprland() {
     sudo systemctl start bluetooth.service
   fi
 
+  # SDDM (display manager) setup
+  configure_sddm
+
   # Voxtype (voice dictation) setup
   configure_voxtype
 
@@ -177,6 +183,47 @@ function configure_hyprland() {
   #   fi
   # done
 
+}
+
+# Function to configure SDDM display manager
+function configure_sddm() {
+  local theme_dir="/usr/share/sddm/themes/catppuccin-mocha-pink"
+  local theme_repo="https://github.com/catppuccin/sddm.git"
+
+  # Deploy sddm.conf
+  local config_source="$MODULES_DIR/hyprland/config/sddm.conf"
+  local config_dest="/etc/sddm.conf"
+  if [ ! -f "$config_dest" ] || ! diff -q "$config_source" "$config_dest" >/dev/null 2>&1; then
+    log_info "Deploying /etc/sddm.conf..."
+    sudo cp "$config_source" "$config_dest"
+    log_success "Deployed /etc/sddm.conf"
+  else
+    log_info "/etc/sddm.conf already up to date"
+  fi
+
+  # Clone catppuccin SDDM theme if not already installed
+  if [ ! -d "$theme_dir" ]; then
+    log_info "Installing catppuccin-mocha-pink SDDM theme..."
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    git clone --depth=1 "$theme_repo" "$tmp_dir/sddm"
+    sudo cp -r "$tmp_dir/sddm/src/catppuccin-mocha-pink" "$theme_dir"
+    rm -rf "$tmp_dir"
+    log_success "catppuccin-mocha-pink SDDM theme installed"
+  else
+    log_info "catppuccin-mocha-pink SDDM theme already installed"
+  fi
+
+  # Enable and start sddm service
+  if ! systemctl is-enabled sddm.service >/dev/null 2>&1; then
+    log_info "Enabling sddm service..."
+    sudo systemctl enable sddm.service
+  fi
+
+  if ! systemctl is-active sddm.service >/dev/null 2>&1; then
+    log_info "Starting sddm service..."
+    sudo systemctl start sddm.service
+  fi
 }
 
 # Function to configure voxtype voice dictation
