@@ -1,2 +1,4 @@
 .env
 device.env
+modules/hyprland/hypr/monitors.conf
+modules/hyprland/hypr/hyprpaper.conf
