@@ -64,7 +64,7 @@ MODULES=(
   # "solaar"
   # "fonts"
   # "obsidian"
-  "hyprland"
+  # "hyprland"
   # "gaming"
 )
 
