@@ -207,7 +207,8 @@ function configure_sddm() {
     local tmp_dir
     tmp_dir=$(mktemp -d)
     git clone --depth=1 "$theme_repo" "$tmp_dir/sddm"
-    sudo cp -r "$tmp_dir/sddm/src/catppuccin-mocha-pink" "$theme_dir"
+    sudo mkdir -p "$theme_dir"
+    sudo find "$tmp_dir/sddm" -mindepth 1 -maxdepth 1 ! -name '.git' -exec cp -r {} "$theme_dir/" \;
     rm -rf "$tmp_dir"
     log_success "catppuccin-mocha-pink SDDM theme installed"
   else
