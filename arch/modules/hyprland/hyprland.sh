@@ -188,7 +188,6 @@ function configure_hyprland() {
 # Function to configure SDDM display manager
 function configure_sddm() {
   local theme_dir="/usr/share/sddm/themes/catppuccin-mocha-pink"
-  local theme_repo="https://github.com/catppuccin/sddm.git"
 
   # Deploy sddm.conf
   local config_source="$MODULES_DIR/hyprland/config/sddm.conf"
@@ -201,15 +200,10 @@ function configure_sddm() {
     log_info "/etc/sddm.conf already up to date"
   fi
 
-  # Clone catppuccin SDDM theme if not already installed
+  # Install catppuccin SDDM theme from dotfiles
   if [ ! -d "$theme_dir" ]; then
     log_info "Installing catppuccin-mocha-pink SDDM theme..."
-    local tmp_dir
-    tmp_dir=$(mktemp -d)
-    git clone --depth=1 "$theme_repo" "$tmp_dir/sddm"
-    sudo mkdir -p "$theme_dir"
-    sudo find "$tmp_dir/sddm" -mindepth 1 -maxdepth 1 ! -name '.git' -exec cp -r {} "$theme_dir/" \;
-    rm -rf "$tmp_dir"
+    sudo cp -r "$MODULES_DIR/hyprland/sddm-theme" "$theme_dir"
     log_success "catppuccin-mocha-pink SDDM theme installed"
   else
     log_info "catppuccin-mocha-pink SDDM theme already installed"
