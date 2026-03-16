@@ -168,6 +168,54 @@ def render_templates(
 
 
 # ---------------------------------------------------------------------------
+# Symlink wiring
+# ---------------------------------------------------------------------------
+
+# Maps generated file paths to their config destinations.
+# Destinations are relative to the dotfiles modules dir or use ~ for $HOME.
+# Since ~/.config/<app> directories are already symlinked to the module dirs,
+# we symlink generated files into the module dirs so they're served automatically.
+MODULES_DIR = THEME_DIR.parent
+
+SYMLINK_MAP: dict[str, str] = {
+    "kitty/kitty-theme.conf": "~/.config/kitty/kitty-theme.conf",
+    "swaync/style.css": str(MODULES_DIR / "hyprland/swaync/style.css"),
+    "waybar/palette.css": str(MODULES_DIR / "hyprland/waybar/palette.css"),
+    "waybar/config.jsonc": str(MODULES_DIR / "hyprland/waybar/config.jsonc"),
+    "hyprland/colors.conf": str(MODULES_DIR / "hyprland/hypr/colors.conf"),
+    "hyprlock/hyprlock.conf": str(MODULES_DIR / "hyprland/hypr/hyprlock.conf"),
+}
+
+
+def create_symlinks(rendered: list[str], dry_run: bool = False) -> None:
+    """Create symlinks from config destinations to generated files."""
+    if not rendered:
+        return
+
+    print("\nSymlinks:")
+    for rel_path in rendered:
+        if rel_path not in SYMLINK_MAP:
+            continue
+
+        source = GENERATED_DIR / rel_path
+        dest = Path(SYMLINK_MAP[rel_path]).expanduser()
+
+        if dry_run:
+            print(f"  [preview] {dest} → {source}")
+            continue
+
+        # Ensure parent directory exists
+        dest.parent.mkdir(parents=True, exist_ok=True)
+
+        # Remove existing file/symlink
+        if dest.exists() or dest.is_symlink():
+            dest.unlink()
+
+        dest.symlink_to(source)
+        print(f"  [link]    {dest} → {source}")
+
+
+# ---------------------------------------------------------------------------
 # App reload
 # ---------------------------------------------------------------------------
 
@@ -214,6 +262,7 @@ def cmd_apply(args: argparse.Namespace) -> None:
         print("\nNo templates found. Add .j2 files to modules/theme/templates/")
         return
 
+    create_symlinks(rendered)
     save_current_theme(name)
     reload_apps()
 
@@ -233,6 +282,9 @@ def cmd_preview(args: argparse.Namespace) -> None:
 
     if not rendered:
         print("\nNo templates found.")
+        return
+
+    create_symlinks(rendered, dry_run=True)
 
 
 def cmd_list(args: argparse.Namespace) -> None:

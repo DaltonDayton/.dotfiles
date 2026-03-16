@@ -1,4 +1,4 @@
-@import "mocha.css";
+@import "palette.css";
 
 * {
   font-family: "MesloLGS Nerd Font Mono Bold";
@@ -51,7 +51,7 @@ button:hover {
 }
 
 #workspaces button.urgent {
-  background-color: #eb4d4b;
+  background-color: @red;
 }
 
 #pulseaudio,
@@ -99,7 +99,7 @@ button:hover {
 
 #idle_inhibitor {
   margin-right: 12px;
-  color: #7cb342;
+  color: @green;
 }
 
 #idle_inhibitor.activated {
