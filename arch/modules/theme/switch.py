@@ -1,0 +1,300 @@
+#!/usr/bin/env python3
+"""Theme switcher — renders Jinja2 templates with palette colors and reloads apps."""
+
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+import tomllib
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+
+THEME_DIR = Path(__file__).resolve().parent
+PALETTES_DIR = THEME_DIR / "palettes"
+TEMPLATES_DIR = THEME_DIR / "templates"
+GENERATED_DIR = THEME_DIR / "generated"
+CURRENT_FILE = THEME_DIR / "current.toml"
+
+# ---------------------------------------------------------------------------
+# Jinja2 filters
+# ---------------------------------------------------------------------------
+
+
+def strip_hash(value: str) -> str:
+    """#1e1e2e → 1e1e2e"""
+    return value.lstrip("#")
+
+
+def upper_hex(value: str) -> str:
+    """#1e1e2e → #1E1E2E"""
+    return value.upper() if value.startswith("#") else f"#{value.upper()}"
+
+
+def to_rgb(value: str) -> str:
+    """#1e1e2e → 30, 30, 46"""
+    h = strip_hash(value)
+    return f"{int(h[0:2], 16)}, {int(h[2:4], 16)}, {int(h[4:6], 16)}"
+
+
+def to_rgba(value: str, alpha: float = 1.0) -> str:
+    """#1e1e2e → rgba(30, 30, 46, 1.0)"""
+    return f"rgba({to_rgb(value)}, {alpha})"
+
+
+def to_rgb_r(value: str) -> int:
+    """#1e1e2e → 30"""
+    return int(strip_hash(value)[0:2], 16)
+
+
+def to_rgb_g(value: str) -> int:
+    """#1e1e2e → 30"""
+    return int(strip_hash(value)[2:4], 16)
+
+
+def to_rgb_b(value: str) -> int:
+    """#1e1e2e → 46"""
+    return int(strip_hash(value)[4:6], 16)
+
+
+# ---------------------------------------------------------------------------
+# Palette loading
+# ---------------------------------------------------------------------------
+
+
+def list_palettes() -> list[str]:
+    """Return sorted list of available palette names (without .toml extension)."""
+    return sorted(p.stem for p in PALETTES_DIR.glob("*.toml"))
+
+
+def load_palette(name: str) -> dict:
+    """Load a palette TOML file and return the parsed dict."""
+    path = PALETTES_DIR / f"{name}.toml"
+    if not path.exists():
+        print(f"Error: palette '{name}' not found at {path}", file=sys.stderr)
+        print(f"Available palettes: {', '.join(list_palettes())}", file=sys.stderr)
+        sys.exit(1)
+    with open(path, "rb") as f:
+        return tomllib.load(f)
+
+
+def get_current_theme() -> str | None:
+    """Read the currently active theme name from current.toml."""
+    if not CURRENT_FILE.exists():
+        return None
+    with open(CURRENT_FILE, "rb") as f:
+        data = tomllib.load(f)
+    return data.get("theme")
+
+
+def save_current_theme(name: str) -> None:
+    """Write the active theme name to current.toml."""
+    with open(CURRENT_FILE, "w") as f:
+        f.write(f'theme = "{name}"\n')
+
+
+# ---------------------------------------------------------------------------
+# Template rendering
+# ---------------------------------------------------------------------------
+
+
+def build_template_context(palette: dict) -> dict:
+    """Flatten palette into a template context dict.
+
+    Colors are available as top-level names (e.g., {{ base }}, {{ mauve }}).
+    Meta and integrations are nested under 'meta' and 'integrations'.
+    """
+    ctx = {}
+    ctx.update(palette.get("colors", {}))
+    ctx["meta"] = palette.get("meta", {})
+    ctx["integrations"] = palette.get("integrations", {})
+    return ctx
+
+
+def create_jinja_env() -> Environment:
+    """Create a Jinja2 environment with custom filters."""
+    env = Environment(
+        loader=FileSystemLoader(str(TEMPLATES_DIR)),
+        keep_trailing_newline=True,
+        trim_blocks=False,
+        lstrip_blocks=False,
+    )
+    env.filters["strip_hash"] = strip_hash
+    env.filters["upper_hex"] = upper_hex
+    env.filters["to_rgb"] = to_rgb
+    env.filters["to_rgba"] = to_rgba
+    env.filters["to_rgb_r"] = to_rgb_r
+    env.filters["to_rgb_g"] = to_rgb_g
+    env.filters["to_rgb_b"] = to_rgb_b
+    return env
+
+
+def render_templates(
+    env: Environment, context: dict, dry_run: bool = False
+) -> list[str]:
+    """Render all .j2 templates and write output to generated/.
+
+    Returns a list of relative paths that were rendered.
+    """
+    rendered = []
+
+    for template_path in sorted(TEMPLATES_DIR.rglob("*.j2")):
+        # Relative path from templates dir, e.g., "kitty.conf.j2"
+        rel = template_path.relative_to(TEMPLATES_DIR)
+        # Output path: strip .j2 extension
+        out_rel = rel.with_suffix("")
+        out_path = GENERATED_DIR / out_rel
+
+        # Load and render
+        template = env.get_template(str(rel))
+        rendered_content = template.render(**context)
+
+        if dry_run:
+            print(f"  [preview] {rel} → generated/{out_rel}")
+        else:
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(out_path, "w") as f:
+                f.write(rendered_content)
+            print(f"  [render]  {rel} → generated/{out_rel}")
+
+        rendered.append(str(out_rel))
+
+    return rendered
+
+
+# ---------------------------------------------------------------------------
+# App reload
+# ---------------------------------------------------------------------------
+
+RELOAD_COMMANDS: dict[str, str | None] = {
+    "kitty": "kill -SIGUSR1 $(pgrep -x kitty) 2>/dev/null",
+    "waybar": "killall -SIGUSR2 waybar 2>/dev/null",
+    "swaync": "swaync-client --reload-css 2>/dev/null && swaync-client --reload-config 2>/dev/null",
+    # Hyprland auto-reloads on config file change
+    # Hyprlock reads config on launch
+    "tmux": "tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null",
+    # Starship auto-reloads per prompt
+    # Yazi requires restart
+}
+
+
+def reload_apps() -> None:
+    """Execute reload commands for all apps that support hot-reload."""
+    print("\nReloading apps:")
+    for app, cmd in RELOAD_COMMANDS.items():
+        if cmd is None:
+            continue
+        result = subprocess.run(cmd, shell=True, capture_output=True)
+        status = "ok" if result.returncode == 0 else "skipped"
+        print(f"  [{status}]  {app}")
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+
+def cmd_apply(args: argparse.Namespace) -> None:
+    """Apply a theme."""
+    name = args.theme
+    palette = load_palette(name)
+
+    print(f"Applying theme: {palette['meta']['name']} ({name})")
+
+    env = create_jinja_env()
+    context = build_template_context(palette)
+    rendered = render_templates(env, context)
+
+    if not rendered:
+        print("\nNo templates found. Add .j2 files to modules/theme/templates/")
+        return
+
+    save_current_theme(name)
+    reload_apps()
+
+    print(f"\nTheme '{name}' applied. {len(rendered)} file(s) rendered.")
+
+
+def cmd_preview(args: argparse.Namespace) -> None:
+    """Preview what would be rendered without writing files."""
+    name = args.theme
+    palette = load_palette(name)
+
+    print(f"Preview: {palette['meta']['name']} ({name})")
+
+    env = create_jinja_env()
+    context = build_template_context(palette)
+    rendered = render_templates(env, context, dry_run=True)
+
+    if not rendered:
+        print("\nNo templates found.")
+
+
+def cmd_list(args: argparse.Namespace) -> None:
+    """List available palettes."""
+    palettes = list_palettes()
+    current = get_current_theme()
+
+    if not palettes:
+        print("No palettes found. Add .toml files to modules/theme/palettes/")
+        return
+
+    for name in palettes:
+        marker = " *" if name == current else ""
+        palette = load_palette(name)
+        meta = palette.get("meta", {})
+        theme_type = meta.get("type", "?")
+        display_name = meta.get("name", name)
+        print(f"  {name:<30} {display_name} ({theme_type}){marker}")
+
+
+def cmd_current(args: argparse.Namespace) -> None:
+    """Show the currently active theme."""
+    current = get_current_theme()
+    if current:
+        palette = load_palette(current)
+        print(f"{current} — {palette['meta']['name']}")
+    else:
+        print("No theme currently applied.")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Theme switcher — apply color palettes across all apps."
+    )
+    subparsers = parser.add_subparsers(dest="command")
+
+    # apply
+    p_apply = subparsers.add_parser("apply", help="Apply a theme")
+    p_apply.add_argument("theme", help="Palette name (without .toml)")
+    p_apply.set_defaults(func=cmd_apply)
+
+    # preview
+    p_preview = subparsers.add_parser("preview", help="Preview without applying")
+    p_preview.add_argument("theme", help="Palette name (without .toml)")
+    p_preview.set_defaults(func=cmd_preview)
+
+    # list
+    p_list = subparsers.add_parser("list", help="List available palettes")
+    p_list.set_defaults(func=cmd_list)
+
+    # current
+    p_current = subparsers.add_parser("current", help="Show active theme")
+    p_current.set_defaults(func=cmd_current)
+
+    args = parser.parse_args()
+
+    if not hasattr(args, "func"):
+        parser.print_help()
+        sys.exit(1)
+
+    args.func(args)
+
+
+if __name__ == "__main__":
+    main()
