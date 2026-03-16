@@ -189,6 +189,7 @@ SYMLINK_MAP: dict[str, str] = {
     "waybar/config.jsonc": str(MODULES_DIR / "hyprland/waybar/config.jsonc"),
     "hyprland/colors.conf": str(MODULES_DIR / "hyprland/hypr/colors.conf"),
     "hyprlock/hyprlock.conf": str(MODULES_DIR / "hyprland/hypr/hyprlock.conf"),
+    "tmux/colors.conf": "~/.config/tmux/colors.conf",
 }
 
 
@@ -221,11 +222,106 @@ def create_symlinks(rendered: list[str], dry_run: bool = False) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Plugin-based app integrations
+# ---------------------------------------------------------------------------
+
+# Each integration defines:
+#   - file: path to the config file
+#   - pattern: regex to match the current theme value (must have one capture group)
+#   - template: replacement string with {value} placeholder
+#   - key: the key in [integrations] to read from the palette
+
+INTEGRATION_MAP: list[dict] = [
+    {
+        "name": "tmux",
+        "file": str(MODULES_DIR / "tmux/config/tmux.conf"),
+        "pattern": r'(set -g @catppuccin_flavor )"[^"]*"',
+        "template": r'\1"{value}"',
+        "key": "tmux",
+    },
+    {
+        "name": "starship",
+        "file": str(MODULES_DIR / "shell/config/starship.toml"),
+        "pattern": r'(palette = )"[^"]*"',
+        "template": r'\1"{value}"',
+        "key": "starship",
+    },
+    {
+        "name": "yazi",
+        "file": str(MODULES_DIR / "shell/config/yazi/theme.toml"),
+        "pattern": r'(dark = )"[^"]*"',
+        "template": r'\1"{value}"',
+        "key": "yazi",
+    },
+    {
+        "name": "yazi",
+        "file": str(MODULES_DIR / "shell/config/yazi/theme.toml"),
+        "pattern": r'(light = )"[^"]*"',
+        "template": r'\1"{value}"',
+        "key": "yazi",
+    },
+    {
+        "name": "opencode",
+        "file": str(Path("~/.config/opencode/tui.json").expanduser()),
+        "pattern": r'("theme": )"[^"]*"',
+        "template": r'\1"{value}"',
+        "key": "opencode",
+    },
+]
+
+
+def apply_integrations(palette: dict, dry_run: bool = False) -> None:
+    """Update plugin-based app configs with theme names from [integrations]."""
+    integrations = palette.get("integrations", {})
+    if not integrations:
+        return
+
+    print("\nIntegrations:")
+    import re
+
+    processed = set()
+    for entry in INTEGRATION_MAP:
+        key = entry["key"]
+        value = integrations.get(key, "")
+        name = entry["name"]
+
+        if not value:
+            # Only warn once per app
+            if name not in processed:
+                print(f"  [skip]    {name} — no integration defined for this theme")
+                processed.add(name)
+            continue
+
+        filepath = Path(entry["file"])
+        if not filepath.exists():
+            if name not in processed:
+                print(f"  [skip]    {name} — config not found: {filepath}")
+                processed.add(name)
+            continue
+
+        if dry_run:
+            print(f"  [preview] {name} — set to '{value}'")
+            continue
+
+        content = filepath.read_text()
+        replacement = entry["template"].replace("{value}", value)
+        new_content = re.sub(entry["pattern"], replacement, content)
+
+        if new_content != content:
+            filepath.write_text(new_content)
+            print(f"  [update]  {name} — set to '{value}'")
+        else:
+            print(f"  [ok]      {name} — already set to '{value}'")
+
+        processed.add(name)
+
+
+# ---------------------------------------------------------------------------
 # App reload
 # ---------------------------------------------------------------------------
 
 RELOAD_COMMANDS: dict[str, str | None] = {
-    "kitty": "kill -SIGUSR1 $(pgrep -x kitty) 2>/dev/null",
+    "kitty": "for sock in /tmp/kitty-socket-*; do kitty @ --to unix:$sock set-colors --all ~/.config/kitty/kitty-theme.conf 2>/dev/null; done",
     "waybar": "killall -SIGUSR2 waybar 2>/dev/null",
     "swaync": "swaync-client --reload-css 2>/dev/null && swaync-client --reload-config 2>/dev/null",
     # Hyprland auto-reloads on config file change
@@ -268,6 +364,7 @@ def cmd_apply(args: argparse.Namespace) -> None:
         return
 
     create_symlinks(rendered)
+    apply_integrations(palette)
     save_current_theme(name)
     reload_apps()
 
@@ -290,6 +387,7 @@ def cmd_preview(args: argparse.Namespace) -> None:
         return
 
     create_symlinks(rendered, dry_run=True)
+    apply_integrations(palette, dry_run=True)
 
 
 def cmd_list(args: argparse.Namespace) -> None:

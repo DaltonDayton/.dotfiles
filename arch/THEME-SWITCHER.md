@@ -205,6 +205,7 @@ Jinja2 templates with custom filters for format conversion:
 - `{{ base | to_rgb_b }}` → `46`
 
 Template context provides:
+
 - Top-level color names: `{{ base }}`, `{{ mauve }}`, etc.
 - Terminal colors: `{{ terminal.color0 }}`, `{{ terminal.color15 }}`, etc.
 - UI accents: `{{ ui.accent }}`, `{{ ui.clock }}`, `{{ ui.gpu }}`, etc.
@@ -224,68 +225,70 @@ python3 switch.py preview <palette-name>    # Render without applying
 
 Generated files are symlinked into module directories (which `~/.config/` already points to):
 
-| Generated File | Symlink Destination |
-|---|---|
-| `kitty/kitty-theme.conf` | `~/.config/kitty/kitty-theme.conf` |
-| `swaync/style.css` | `modules/hyprland/swaync/style.css` |
-| `waybar/palette.css` | `modules/hyprland/waybar/palette.css` |
-| `waybar/style.css` | `modules/hyprland/waybar/style.css` |
-| `waybar/config.jsonc` | `modules/hyprland/waybar/config.jsonc` |
-| `hyprland/colors.conf` | `modules/hyprland/hypr/colors.conf` |
-| `hyprlock/hyprlock.conf` | `modules/hyprland/hypr/hyprlock.conf` |
+| Generated File           | Symlink Destination                    |
+| ------------------------ | -------------------------------------- |
+| `kitty/kitty-theme.conf` | `~/.config/kitty/kitty-theme.conf`     |
+| `swaync/style.css`       | `modules/hyprland/swaync/style.css`    |
+| `waybar/palette.css`     | `modules/hyprland/waybar/palette.css`  |
+| `waybar/style.css`       | `modules/hyprland/waybar/style.css`    |
+| `waybar/config.jsonc`    | `modules/hyprland/waybar/config.jsonc` |
+| `hyprland/colors.conf`   | `modules/hyprland/hypr/colors.conf`    |
+| `hyprlock/hyprlock.conf` | `modules/hyprland/hypr/hyprlock.conf`  |
 
 ## Reload Map
 
-| App | Reload Command | Notes |
-|-----|---------------|-------|
-| Kitty | `kill -SIGUSR1 $(pgrep -x kitty)` | New windows pick up changes |
-| Waybar | `killall -SIGUSR2 waybar` | Full reload |
-| SwayNC | `swaync-client --reload-css && --reload-config` | Full reload |
-| Hyprland | — | Auto-reloads on file change |
-| Hyprlock | — | Reads config on launch |
-| Tmux | `tmux source-file ~/.config/tmux/tmux.conf` | Full reload |
-| Starship | — | Auto-reloads per prompt |
-| Neovim | TBD | Needs investigation |
-| Yazi | — | Requires restart |
-| SDDM | `sudo cp ... && sudo systemctl restart sddm` | Requires sudo, deferred |
+| App      | Reload Command                                  | Notes                       |
+| -------- | ----------------------------------------------- | --------------------------- |
+| Kitty    | `kill -SIGUSR1 $(pgrep -x kitty)`               | New windows pick up changes |
+| Waybar   | `killall -SIGUSR2 waybar`                       | Full reload                 |
+| SwayNC   | `swaync-client --reload-css && --reload-config` | Full reload                 |
+| Hyprland | —                                               | Auto-reloads on file change |
+| Hyprlock | —                                               | Reads config on launch      |
+| Tmux     | `tmux source-file ~/.config/tmux/tmux.conf`     | Full reload                 |
+| Starship | —                                               | Auto-reloads per prompt     |
+| Neovim   | TBD                                             | Needs investigation         |
+| Yazi     | —                                               | Requires restart            |
+| SDDM     | `sudo cp ... && sudo systemctl restart sddm`    | Requires sudo, deferred     |
 
 ## App Inventory
 
 ### Template-generated (done)
 
-| App | Template | Config Integration | Status |
-|-----|----------|-------------------|--------|
-| Kitty | `kitty/kitty-theme.conf.j2` | `include` directive in kitty.conf | ✅ Done |
-| SwayNC | `swaync/style.css.j2` | Symlink replaces style.css | ✅ Done |
-| Waybar CSS | `waybar/style.css.j2` + `palette.css.j2` | Symlink replaces both files | ✅ Done |
-| Waybar config | `waybar/config.jsonc.j2` | Symlink replaces config.jsonc | ✅ Done |
-| Hyprland | `hyprland/colors.conf.j2` | `source` directive in hyprland.conf | ✅ Done |
-| Hyprlock | `hyprlock/hyprlock.conf.j2` | Symlink replaces hyprlock.conf | ✅ Done |
+| App           | Template                                 | Config Integration                  | Status  |
+| ------------- | ---------------------------------------- | ----------------------------------- | ------- |
+| Kitty         | `kitty/kitty-theme.conf.j2`              | `include` directive in kitty.conf   | ✅ Done |
+| SwayNC        | `swaync/style.css.j2`                    | Symlink replaces style.css          | ✅ Done |
+| Waybar CSS    | `waybar/style.css.j2` + `palette.css.j2` | Symlink replaces both files         | ✅ Done |
+| Waybar config | `waybar/config.jsonc.j2`                 | Symlink replaces config.jsonc       | ✅ Done |
+| Hyprland      | `hyprland/colors.conf.j2`                | `source` directive in hyprland.conf | ✅ Done |
+| Hyprlock      | `hyprlock/hyprlock.conf.j2`              | Symlink replaces hyprlock.conf      | ✅ Done |
 
 ### Plugin-based (switcher updates flavor/colorscheme name)
 
-| App | Config File | Current Setting | Status |
-|-----|------------|----------------|--------|
-| Neovim | `modules/neovim/nvim/lua/plugins/colorscheme.lua` | `catppuccin_flavor = "mocha"` | TODO |
-| Tmux | `modules/tmux/config/tmux.conf` | `@catppuccin_flavor "mocha"` | TODO |
-| Starship | `modules/shell/config/starship.toml` | `palette = "catppuccin_mocha"` | TODO |
-| Yazi | `modules/shell/config/yazi/theme.toml` | `dark = "catppuccin-mocha"` | TODO |
+| App      | Config File                                       | Current Setting                | Status  |
+| -------- | ------------------------------------------------- | ------------------------------ | ------- |
+| Tmux     | `modules/tmux/config/tmux.conf`                   | `source-file colors.conf`      | ✅ Done |
+| Starship | `modules/shell/config/starship.toml`              | `palette = "catppuccin_mocha"` | ✅ Done |
+| Yazi     | `modules/shell/config/yazi/theme.toml`            | `dark = "catppuccin-mocha"`    | ✅ Done |
+| Neovim   | `modules/neovim/nvim/lua/plugins/colorscheme.lua` | Deeply tied to Catppuccin      | Deferred (complex) |
 
 ### Not yet themed
 
-| App | Notes | Status |
-|-----|-------|--------|
-| eza | Uses `EZA_COLORS` env var or theme file, truecolor | TODO |
-| Rofi | No config exists, using defaults | Deferred |
-| btop | No config exists, using defaults | Deferred |
-| GTK | Commented out in hyprland.sh | Deferred |
-| SDDM | `modules/hyprland/sddm-theme/*.qml` + SVGs | Deferred |
+| App      | Notes                                                          | Status   |
+| -------- | -------------------------------------------------------------- | -------- |
+| OpenCode | Built-in themes (`catppuccin`, `nord`, etc.) via `tui.json`   | TODO     |
+| eza      | Uses `EZA_COLORS` env var or theme file, truecolor             | TODO     |
+| Rofi     | No config exists, using defaults                               | Deferred |
+| btop     | No config exists, using defaults                               | Deferred |
+| GTK      | Commented out in hyprland.sh                                   | Deferred |
+| SDDM     | `modules/hyprland/sddm-theme/*.qml` + SVGs                    | Deferred |
 
 ---
 
 ## Phases
 
 ### Phase 1 — Foundation ✅
+
 - [x] Create `modules/theme/` directory structure
 - [x] Define palette format and create `catppuccin-mocha.toml`
 - [x] Build `switch.py` core engine
@@ -299,6 +302,7 @@ Generated files are symlinked into module directories (which `~/.config/` alread
 - [x] Add `generated/` to `.gitignore`
 
 ### Phase 2 — Templates (hardcoded apps) ✅
+
 - [x] Kitty — `include` directive for generated theme file
 - [x] SwayNC — full style.css template
 - [x] Waybar — palette.css, style.css, and config.jsonc templates
@@ -308,6 +312,7 @@ Generated files are symlinked into module directories (which `~/.config/` alread
 - [x] Hot-reload verified for all apps
 
 ### Phase 2.5 — Palette refinement ✅
+
 - [x] Add `[terminal]` section — 16 ANSI colors independent from UI palette
 - [x] Add `[ui]` section — semantic accent mappings (clock, network, battery, etc.)
 - [x] Templatize `waybar/style.css` — per-module colors use `ui.*` instead of raw palette
@@ -316,19 +321,25 @@ Generated files are symlinked into module directories (which `~/.config/` alread
 - [x] Create Nord palette — 100% official Nord colors, zero interpolation
 - [x] Tested both themes end-to-end
 
-### Phase 3 — Plugin integrations
-- [ ] Neovim — swap `catppuccin_flavor` in colorscheme.lua
-- [ ] Tmux — swap `@catppuccin_flavor` in tmux.conf
-- [ ] Starship — swap `palette` name in starship.toml
-- [ ] Yazi — swap flavor name in theme.toml
-- [ ] Handle missing integrations (fall back to template if plugin theme doesn't exist)
+### Phase 3 — Plugin integrations ✅
 
-### Phase 4 — Community themes + polish
+- [x] Tmux — template-generated `colors.conf` overrides `@thm_*` variables after TPM loads
+- [x] Starship — added `[palettes.nord]` block, switcher swaps `palette` name
+- [x] Yazi — installed `nord.yazi` flavor, switcher swaps `dark`/`light` values
+- [x] Kitty — live reload via `kitty @ set-colors` over unix socket
+- [x] Integration replacement logic in `switch.py` with `[update]`/`[ok]`/`[skip]` states
+- [x] Empty integration values skip with warning (no crash)
+- [ ] Neovim — deferred (config deeply tied to Catppuccin plugin, needs restructuring)
+
+### Phase 4 — More apps + community themes
+
+- [ ] OpenCode — swap `theme` in `tui.json` (has built-in `catppuccin`, `nord`, etc.)
+- [ ] eza theming (`EZA_COLORS` env var or theme file)
+- [ ] Neovim — restructure colorscheme config to support multiple themes
 - [ ] Build `import_base16.py` (map 16 colors, duplicate for remaining slots)
 - [ ] Batch import popular Base16 schemes (Gruvbox, Tokyo Night, Dracula, etc.)
 - [ ] Hand-tune imported palettes
 - [ ] Add Catppuccin Latte (hand-crafted, light theme)
-- [ ] eza theming (`EZA_COLORS` env var or theme file)
 - [ ] Rofi theme template
 - [ ] btop theme template
 - [ ] GTK theme integration
