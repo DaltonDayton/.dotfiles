@@ -1,0 +1,340 @@
+/* Catppuccin Mocha palette
+ *
+ * base:      #1e1e2e    mantle:    #181825    crust:     #11111b
+ * surface0:  #313244    surface1:  #45475a    surface2:  #585b70
+ * overlay0:  #6c7086    overlay1:  #7f849c    overlay2:  #9399b2
+ * text:      #cdd6f4    subtext0:  #a6adc8    subtext1:  #bac2de
+ * blue:      #89b4fa    lavender:  #b4befe    sapphire:  #74c7ec
+ * sky:       #89dceb    teal:      #94e2d5    green:     #a6e3a1
+ * yellow:    #f9e2af    peach:     #fab387    maroon:    #eba0ac
+ * red:       #f38ba8    mauve:     #cba6f7    pink:      #f5c2e7
+ * flamingo:  #f2cdcd    rosewater: #f5e0dc
+ */
+
+/* ============================================
+ * NOTIFICATION POPUPS
+ * ============================================ */
+
+.notification-row {
+  outline: none;
+}
+
+.notification-row:focus,
+.notification-row:hover {
+  background: transparent;
+}
+
+.notification {
+  border-radius: 12px;
+  margin: 8px 12px;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.5),
+              0 1px 4px 0 rgba(0, 0, 0, 0.3);
+  padding: 0;
+  transition: all 250ms ease;
+}
+
+.notification:hover {
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.55),
+              0 0 12px 0 alpha(#cba6f7, 0.08);
+}
+
+.notification-content {
+  background: alpha(#1e1e2e, 0.94);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #313244;
+  border-left: 4px solid #cba6f7;
+}
+
+.notification-content:hover {
+  border-color: #45475a;
+  border-left-color: #cba6f7;
+}
+
+/* Urgency styles */
+.critical .notification-content {
+  border-color: alpha(#f38ba8, 0.6);
+  border-left-color: #f38ba8;
+  background: alpha(#1e1e2e, 0.96);
+}
+
+.critical .notification-content:hover {
+  border-color: #f38ba8;
+  border-left-color: #f38ba8;
+}
+
+.low .notification-content {
+  border-color: #313244;
+  border-left-color: #585b70;
+}
+
+/* Notification text */
+.summary {
+  font-family: "MesloLGS Nerd Font Mono Bold";
+  font-size: 14px;
+  font-weight: bold;
+  color: #cdd6f4;
+  margin-bottom: 4px;
+}
+
+.body {
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 12px;
+  color: #bac2de;
+  line-height: 1.4;
+}
+
+.time {
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 10px;
+  color: #6c7086;
+  margin-right: 14px;
+}
+
+/* Notification image/icon */
+.image {
+  border-radius: 10px;
+  margin-right: 14px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* App icon in notification */
+.notification-default-action .image {
+  margin-top: 2px;
+}
+
+/* Close button */
+.close-button {
+  background: #313244;
+  color: #a6adc8;
+  border-radius: 50%;
+  padding: 2px;
+  margin: 6px;
+  min-width: 22px;
+  min-height: 22px;
+  border: 1px solid #45475a;
+  transition: all 200ms ease;
+}
+
+.close-button:hover {
+  background: #f38ba8;
+  color: #1e1e2e;
+  border-color: #f38ba8;
+}
+
+/* Action buttons within notifications */
+.notification-action {
+  background: #313244;
+  color: #bac2de;
+  border-radius: 8px;
+  border: 1px solid #45475a;
+  margin: 4px 2px 2px 2px;
+  padding: 6px 12px;
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 11px;
+  transition: all 200ms ease;
+}
+
+.notification-action:hover {
+  background: #45475a;
+  color: #cdd6f4;
+}
+
+.notification-action:first-child {
+  margin-left: 0;
+}
+
+.notification-action:last-child {
+  margin-right: 0;
+}
+
+/* ============================================
+ * CONTROL CENTER (notification panel)
+ * ============================================ */
+
+.control-center {
+  background: alpha(#11111b, 0.95);
+  border-radius: 16px;
+  border: 2px solid #313244;
+  margin: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Title widget */
+.widget-title {
+  color: #cdd6f4;
+  font-family: "MesloLGS Nerd Font Mono Bold";
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px;
+}
+
+.widget-title > button {
+  background: #313244;
+  color: #cdd6f4;
+  border-radius: 8px;
+  padding: 4px 12px;
+  border: 1px solid #45475a;
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 12px;
+  transition: all 200ms ease;
+}
+
+.widget-title > button:hover {
+  background: #45475a;
+}
+
+/* DND toggle */
+.widget-dnd {
+  margin: 8px;
+  font-family: "MesloLGS Nerd Font Mono";
+  color: #bac2de;
+}
+
+.widget-dnd > switch {
+  border-radius: 12px;
+  background: #313244;
+  border: 2px solid #45475a;
+}
+
+.widget-dnd > switch:checked {
+  background: #cba6f7;
+  border-color: #cba6f7;
+}
+
+.widget-dnd > switch slider {
+  background: #cdd6f4;
+  border-radius: 50%;
+}
+
+/* MPRIS widget (media controls) */
+.widget-mpris {
+  background: alpha(#313244, 0.6);
+  border-radius: 12px;
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid #45475a;
+}
+
+.widget-mpris-player {
+  padding: 8px;
+}
+
+.widget-mpris-title {
+  font-family: "MesloLGS Nerd Font Mono Bold";
+  font-weight: bold;
+  font-size: 13px;
+  color: #cdd6f4;
+}
+
+.widget-mpris-subtitle {
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 11px;
+  color: #a6adc8;
+}
+
+.widget-mpris > box > button {
+  background: transparent;
+  color: #bac2de;
+  border: none;
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 28px;
+  min-height: 28px;
+  transition: all 200ms ease;
+}
+
+.widget-mpris > box > button:hover {
+  background: #45475a;
+  color: #cdd6f4;
+}
+
+/* Button grid */
+.widget-buttons-grid {
+  margin: 8px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+  background: #313244;
+  color: #bac2de;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 4px;
+  border: 1px solid #45475a;
+  font-family: "MesloLGS Nerd Font Mono";
+  font-size: 12px;
+  transition: all 200ms ease;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+  background: #45475a;
+  color: #cdd6f4;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
+  background: #89b4fa;
+  color: #1e1e2e;
+  border-color: #89b4fa;
+}
+
+/* Notifications within control center */
+.control-center .notification-row .notification {
+  margin: 4px 0;
+  box-shadow: none;
+}
+
+.control-center .notification-row .notification-content {
+  background: alpha(#1e1e2e, 0.8);
+  border: 1px solid #313244;
+  border-left: 3px solid #cba6f7;
+}
+
+.control-center .notification-row .notification-content:hover {
+  border-color: #45475a;
+  border-left-color: #cba6f7;
+}
+
+.control-center .notification-row .critical .notification-content {
+  border-left-color: #f38ba8;
+}
+
+.control-center .notification-row .low .notification-content {
+  border-left-color: #585b70;
+}
+
+/* Scrollbar in control center */
+scrollbar {
+  border-radius: 8px;
+}
+
+scrollbar slider {
+  background: #45475a;
+  border-radius: 8px;
+  min-width: 4px;
+  min-height: 20px;
+}
+
+scrollbar slider:hover {
+  background: #585b70;
+}
+
+/* ============================================
+ * NOTIFICATION GROUP HEADERS
+ * ============================================ */
+
+.notification-group-headers {
+  font-family: "MesloLGS Nerd Font Mono Bold";
+  font-weight: bold;
+  color: #a6adc8;
+  font-size: 12px;
+  margin: 4px 8px;
+}
+
+/* ============================================
+ * BLANK WINDOW (behind control center)
+ * ============================================ */
+
+.blank-window {
+  background: alpha(black, 0.15);
+}

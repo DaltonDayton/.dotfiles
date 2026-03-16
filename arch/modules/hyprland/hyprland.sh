@@ -79,7 +79,7 @@ function install_hyprland() {
 
     # # Enhanced tools and utilities
     # "rofi-wayland" # Application launcher (better than wofi)
-    # "swaync"       # Notification center
+    swaync # Notification center
     # "cliphist"     # Clipboard manager
     # "hyprshade"    # Blue light filter and screen effects
     # "hypridle"     # Idle daemon
@@ -119,8 +119,6 @@ function install_hyprland() {
 # Function to configure the module
 function configure_hyprland() {
   # set -euo pipefail
-
-  # TODO: dunst config
 
   # Load device identity (sets DEVICE_NAME from ~/.config/device.env)
   load_device_env
@@ -183,6 +181,9 @@ function configure_hyprland() {
 
   # Voxtype (voice dictation) setup
   configure_voxtype
+
+  # Swaync (notification center) setup
+  configure_swaync
 
   # Cliphist (clipboard manager) setup
   configure_cliphist
@@ -315,6 +316,13 @@ function configure_voxtype() {
     log_warn "  voxtype setup systemd"
     log_warn "  voxtype setup compositor hyprland"
   fi
+}
+
+# Function to configure swaync notification center
+function configure_swaync() {
+  local config_source="$MODULES_DIR/hyprland/swaync"
+  local config_dest="$HOME/.config/swaync"
+  symlink_config "$config_source" "$config_dest"
 }
 
 # Function to configure cliphist clipboard manager
