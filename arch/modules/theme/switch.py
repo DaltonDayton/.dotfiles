@@ -107,10 +107,14 @@ def build_template_context(palette: dict) -> dict:
     """Flatten palette into a template context dict.
 
     Colors are available as top-level names (e.g., {{ base }}, {{ mauve }}).
+    Terminal colors are nested under 'terminal' (e.g., {{ terminal.color0 }}).
+    UI accent colors are nested under 'ui' (e.g., {{ ui.accent }}).
     Meta and integrations are nested under 'meta' and 'integrations'.
     """
     ctx = {}
     ctx.update(palette.get("colors", {}))
+    ctx["terminal"] = palette.get("terminal", {})
+    ctx["ui"] = palette.get("ui", {})
     ctx["meta"] = palette.get("meta", {})
     ctx["integrations"] = palette.get("integrations", {})
     return ctx
@@ -181,6 +185,7 @@ SYMLINK_MAP: dict[str, str] = {
     "kitty/kitty-theme.conf": "~/.config/kitty/kitty-theme.conf",
     "swaync/style.css": str(MODULES_DIR / "hyprland/swaync/style.css"),
     "waybar/palette.css": str(MODULES_DIR / "hyprland/waybar/palette.css"),
+    "waybar/style.css": str(MODULES_DIR / "hyprland/waybar/style.css"),
     "waybar/config.jsonc": str(MODULES_DIR / "hyprland/waybar/config.jsonc"),
     "hyprland/colors.conf": str(MODULES_DIR / "hyprland/hypr/colors.conf"),
     "hyprlock/hyprlock.conf": str(MODULES_DIR / "hyprland/hypr/hyprlock.conf"),

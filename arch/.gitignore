@@ -8,5 +8,6 @@ modules/hyprland/hypr/colors.conf
 modules/hyprland/hypr/hyprlock.conf
 modules/hyprland/swaync/style.css
 modules/hyprland/waybar/palette.css
+modules/hyprland/waybar/style.css
 modules/hyprland/waybar/config.jsonc
 modules/theme/current.toml

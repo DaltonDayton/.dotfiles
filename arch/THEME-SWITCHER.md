@@ -8,30 +8,30 @@ A Python-based theme engine that manages colors across all desktop applications 
 modules/theme/
 ├── theme.sh                     # Module: install deps, run initial generation
 ├── switch.py                    # Engine: parse → render → reload
-├── import_base16.py             # Import Base16/Base24 schemes → our palette format
+├── import_base16.py             # Import Base16/Base24 schemes → our palette format (planned)
 ├── palettes/
-│   ├── catppuccin-mocha.toml    # Hand-crafted (full 26 colors)
-│   ├── catppuccin-latte.toml    # Hand-crafted
-│   ├── gruvbox-dark.toml        # Imported + hand-tuned
-│   └── ...
+│   ├── catppuccin-mocha.toml    # Hand-crafted (full 26 colors + terminal + ui)
+│   └── nord.toml                # Hand-crafted (official Nord colors only)
 ├── templates/
-│   ├── kitty.conf.j2
+│   ├── kitty/
+│   │   └── kitty-theme.conf.j2
 │   ├── swaync/
 │   │   └── style.css.j2
 │   ├── waybar/
 │   │   ├── palette.css.j2
+│   │   ├── style.css.j2
 │   │   └── config.jsonc.j2
 │   ├── hyprland/
 │   │   └── colors.conf.j2
-│   └── hyprlock.conf.j2
+│   └── hyprlock/
+│       └── hyprlock.conf.j2
 ├── generated/                   # Gitignored — rendered output
 │   ├── kitty/
 │   ├── swaync/
 │   ├── waybar/
 │   ├── hyprland/
 │   └── hyprlock/
-├── current.toml                 # Tracks active theme
-└── requirements.txt             # jinja2
+└── current.toml                 # Tracks active theme
 ```
 
 ## Design Decisions
@@ -41,18 +41,31 @@ modules/theme/
 Evaluated existing tools before building:
 
 - **Tinty** (Base16/Base24 manager): Active, 250+ schemes, but locked to 16-24 colors.
-  Our setup uses 26 (Catppuccin's full palette). Templates are community-maintained
+  Our setup uses 26 colors + terminal + UI sections. Templates are community-maintained
   with gaps for Wayland-native apps (swaync, hyprlock, etc.).
 - **HyDE** (Hyprland desktop environment): Full theme switching with wallbash
   (wallpaper-driven color extraction). But it's an entire DE — adopting it means
   replacing our dotfiles with theirs.
 - **Flavours**: Predecessor to Tinty, no longer maintained.
-- **pywal**: Wallpaper-based palette generation. Interesting for Phase 4 but not
+- **pywal**: Wallpaper-based palette generation. Interesting for a future phase but not
   a theme management system.
 
-**Decision**: Build our own with a 26-color palette format that can import Base16
-schemes. This gives us full control over templates while accessing the community's
-250+ theme library.
+**Decision**: Build our own with a palette format that can import Base16 schemes.
+This gives us full control over templates while accessing the community's 250+ theme library.
+
+### Palette design principles
+
+- **Use official theme colors only.** When creating a palette for an established theme
+  (Nord, Gruvbox, etc.), every color should map to an official color from that theme.
+  Do not interpolate or derive colors — duplicate official colors across multiple slots
+  if needed. This ensures the theme looks authentic.
+- **Terminal colors are separate from UI colors.** The 16 ANSI terminal colors (what
+  `ls`, `eza`, etc. use) are defined in `[terminal]`, independent from the `[colors]`
+  palette. This allows themes to control terminal output separately from UI accents.
+- **UI accents are semantic.** The `[ui]` section maps semantic purposes (clock, network,
+  battery, etc.) to specific colors. This lets each theme control how colorful or
+  restrained the UI feels — e.g., Nord maps almost everything to Frost blues, while
+  Catppuccin uses a rainbow of accents.
 
 ### Importing community themes (Base16/Base24)
 
@@ -78,46 +91,34 @@ Our palette uses 26 color names. Base16 defines 16. The import strategy:
 | `base0E` | `mauve` | Purple / Keywords |
 | `base0F` | `flamingo` | Brown / Deprecated |
 
-**Derived colors** (10 auto-generated from the 16):
-| Our name | Derived from | Method |
-|----------|-------------|--------|
-| `mantle` | `base` | Darken 3% |
-| `crust` | `base` | Darken 6% |
-| `surface2` | `surface1` → `overlay0` | Midpoint |
-| `overlay1` | `overlay0` → `subtext0` | 33% blend |
-| `overlay2` | `overlay0` → `subtext0` | 66% blend |
-| `sky` | `teal` → `blue` | 50% blend |
-| `sapphire` | `teal` → `blue` | 25% blend |
-| `lavender` | `blue` → `mauve` | 50% blend |
-| `pink` | `mauve` → `red` | 30% blend toward red |
-| `maroon` | `red` | Desaturate 15% |
-
-The `import_base16.py` script reads Base16 YAML schemes and outputs our TOML
-format with all 26 colors populated. Imported palettes can be hand-tuned afterward.
+**Remaining slots** (10 colors): Map to the nearest official color from the theme.
+Do not interpolate. Duplicate existing colors if no distinct equivalent exists.
+Imported palettes should be hand-tuned afterward to ensure authenticity.
 
 ### Ideas borrowed from existing tools
 
-- **From Tinty**: Hook-based reload system, `fzf` picker pattern (`switch.py --list | fzf`)
-- **From HyDE/wallbash**: Wallpaper-driven color extraction (Phase 4 — `switch.py --from-wallpaper <image>`)
+- **From Tinty**: Hook-based reload system, `fzf` picker pattern (`switch.py list | fzf`)
+- **From HyDE/wallbash**: Wallpaper-driven color extraction (future — `switch.py --from-wallpaper <image>`)
 - **From swww**: Animated wallpaper transitions when switching themes (optional, independent)
 
 ## Flow
 
 1. Templates (`.j2`) are the source of truth for themed configs
 2. `switch.py` renders templates with palette colors → writes to `generated/`
-3. Symlinks point from `~/.config/<app>/` to `generated/` output
+3. Symlinks wire generated files into module directories (which `~/.config/` already points to)
 4. Apps are hot-reloaded after generation
 5. Apps with plugin theme systems (Neovim, Tmux, Starship, Yazi) get their flavor/colorscheme name swapped in their existing config files
 
 ## Palette Format
 
-TOML files with a standard set of 26 color names.
+TOML files with four sections: `[colors]` (26 base colors), `[terminal]` (16 ANSI colors),
+`[ui]` (semantic accent mappings), and `[integrations]` (plugin-based app theme names).
 
 ```toml
 [meta]
 name = "Catppuccin Mocha"
 type = "dark"  # dark | light
-source = "hand-crafted"  # hand-crafted | base16-import | base24-import
+source = "hand-crafted"  # hand-crafted | base16-import
 
 [colors]
 base = "#1e1e2e"
@@ -147,17 +148,48 @@ sapphire = "#74c7ec"
 blue = "#89b4fa"
 lavender = "#b4befe"
 
+# 16 terminal ANSI colors (independent from UI palette)
+[terminal]
+color0  = "#45475a"
+color1  = "#f38ba8"
+color2  = "#a6e3a1"
+color3  = "#f9e2af"
+color4  = "#89b4fa"
+color5  = "#f5c2e7"
+color6  = "#94e2d5"
+color7  = "#cdd6f4"
+color8  = "#585b70"
+color9  = "#f38ba8"
+color10 = "#a6e3a1"
+color11 = "#f9e2af"
+color12 = "#89b4fa"
+color13 = "#f5c2e7"
+color14 = "#94e2d5"
+color15 = "#a6adc8"
+
+# Semantic UI accent colors (controls how colorful the UI feels)
+[ui]
+accent = "#cba6f7"
+accent_secondary = "#74c7ec"
+clock = "#eba0ac"
+clock_date = "#cba6f7"
+audio = "#89b4fa"
+network = "#f9e2af"
+battery = "#a6e3a1"
+bluetooth = "#74c7ec"
+cpu = "#cba6f7"
+gpu = "#fab387"
+idle = "#a6e3a1"
+vpn = "#b4befe"
+
 # Plugin-based app integrations (optional — omit if not available)
 [integrations]
-neovim = "catppuccin"           # colorscheme name
-neovim_variant = "mocha"        # flavor/variant
-tmux = "mocha"                  # @catppuccin_flavor value
-yazi = "catppuccin-mocha"       # yazi flavor name
-starship = "catppuccin_mocha"   # palette name in starship.toml
+neovim = "catppuccin"
+neovim_variant = "mocha"
+tmux = "mocha"
+yazi = "catppuccin-mocha"
+starship = "catppuccin_mocha"
 ```
-
-When `[integrations]` entries are missing, the switcher falls back to template
-generation for those apps (using the 26 colors directly).
 
 ## Templating
 
@@ -168,47 +200,67 @@ Jinja2 templates with custom filters for format conversion:
 - `{{ base | to_rgb }}` → `30, 30, 46`
 - `{{ base | to_rgba(0.94) }}` → `rgba(30, 30, 46, 0.94)`
 - `{{ base | upper_hex }}` → `#1E1E2E`
+- `{{ base | to_rgb_r }}` → `30`
+- `{{ base | to_rgb_g }}` → `30`
+- `{{ base | to_rgb_b }}` → `46`
+
+Template context provides:
+- Top-level color names: `{{ base }}`, `{{ mauve }}`, etc.
+- Terminal colors: `{{ terminal.color0 }}`, `{{ terminal.color15 }}`, etc.
+- UI accents: `{{ ui.accent }}`, `{{ ui.clock }}`, `{{ ui.gpu }}`, etc.
+- Metadata: `{{ meta.name }}`, `{{ meta.type }}`
+- Integrations: `{{ integrations.neovim }}`, `{{ integrations.tmux }}`, etc.
 
 ## CLI
 
 ```
-python3 switch.py <palette-name>            # Apply theme
-python3 switch.py --list                    # Show available palettes
-python3 switch.py --current                 # Show active theme
-python3 switch.py --preview <name>          # Render without applying
-
-python3 import_base16.py <scheme.yaml>      # Import a Base16 scheme
-python3 import_base16.py --all <dir>        # Batch import from a directory
+python3 switch.py apply <palette-name>      # Apply theme
+python3 switch.py list                      # Show available palettes (* = active)
+python3 switch.py current                   # Show active theme
+python3 switch.py preview <palette-name>    # Render without applying
 ```
+
+## Symlink Map
+
+Generated files are symlinked into module directories (which `~/.config/` already points to):
+
+| Generated File | Symlink Destination |
+|---|---|
+| `kitty/kitty-theme.conf` | `~/.config/kitty/kitty-theme.conf` |
+| `swaync/style.css` | `modules/hyprland/swaync/style.css` |
+| `waybar/palette.css` | `modules/hyprland/waybar/palette.css` |
+| `waybar/style.css` | `modules/hyprland/waybar/style.css` |
+| `waybar/config.jsonc` | `modules/hyprland/waybar/config.jsonc` |
+| `hyprland/colors.conf` | `modules/hyprland/hypr/colors.conf` |
+| `hyprlock/hyprlock.conf` | `modules/hyprland/hypr/hyprlock.conf` |
 
 ## Reload Map
 
 | App | Reload Command | Notes |
 |-----|---------------|-------|
-| Kitty | `kill -SIGUSR1 $(pgrep kitty)` | Partial — new windows pick up changes |
+| Kitty | `kill -SIGUSR1 $(pgrep -x kitty)` | New windows pick up changes |
 | Waybar | `killall -SIGUSR2 waybar` | Full reload |
-| SwayNC | `swaync-client --reload-css && swaync-client --reload-config` | Full reload |
+| SwayNC | `swaync-client --reload-css && --reload-config` | Full reload |
 | Hyprland | — | Auto-reloads on file change |
 | Hyprlock | — | Reads config on launch |
 | Tmux | `tmux source-file ~/.config/tmux/tmux.conf` | Full reload |
 | Starship | — | Auto-reloads per prompt |
-| Neovim | TBD (nvim RPC or flag file) | Needs investigation |
+| Neovim | TBD | Needs investigation |
 | Yazi | — | Requires restart |
-| SDDM | `sudo cp -r ... && sudo systemctl restart sddm` | Requires sudo, deferred |
+| SDDM | `sudo cp ... && sudo systemctl restart sddm` | Requires sudo, deferred |
 
 ## App Inventory
 
-### Template-generated (colors hardcoded today, will become templates)
+### Template-generated (done)
 
-| App | Config File | Hardcoded Colors | Status |
-|-----|------------|-----------------|--------|
-| Kitty | `modules/kitty/config/kitty.conf` | ~30 hex values | TODO |
-| SwayNC | `modules/hyprland/swaync/style.css` | ~80+ hex values | TODO |
-| Waybar CSS | `modules/hyprland/waybar/style.css` + `mocha.css` | Partial abstraction via mocha.css | TODO |
-| Waybar config | `modules/hyprland/waybar/config.jsonc` | ~10 Pango markup hex values | TODO |
-| Hyprland | `modules/hyprland/hypr/hyprland.conf` | 3 border/shadow colors | TODO |
-| Hyprlock | `modules/hyprland/hypr/hyprlock.conf` | ~8 decimal RGB values | TODO |
-| SDDM | `modules/hyprland/sddm-theme/*.qml` + SVGs | ~40 across 9 QML + 3 SVG | Deferred |
+| App | Template | Config Integration | Status |
+|-----|----------|-------------------|--------|
+| Kitty | `kitty/kitty-theme.conf.j2` | `include` directive in kitty.conf | ✅ Done |
+| SwayNC | `swaync/style.css.j2` | Symlink replaces style.css | ✅ Done |
+| Waybar CSS | `waybar/style.css.j2` + `palette.css.j2` | Symlink replaces both files | ✅ Done |
+| Waybar config | `waybar/config.jsonc.j2` | Symlink replaces config.jsonc | ✅ Done |
+| Hyprland | `hyprland/colors.conf.j2` | `source` directive in hyprland.conf | ✅ Done |
+| Hyprlock | `hyprlock/hyprlock.conf.j2` | Symlink replaces hyprlock.conf | ✅ Done |
 
 ### Plugin-based (switcher updates flavor/colorscheme name)
 
@@ -223,36 +275,46 @@ python3 import_base16.py --all <dir>        # Batch import from a directory
 
 | App | Notes | Status |
 |-----|-------|--------|
+| eza | Uses `EZA_COLORS` env var or theme file, truecolor | TODO |
 | Rofi | No config exists, using defaults | Deferred |
 | btop | No config exists, using defaults | Deferred |
 | GTK | Commented out in hyprland.sh | Deferred |
+| SDDM | `modules/hyprland/sddm-theme/*.qml` + SVGs | Deferred |
 
 ---
 
 ## Phases
 
-### Phase 1 — Foundation
-- [ ] Create `modules/theme/` directory structure
-- [ ] Define palette format and create `catppuccin-mocha.toml`
-- [ ] Build `switch.py` core engine
-  - [ ] TOML palette parsing (use `tomllib` — stdlib since Python 3.11)
-  - [ ] Jinja2 template rendering
-  - [ ] Custom filters (`strip_hash`, `to_rgb`, `to_rgba`, `upper_hex`)
-  - [ ] CLI (`--list`, `--current`, `--preview`, apply)
-  - [ ] Reload orchestration
-  - [ ] `current.toml` tracking
-- [ ] Create `theme.sh` module (install deps, initial generation)
-- [ ] Add `generated/` to `.gitignore`
+### Phase 1 — Foundation ✅
+- [x] Create `modules/theme/` directory structure
+- [x] Define palette format and create `catppuccin-mocha.toml`
+- [x] Build `switch.py` core engine
+  - [x] TOML palette parsing (uses `tomllib` — stdlib since Python 3.11)
+  - [x] Jinja2 template rendering
+  - [x] Custom filters (`strip_hash`, `to_rgb`, `to_rgba`, `upper_hex`, `to_rgb_r/g/b`)
+  - [x] CLI (apply, list, current, preview)
+  - [x] Reload orchestration
+  - [x] `current.toml` tracking
+- [x] Create `theme.sh` module (install deps, initial generation)
+- [x] Add `generated/` to `.gitignore`
 
-### Phase 2 — Templates (hardcoded apps)
-- [ ] Kitty — convert `kitty.conf` to template
-- [ ] SwayNC — convert `style.css` to template
-- [ ] Waybar — convert `mocha.css` + `style.css` to palette template
-- [ ] Waybar — convert `config.jsonc` to template
-- [ ] Hyprland — extract border/shadow colors into a sourced `colors.conf` template
-- [ ] Hyprlock — convert `hyprlock.conf` to template
-- [ ] Update symlinks: `~/.config/<app>/` → `generated/<app>/`
-- [ ] Verify hot-reload works for each app
+### Phase 2 — Templates (hardcoded apps) ✅
+- [x] Kitty — `include` directive for generated theme file
+- [x] SwayNC — full style.css template
+- [x] Waybar — palette.css, style.css, and config.jsonc templates
+- [x] Hyprland — `source` directive for generated colors.conf
+- [x] Hyprlock — full config template
+- [x] Symlink wiring from module dirs to generated files
+- [x] Hot-reload verified for all apps
+
+### Phase 2.5 — Palette refinement ✅
+- [x] Add `[terminal]` section — 16 ANSI colors independent from UI palette
+- [x] Add `[ui]` section — semantic accent mappings (clock, network, battery, etc.)
+- [x] Templatize `waybar/style.css` — per-module colors use `ui.*` instead of raw palette
+- [x] Update `config.jsonc` template — Pango markup uses `ui.*`
+- [x] Update kitty template — ANSI colors use `terminal.*`
+- [x] Create Nord palette — 100% official Nord colors, zero interpolation
+- [x] Tested both themes end-to-end
 
 ### Phase 3 — Plugin integrations
 - [ ] Neovim — swap `catppuccin_flavor` in colorscheme.lua
@@ -262,15 +324,16 @@ python3 import_base16.py --all <dir>        # Batch import from a directory
 - [ ] Handle missing integrations (fall back to template if plugin theme doesn't exist)
 
 ### Phase 4 — Community themes + polish
-- [ ] Build `import_base16.py` with color derivation for missing slots
-- [ ] Batch import popular Base16 schemes (Gruvbox, Tokyo Night, Nord, Dracula, etc.)
-- [ ] Hand-tune imported palettes where needed
+- [ ] Build `import_base16.py` (map 16 colors, duplicate for remaining slots)
+- [ ] Batch import popular Base16 schemes (Gruvbox, Tokyo Night, Dracula, etc.)
+- [ ] Hand-tune imported palettes
 - [ ] Add Catppuccin Latte (hand-crafted, light theme)
+- [ ] eza theming (`EZA_COLORS` env var or theme file)
 - [ ] Rofi theme template
 - [ ] btop theme template
 - [ ] GTK theme integration
 - [ ] SDDM templates (QML + SVG)
-- [ ] Theme picker UI (`switch.py --list | fzf` or rofi)
+- [ ] Theme picker UI (`switch.py list | fzf` or rofi)
 - [ ] Light/dark mode toggle shortcut
 - [ ] Wallpaper-driven palette generation (`switch.py --from-wallpaper <image>`)
 - [ ] swww integration for animated wallpaper transitions
