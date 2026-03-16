@@ -27,53 +27,39 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 # hyde_plugins=(sudo git zsh-256color zsh-autosuggestions zsh-syntax-highlighting)
 
-# Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
+# zinit plugins
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-syntax-highlighting
 
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
+# TODO: Look into moving starship to zinit?
+# https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#plugins-and-snippets
 
-# Add in snippets
-# zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::command-not-found
 
-# Load completions
-autoload -Uz compinit && compinit
-
-zinit cdreplay -q
-
-# Keybindings
-bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^[w' kill-region
-# Home key
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[H' beginning-of-line
-# End key
-bindkey '\e[4~' end-of-line
-bindkey '\e[F' end-of-line
-# Ctrl+Left Arrow key
-bindkey '^[[1;5D' backward-word
-# Ctrl+Right Arrow key
-bindkey '^[[1;5C' forward-word
-
-# History
-HISTSIZE=5000
-HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
+# Added by initial installer
+# ==========================
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt notify
+unsetopt beep
+bindkey -v
+# Fix special keys in vi mode
+bindkey '^[[3~' delete-char           # Delete key
+bindkey '^[[1;5D' backward-word       # Ctrl+Left
+bindkey '^[[1;5C' forward-word        # Ctrl+Right
+bindkey '^[[H' beginning-of-line      # Home
+bindkey '^[[F' end-of-line            # End
+bindkey '^[[1~' beginning-of-line     # Home (alternate)
+bindkey '^[[4~' end-of-line           # End (alternate)
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/dalton/.zshrc'
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -96,68 +82,8 @@ alias githist="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %C
 alias githistall="git log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --all --date=short --date-order"
 alias ff="fzf --preview 'batcat {-1} --color=always'"
 alias sz="source ~/.zshrc"
-alias poetryactivate='source "$(poetry env info --path)/bin/activate"'
-alias pa='poetryactivate && export PYTHONPATH=$(pwd)'
-alias pd='deactivate'
 alias lg='lazygit'
 alias bat='batcat'
-
-# nvim appname function
-# Usage: nv [config_name] [args...]
-# Examples:
-#   nv .           -> opens default nvim in current dir
-#   nv test .      -> opens nvimtest config in current dir
-#   nv minimal foo -> opens nvimminimal config editing foo
-nv() {
-    # Check if first arg looks like a config name (not a flag, file, or path)
-    if [[ -n "$1" && ! "$1" =~ ^[-.+/] && ! -e "$1" ]]; then
-        local config_name="$1"
-        shift
-        NVIM_APPNAME="nvim${config_name}" nvim "$@"
-    else
-        nvim "$@"
-    fi
-}
-
-
-# Function to record screen with a specified filename
-record_screen() {
-    local filename=$1
-    if [ -z "$filename" ]; then
-        echo "Usage: record_screen <filename>"
-        return 1
-    fi
-    wf-recorder -f "${filename}.mp4"
-}
-
-# Function to convert the recording to GIF with a specified filename
-convert_to_gif() {
-    local filename=$1
-    if [ -z "$filename" ]; then
-        echo "Usage: convert_to_gif <filename>"
-        return 1
-    fi
-    ffmpeg -i "${filename}.mp4" -vf "fps=15,scale=640:-1:flags=lanczos" -c:v gif "${filename}.gif"
-}
-
-record_and_convert() {
-    local filename=$1
-    if [ -z "$filename" ]; then
-        echo "Usage: record_and_convert <filename>"
-        return 1
-    fi
-
-    # Start recording
-    wf-recorder -f "${filename}.mp4"
-
-    # Wait for the recording to finish
-    echo "Recording stopped. Converting to GIF..."
-
-    # Convert to GIF with 15fps
-    ffmpeg -i "${filename}.mp4" -vf "fps=15,scale=640:-1:flags=lanczos" -c:v gif "${filename}.gif"
-
-    echo "Conversion complete: ${filename}.gif"
-}
 
 # Handy change dir shortcuts
 alias ..='cd ..'
@@ -169,50 +95,13 @@ alias .5='cd ../../../../..'
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
 
-showPreview()
-{
-  gitFilePreview="git diff $@ --color=always -- {-1}"
-  git diff $@ --name-only | fzf -m --ansi --preview "$gitFilePreview"
-}
-fd()
-{
-  if git rev-parse --git-dir > /dev/null 2>&1; then
-    if [ -d .git ]; then
-      showPreview > /dev/null
-    else
-      gitRepoDir=$(git rev-parse --git-dir | sed 's/.git//')
-      pushd $gitRepoDir > /dev/null
-      showPreview > /dev/null
-      popd > /dev/null
-    fi
-  else
-    echo "Error: Not inside a git repository."
-  fi
-}
 
 # Shell integrations
+# ==================
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh)"
-# eval "$(zoxide init --cmd cd zsh)"
-
-if command -v zoxide &>/dev/null && [[ "$CLAUDECODE" != "1" ]]; then
-  eval "$(zoxide init --cmd cd zsh)"
-
-  # Ensure __zoxide_z function exists
-  if ! type __zoxide_z &>/dev/null; then
-    function __zoxide_z() {
-      if [[ "$#" -eq 0 ]]; then
-        builtin cd ~
-      elif [[ "$#" -eq 1 ]] && { [[ -d "$1" ]] || [[ "$1" = '-' ]] || [[ "$1" =~ ^[-+][0-9]$ ]]; }; then
-        builtin cd "$1"
-      else
-        local result
-        result="$(command zoxide query --exclude "$(pwd)" -- "$@")" && builtin cd "${result}"
-      fi
-    }
-  fi
-fi
+eval "$(zoxide init --cmd cd zsh)"
 
 
 # asdf completion (if asdf is available)
