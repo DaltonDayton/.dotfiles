@@ -6,7 +6,7 @@ SWITCH_PY="$THEME_DIR/switch.py"
 
 # Get list of palettes, format for rofi
 # Output: "name  Display Name (type)" with * for current
-selected=$(python3 "$SWITCH_PY" list | rofi -dmenu -i -p "Theme" -theme-str 'window {width: 400px;}')
+selected=$(python3 "$SWITCH_PY" list | rofi -dmenu -i -p " Theme")
 
 # Extract palette name (first word)
 palette=$(echo "$selected" | awk '{print $1}')

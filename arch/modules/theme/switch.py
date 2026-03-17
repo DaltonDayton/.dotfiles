@@ -19,6 +19,7 @@ THEME_DIR = Path(__file__).resolve().parent
 PALETTES_DIR = THEME_DIR / "palettes"
 TEMPLATES_DIR = THEME_DIR / "templates"
 GENERATED_DIR = THEME_DIR / "generated"
+WALLPAPERS_DIR = THEME_DIR / "wallpapers"
 CURRENT_FILE = THEME_DIR / "current.toml"
 
 # ---------------------------------------------------------------------------
@@ -190,6 +191,8 @@ SYMLINK_MAP: dict[str, str] = {
     "hyprland/colors.conf": str(MODULES_DIR / "hyprland/hypr/colors.conf"),
     "hyprlock/hyprlock.conf": str(MODULES_DIR / "hyprland/hypr/hyprlock.conf"),
     "tmux/colors.conf": "~/.config/tmux/colors.conf",
+    "rofi/theme.rasi": "~/.config/rofi/theme.rasi",
+    "rofi/config.rasi": "~/.config/rofi/config.rasi",
 }
 
 
@@ -219,6 +222,76 @@ def create_symlinks(rendered: list[str], dry_run: bool = False) -> None:
 
         dest.symlink_to(source)
         print(f"  [link]    {dest} → {source}")
+
+
+# ---------------------------------------------------------------------------
+# Wallpaper management
+# ---------------------------------------------------------------------------
+
+HYPRPAPER_CONF = Path("~/.config/hypr/hyprpaper.conf").expanduser()
+MONITORS = ["DP-1", "DP-2"]
+
+
+def get_wallpapers(palette_name: str) -> list[Path]:
+    """Get wallpapers for a theme, sorted by name."""
+    theme_dir = WALLPAPERS_DIR / palette_name
+    if not theme_dir.exists():
+        return []
+    exts = {".jpg", ".jpeg", ".png", ".webp"}
+    return sorted(p for p in theme_dir.iterdir() if p.suffix.lower() in exts)
+
+
+def apply_wallpapers(palette_name: str, dry_run: bool = False) -> None:
+    """Set wallpapers from the theme's wallpaper directory via hyprpaper."""
+    wallpapers = get_wallpapers(palette_name)
+    if not wallpapers:
+        print(f"\nWallpapers:\n  [skip]    no wallpapers found for '{palette_name}'")
+        return
+
+    # Assign wallpapers to monitors (cycle if fewer wallpapers than monitors)
+    assignments = []
+    for i, monitor in enumerate(MONITORS):
+        wp = wallpapers[i % len(wallpapers)]
+        assignments.append((monitor, wp))
+
+    print("\nWallpapers:")
+    if dry_run:
+        for monitor, wp in assignments:
+            print(f"  [preview] {monitor} → {wp.name}")
+        return
+
+    # Write hyprpaper.conf
+    lines = [
+        "splash = false",
+        "",
+    ]
+    for monitor, wp in assignments:
+        lines.extend(
+            [
+                "wallpaper {",
+                f"    monitor = {monitor}",
+                f"    path = {wp}",
+                "    fit_mode = cover",
+                "}",
+                "",
+            ]
+        )
+
+    HYPRPAPER_CONF.parent.mkdir(parents=True, exist_ok=True)
+    HYPRPAPER_CONF.write_text("\n".join(lines))
+
+    for monitor, wp in assignments:
+        print(f"  [set]     {monitor} → {wp.name}")
+
+    # Reload hyprpaper
+    subprocess.run("killall hyprpaper 2>/dev/null", shell=True, capture_output=True)
+    subprocess.Popen(
+        ["hyprpaper"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    print("  [reload]  hyprpaper restarted")
 
 
 # ---------------------------------------------------------------------------
@@ -365,6 +438,7 @@ def cmd_apply(args: argparse.Namespace) -> None:
 
     create_symlinks(rendered)
     apply_integrations(palette)
+    apply_wallpapers(name)
     save_current_theme(name)
     reload_apps()
 
@@ -388,6 +462,7 @@ def cmd_preview(args: argparse.Namespace) -> None:
 
     create_symlinks(rendered, dry_run=True)
     apply_integrations(palette, dry_run=True)
+    apply_wallpapers(name, dry_run=True)
 
 
 def cmd_list(args: argparse.Namespace) -> None:
