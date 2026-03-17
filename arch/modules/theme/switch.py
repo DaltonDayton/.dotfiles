@@ -475,12 +475,17 @@ def cmd_list(args: argparse.Namespace) -> None:
         return
 
     for name in palettes:
-        marker = " *" if name == current else ""
         palette = load_palette(name)
         meta = palette.get("meta", {})
         theme_type = meta.get("type", "?")
         display_name = meta.get("name", name)
-        print(f"  {name:<30} {display_name} ({theme_type}){marker}")
+
+        if args.rofi:
+            active = " (active)" if name == current else ""
+            print(f"{display_name}{active}")
+        else:
+            marker = " *" if name == current else ""
+            print(f"  {name:<30} {display_name} ({theme_type}){marker}")
 
 
 def cmd_current(args: argparse.Namespace) -> None:
@@ -511,6 +516,9 @@ def main() -> None:
 
     # list
     p_list = subparsers.add_parser("list", help="List available palettes")
+    p_list.add_argument(
+        "--rofi", action="store_true", help="Output for rofi (display names only)"
+    )
     p_list.set_defaults(func=cmd_list)
 
     # current
