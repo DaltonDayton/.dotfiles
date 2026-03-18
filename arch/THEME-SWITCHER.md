@@ -1,3 +1,5 @@
+opencode -s ses_30bd72228ffeiakmixrPs3jM7n
+
 # Theme Switcher
 
 A Python-based theme engine that manages colors and wallpapers across all desktop applications from a single palette definition.
@@ -222,6 +224,7 @@ Jinja2 templates with custom filters for format conversion:
 - `{{ base | to_rgb_b }}` → `46`
 
 Template context provides:
+
 - Top-level color names: `{{ base }}`, `{{ mauve }}`, etc.
 - Terminal colors: `{{ terminal.color0 }}`, `{{ terminal.color15 }}`, etc.
 - UI accents: `{{ ui.accent }}`, `{{ ui.clock }}`, `{{ ui.gpu }}`, etc.
@@ -240,8 +243,8 @@ python3 switch.py preview <palette-name>    # Render without applying
 
 ## Keybindings
 
-| Key | Action |
-|-----|--------|
+| Key       | Action                   |
+| --------- | ------------------------ |
 | `SUPER+D` | Open theme picker (rofi) |
 | `SUPER+R` | Open app launcher (rofi) |
 
@@ -249,76 +252,76 @@ python3 switch.py preview <palette-name>    # Render without applying
 
 Generated files are symlinked into module directories (which `~/.config/` already points to):
 
-| Generated File | Symlink Destination |
-|---|---|
-| `kitty/kitty-theme.conf` | `~/.config/kitty/kitty-theme.conf` |
-| `swaync/style.css` | `modules/hyprland/swaync/style.css` |
-| `waybar/palette.css` | `modules/hyprland/waybar/palette.css` |
-| `waybar/style.css` | `modules/hyprland/waybar/style.css` |
-| `waybar/config.jsonc` | `modules/hyprland/waybar/config.jsonc` |
-| `hyprland/colors.conf` | `modules/hyprland/hypr/colors.conf` |
-| `hyprlock/hyprlock.conf` | `modules/hyprland/hypr/hyprlock.conf` |
-| `tmux/colors.conf` | `~/.config/tmux/colors.conf` |
-| `rofi/theme.rasi` | `~/.config/rofi/theme.rasi` |
-| `rofi/config.rasi` | `~/.config/rofi/config.rasi` |
+| Generated File           | Symlink Destination                    |
+| ------------------------ | -------------------------------------- |
+| `kitty/kitty-theme.conf` | `~/.config/kitty/kitty-theme.conf`     |
+| `swaync/style.css`       | `modules/hyprland/swaync/style.css`    |
+| `waybar/palette.css`     | `modules/hyprland/waybar/palette.css`  |
+| `waybar/style.css`       | `modules/hyprland/waybar/style.css`    |
+| `waybar/config.jsonc`    | `modules/hyprland/waybar/config.jsonc` |
+| `hyprland/colors.conf`   | `modules/hyprland/hypr/colors.conf`    |
+| `hyprlock/hyprlock.conf` | `modules/hyprland/hypr/hyprlock.conf`  |
+| `tmux/colors.conf`       | `~/.config/tmux/colors.conf`           |
+| `rofi/theme.rasi`        | `~/.config/rofi/theme.rasi`            |
+| `rofi/config.rasi`       | `~/.config/rofi/config.rasi`           |
 
 ## Reload Map
 
-| App | Reload Command | Notes |
-|-----|---------------|-------|
-| Kitty | `kitty @ --to unix:/tmp/kitty-socket-* set-colors` | Live color update via remote control |
-| Waybar | `killall -SIGUSR2 waybar` | Full reload |
-| SwayNC | `swaync-client --reload-css && --reload-config` | Full reload |
-| Hyprland | — | Auto-reloads on file change |
-| Hyprlock | — | Reads config on launch |
-| Hyprpaper | `killall hyprpaper && hyprpaper` | Restart with new wallpapers |
-| Tmux | `tmux source-file ~/.config/tmux/tmux.conf` | Full reload |
-| Starship | — | Auto-reloads per prompt |
-| Yazi | — | Requires restart |
-| OpenCode | — | Requires restart |
-| SDDM | `sudo cp ... && sudo systemctl restart sddm` | Requires sudo, deferred |
+| App       | Reload Command                                     | Notes                                |
+| --------- | -------------------------------------------------- | ------------------------------------ |
+| Kitty     | `kitty @ --to unix:/tmp/kitty-socket-* set-colors` | Live color update via remote control |
+| Waybar    | `killall -SIGUSR2 waybar`                          | Full reload                          |
+| SwayNC    | `swaync-client --reload-css && --reload-config`    | Full reload                          |
+| Hyprland  | —                                                  | Auto-reloads on file change          |
+| Hyprlock  | —                                                  | Reads config on launch               |
+| Hyprpaper | `killall hyprpaper && hyprpaper`                   | Restart with new wallpapers          |
+| Tmux      | `tmux source-file ~/.config/tmux/tmux.conf`        | Full reload                          |
+| Starship  | —                                                  | Auto-reloads per prompt              |
+| Yazi      | —                                                  | Requires restart                     |
+| OpenCode  | —                                                  | Requires restart                     |
+| SDDM      | `sudo cp ... && sudo systemctl restart sddm`       | Requires sudo, deferred              |
 
 ## App Inventory
 
 ### Template-generated ✅
 
-| App | Template | Config Integration | Status |
-|-----|----------|-------------------|--------|
-| Kitty | `kitty/kitty-theme.conf.j2` | `include` directive in kitty.conf | ✅ Done |
-| SwayNC | `swaync/style.css.j2` | Symlink replaces style.css | ✅ Done |
-| Waybar CSS | `waybar/style.css.j2` + `palette.css.j2` | Symlink replaces both files | ✅ Done |
-| Waybar config | `waybar/config.jsonc.j2` | Symlink replaces config.jsonc | ✅ Done |
-| Hyprland | `hyprland/colors.conf.j2` | `source` directive in hyprland.conf | ✅ Done |
-| Hyprlock | `hyprlock/hyprlock.conf.j2` | Symlink replaces hyprlock.conf | ✅ Done |
-| Tmux | `tmux/colors.conf.j2` | `source-file` after TPM, overrides `@thm_*` | ✅ Done |
-| Rofi | `rofi/theme.rasi.j2` + `config.rasi.j2` | Symlink to `~/.config/rofi/` | ✅ Done |
+| App           | Template                                 | Config Integration                          | Status  |
+| ------------- | ---------------------------------------- | ------------------------------------------- | ------- |
+| Kitty         | `kitty/kitty-theme.conf.j2`              | `include` directive in kitty.conf           | ✅ Done |
+| SwayNC        | `swaync/style.css.j2`                    | Symlink replaces style.css                  | ✅ Done |
+| Waybar CSS    | `waybar/style.css.j2` + `palette.css.j2` | Symlink replaces both files                 | ✅ Done |
+| Waybar config | `waybar/config.jsonc.j2`                 | Symlink replaces config.jsonc               | ✅ Done |
+| Hyprland      | `hyprland/colors.conf.j2`                | `source` directive in hyprland.conf         | ✅ Done |
+| Hyprlock      | `hyprlock/hyprlock.conf.j2`              | Symlink replaces hyprlock.conf              | ✅ Done |
+| Tmux          | `tmux/colors.conf.j2`                    | `source-file` after TPM, overrides `@thm_*` | ✅ Done |
+| Rofi          | `rofi/theme.rasi.j2` + `config.rasi.j2`  | Symlink to `~/.config/rofi/`                | ✅ Done |
 
 ### Plugin-based (switcher updates flavor/colorscheme name) ✅
 
-| App | Config File | Integration Method | Status |
-|-----|------------|-------------------|--------|
-| Tmux | `modules/tmux/config/tmux.conf` | Regex swap `@catppuccin_flavor` | ✅ Done |
-| Starship | `modules/shell/config/starship.toml` | Regex swap `palette` name | ✅ Done |
-| Yazi | `modules/shell/config/yazi/theme.toml` | Regex swap `dark`/`light` flavor | ✅ Done |
-| OpenCode | `~/.config/opencode/tui.json` | Regex swap `theme` name | ✅ Done |
+| App      | Config File                            | Integration Method               | Status  |
+| -------- | -------------------------------------- | -------------------------------- | ------- |
+| Tmux     | `modules/tmux/config/tmux.conf`        | Regex swap `@catppuccin_flavor`  | ✅ Done |
+| Starship | `modules/shell/config/starship.toml`   | Regex swap `palette` name        | ✅ Done |
+| Yazi     | `modules/shell/config/yazi/theme.toml` | Regex swap `dark`/`light` flavor | ✅ Done |
+| OpenCode | `~/.config/opencode/tui.json`          | Regex swap `theme` name          | ✅ Done |
 
 ### Wallpapers ✅
 
-| Feature | Status |
-|---------|--------|
-| Per-theme wallpaper directories | ✅ Done |
-| Auto-assign wallpapers to monitors | ✅ Done |
+| Feature                             | Status  |
+| ----------------------------------- | ------- |
+| Per-theme wallpaper directories     | ✅ Done |
+| Auto-assign wallpapers to monitors  | ✅ Done |
 | Generate hyprpaper.conf and restart | ✅ Done |
 
 ### Not yet themed
 
-| App | Notes | Status |
-|-----|-------|--------|
+| App    | Notes                                                        | Status   |
+| ------ | ------------------------------------------------------------ | -------- |
 | Neovim | Config deeply tied to Catppuccin plugin, needs restructuring | Deferred |
-| eza | Uses `EZA_COLORS` env var or theme file, truecolor | TODO |
-| btop | No config exists, using defaults | Deferred |
-| GTK | Commented out in hyprland.sh | Deferred |
-| SDDM | `modules/hyprland/sddm-theme/*.qml` + SVGs | Deferred |
+| eza    | Uses `EZA_COLORS` env var or theme file, truecolor           | TODO     |
+| btop   | No config exists, using defaults                             | Deferred |
+| GTK    | Commented out in hyprland.sh                                 | Deferred |
+| SDDM   | `modules/hyprland/sddm-theme/*.qml` + SVGs                   | Deferred |
 
 ---
 
