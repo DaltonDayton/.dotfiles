@@ -255,13 +255,26 @@ function configure_sddm() {
 
 # Function to configure voxtype voice dictation
 function configure_voxtype() {
-  local config_source="$MODULES_DIR/hyprland/voxtype"
+  local voxtype_dir="$MODULES_DIR/hyprland/voxtype"
   local config_dest="$HOME/.config/voxtype"
   local hypr_conf_source="$MODULES_DIR/hyprland/hypr/conf.d/voxtype-submap.conf"
   local hypr_conf_dest="$HOME/.config/hypr/conf.d/voxtype-submap.conf"
 
+  # Deploy device-specific voxtype config as a relative symlink within the repo,
+  # falling back to default.
+  local config_target
+  if [ -f "$voxtype_dir/configs/${DEVICE_NAME}.toml" ]; then
+    config_target="configs/${DEVICE_NAME}.toml"
+    log_info "Using voxtype config for device: $DEVICE_NAME"
+  else
+    config_target="configs/default.toml"
+    log_warn "No voxtype config found for '$DEVICE_NAME', falling back to default"
+  fi
+  ln -sfn "$config_target" "$voxtype_dir/config.toml"
+  log_success "Set voxtype config.toml -> $config_target"
+
   # Symlink voxtype config directory
-  symlink_config "$config_source" "$config_dest"
+  symlink_config "$voxtype_dir" "$config_dest"
 
   # Symlink voxtype submap config for compositor integration
   # Note: hyprland.conf already sources this file via the dotfiles repo config
@@ -269,12 +282,9 @@ function configure_voxtype() {
     symlink_config "$hypr_conf_source" "$hypr_conf_dest"
   fi
 
-  # Download the whisper model if not already present
-  local model_dir="$HOME/.local/share/voxtype/models"
-  if [ -f "$model_dir/ggml-large-v3-turbo.bin" ]; then
-    log_info "Voxtype whisper model already downloaded"
-  elif command -v voxtype >/dev/null 2>&1; then
-    log_info "Downloading voxtype whisper model (large-v3-turbo)..."
+  # Download the whisper model configured for this device
+  if command -v voxtype >/dev/null 2>&1; then
+    log_info "Downloading voxtype whisper model (if not already present)..."
     voxtype setup --download
   else
     log_warn "voxtype not found in PATH. Run manually after install: voxtype setup --download"

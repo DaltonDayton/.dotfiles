@@ -3,6 +3,7 @@ device.env
 modules/hyprland/hypr/monitors.conf
 modules/hyprland/hypr/hyprpaper.conf
 modules/hyprland/hypr/hyprpaper/
+modules/hyprland/voxtype/config.toml
 
 # Theme switcher generated symlinks (point to modules/theme/generated/)
 modules/hyprland/hypr/colors.conf
