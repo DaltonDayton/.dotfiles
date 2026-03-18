@@ -118,6 +118,8 @@ def build_template_context(palette: dict) -> dict:
     ctx["ui"] = palette.get("ui", {})
     ctx["meta"] = palette.get("meta", {})
     ctx["integrations"] = palette.get("integrations", {})
+    ctx["device"] = get_device_name()
+    ctx["monitors"] = get_monitors()
     return ctx
 
 
@@ -185,6 +187,7 @@ MODULES_DIR = THEME_DIR.parent
 SYMLINK_MAP: dict[str, str] = {
     "kitty/kitty-theme.conf": "~/.config/kitty/kitty-theme.conf",
     "swaync/style.css": str(MODULES_DIR / "hyprland/swaync/style.css"),
+    "swaync/config.json": str(MODULES_DIR / "hyprland/swaync/config.json"),
     "waybar/palette.css": str(MODULES_DIR / "hyprland/waybar/palette.css"),
     "waybar/style.css": str(MODULES_DIR / "hyprland/waybar/style.css"),
     "waybar/config.jsonc": str(MODULES_DIR / "hyprland/waybar/config.jsonc"),
@@ -229,7 +232,41 @@ def create_symlinks(rendered: list[str], dry_run: bool = False) -> None:
 # ---------------------------------------------------------------------------
 
 HYPRPAPER_CONF = Path("~/.config/hypr/hyprpaper.conf").expanduser()
-MONITORS = ["DP-1", "DP-2"]
+DEVICE_ENV = THEME_DIR.parent.parent / "device.env"
+
+
+def get_device_name() -> str:
+    """Read DEVICE_NAME from device.env, defaulting to 'default'."""
+    if not DEVICE_ENV.exists():
+        return "default"
+    for line in DEVICE_ENV.read_text().splitlines():
+        line = line.strip()
+        if line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        if key.strip() == "DEVICE_NAME":
+            return value.strip()
+    return "default"
+
+
+def get_monitors() -> list[str]:
+    """Detect active monitors via hyprctl, sorted by ID (primary first)."""
+    try:
+        result = subprocess.run(
+            ["hyprctl", "monitors", "-j"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode == 0:
+            import json
+
+            monitors = json.loads(result.stdout)
+            monitors.sort(key=lambda m: m["id"])
+            return [m["name"] for m in monitors]
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        pass
+    return []
 
 
 def get_wallpapers(palette_name: str) -> list[Path]:
@@ -248,9 +285,14 @@ def apply_wallpapers(palette_name: str, dry_run: bool = False) -> None:
         print(f"\nWallpapers:\n  [skip]    no wallpapers found for '{palette_name}'")
         return
 
+    monitors = get_monitors()
+    if not monitors:
+        print(f"\nWallpapers:\n  [skip]    no monitors detected (is Hyprland running?)")
+        return
+
     # Assign wallpapers to monitors (cycle if fewer wallpapers than monitors)
     assignments = []
-    for i, monitor in enumerate(MONITORS):
+    for i, monitor in enumerate(monitors):
         wp = wallpapers[i % len(wallpapers)]
         assignments.append((monitor, wp))
 
