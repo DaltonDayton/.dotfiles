@@ -4,14 +4,6 @@
 function install_hyprland() {
   # Define the list of packages required for this module
   local packages=(
-    # Nvidia
-    nvidia-dkms
-    nvidia-open-dkms
-    linux-zen-headers
-    nvidia-utils
-    lib32-nvidia-utils
-    egl-wayland
-
     # Authentication Agent
     hyprpolkitagent
 
@@ -229,21 +221,6 @@ function configure_sddm() {
     log_success "Symlinked /etc/sddm.conf -> $config_source"
   else
     log_info "/etc/sddm.conf already up to date"
-  fi
-
-  # On Optimus laptops, restrict X to the Intel iGPU to prevent NVIDIA from
-  # segfaulting Xorg on warm reboot due to dirty GPU state.
-  if [ "$DEVICE_NAME" = "laptop" ]; then
-    local xorg_source="$MODULES_DIR/hyprland/config/xorg-laptop.conf"
-    local xorg_dest="/etc/X11/xorg.conf.d/20-nvidia-ignore.conf"
-    if [ "$(readlink "$xorg_dest" 2>/dev/null)" != "$xorg_source" ]; then
-      log_info "Symlinking $xorg_dest..."
-      sudo mkdir -p /etc/X11/xorg.conf.d
-      sudo ln -sfn "$xorg_source" "$xorg_dest"
-      log_success "Symlinked $xorg_dest -> $xorg_source"
-    else
-      log_info "$xorg_dest already up to date"
-    fi
   fi
 
   # Install catppuccin SDDM theme from dotfiles

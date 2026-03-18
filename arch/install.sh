@@ -64,6 +64,8 @@ MODULES=(
   # "solaar"
   # "fonts"
   # "obsidian"
+  # "nvidia"    # Run before hyprland on NVIDIA/Optimus systems
+  # "theme"     # Run before hyprland always
   # "hyprland"
   # "gaming"
 )

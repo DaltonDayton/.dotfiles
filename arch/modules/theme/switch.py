@@ -438,7 +438,7 @@ def apply_integrations(palette: dict, dry_run: bool = False) -> None:
 RELOAD_COMMANDS: dict[str, str | None] = {
     "kitty": "for sock in /tmp/kitty-socket-*; do kitty @ --to unix:$sock set-colors --all ~/.config/kitty/kitty-theme.conf 2>/dev/null; done",
     "waybar": "killall -SIGUSR2 waybar 2>/dev/null",
-    "swaync": "swaync-client --reload-css 2>/dev/null && swaync-client --reload-config 2>/dev/null",
+    "swaync": "pgrep -x swaync >/dev/null && { swaync-client --reload-config 2>/dev/null; swaync-client --reload-css 2>/dev/null; }",
     # Hyprland auto-reloads on config file change
     # Hyprlock reads config on launch
     "tmux": "tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null",
