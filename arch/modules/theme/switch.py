@@ -453,8 +453,11 @@ def reload_apps() -> None:
     for app, cmd in RELOAD_COMMANDS.items():
         if cmd is None:
             continue
-        result = subprocess.run(cmd, shell=True, capture_output=True)
-        status = "ok" if result.returncode == 0 else "skipped"
+        try:
+            result = subprocess.run(cmd, shell=True, capture_output=True, timeout=5)
+            status = "ok" if result.returncode == 0 else "skipped"
+        except subprocess.TimeoutExpired:
+            status = "timeout"
         print(f"  [{status}]  {app}")
 
 
