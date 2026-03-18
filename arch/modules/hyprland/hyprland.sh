@@ -320,6 +320,12 @@ function configure_voxtype() {
 
 # Function to configure swaync notification center
 function configure_swaync() {
+  # Remove dunst if installed (conflicts with swaync)
+  if pacman -Qi dunst &>/dev/null; then
+    log_info "Removing dunst (replaced by swaync)"
+    sudo pacman -Rns --noconfirm dunst
+  fi
+
   local config_source="$MODULES_DIR/hyprland/swaync"
   local config_dest="$HOME/.config/swaync"
   symlink_config "$config_source" "$config_dest"
