@@ -134,18 +134,7 @@ function configure_hyprland() {
   ln -sfn "$monitors_target" "$hypr_dir/monitors.conf"
   log_success "Set monitors.conf -> $monitors_target"
 
-  # Deploy device-specific hyprpaper config as a relative symlink within the repo,
-  # falling back to default.
-  local hyprpaper_target
-  if [ -f "$hypr_dir/hyprpaper/${DEVICE_NAME}.conf" ]; then
-    hyprpaper_target="hyprpaper/${DEVICE_NAME}.conf"
-    log_info "Using hyprpaper config for device: $DEVICE_NAME"
-  else
-    hyprpaper_target="hyprpaper/default.conf"
-    log_warn "No hyprpaper config found for '$DEVICE_NAME', falling back to default"
-  fi
-  ln -sfn "$hyprpaper_target" "$hypr_dir/hyprpaper.conf"
-  log_success "Set hyprpaper.conf -> $hyprpaper_target"
+  # Hyprpaper config is managed by the theme switcher (modules/theme/switch.py)
 
   # waybar
   config_source="$MODULES_DIR/hyprland/waybar"
