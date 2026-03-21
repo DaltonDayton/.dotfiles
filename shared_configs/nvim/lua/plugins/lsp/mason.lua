@@ -27,6 +27,7 @@ return {
         "pyright",
         "eslint",
         "csharp_ls",
+        "ruby_lsp",
       },
     },
     dependencies = {
@@ -55,7 +56,7 @@ return {
         "isort", -- python formatter
         "black", -- python formatter
         "pylint", -- python linter
-        "eslint_d", -- linter
+        "rubocop", -- ruby formatter/linter
       },
     },
     dependencies = {

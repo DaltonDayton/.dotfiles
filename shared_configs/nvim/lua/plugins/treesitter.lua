@@ -22,7 +22,7 @@ return {
       autotag = {
         enable = true,
       },
-      auto_install = true,
+      auto_install = false,
       -- ensure these language parsers are installed
       ensure_installed = {
         "json",
@@ -47,6 +47,8 @@ return {
         "c_sharp",
         "python",
         "regex",
+        "ruby",
+        "embedded_template",
       },
       -- TODO: Ask AI what this is useful for
       incremental_selection = {

@@ -63,18 +63,18 @@ return {
       end, { expr = true, desc = "Previous hunk" })
 
       -- Actions
-      map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })
-      map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset hunk" })
-      map("v", "<leader>hs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
-      map("v", "<leader>hr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
-      map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
-      map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
-      map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
-      map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
-      map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
-      map("n", "<leader>hd", gs.diffthis, { desc = "Diff this" })
-      map("n", "<leader>hD", function() gs.diffthis("~") end, { desc = "Diff this ~" })
-      map("n", "<leader>hq", function()
+      map("n", "<leader>ghs", gs.stage_hunk, { desc = "Stage hunk" })
+      map("n", "<leader>ghr", gs.reset_hunk, { desc = "Reset hunk" })
+      map("v", "<leader>ghs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
+      map("v", "<leader>ghr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
+      map("n", "<leader>ghS", gs.stage_buffer, { desc = "Stage buffer" })
+      map("n", "<leader>ghu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+      map("n", "<leader>ghR", gs.reset_buffer, { desc = "Reset buffer" })
+      map("n", "<leader>ghp", gs.preview_hunk, { desc = "Preview hunk" })
+      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
+      map("n", "<leader>ghd", gs.diffthis, { desc = "Diff this" })
+      map("n", "<leader>ghD", function() gs.diffthis("~") end, { desc = "Diff this ~" })
+      map("n", "<leader>ghq", function()
         local current_win = vim.api.nvim_get_current_win()
         -- Close all windows in diff mode except current
         for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -85,9 +85,9 @@ return {
       end, { desc = "Quit diff mode" })
 
       -- Toggles (git-specific, under hunk group)
-      map("n", "<leader>htb", gs.toggle_current_line_blame, { desc = "Toggle line blame" })
-      map("n", "<leader>htd", gs.toggle_deleted, { desc = "Toggle deleted" })
-      map("n", "<leader>htw", gs.toggle_word_diff, { desc = "Toggle word diff" })
+      map("n", "<leader>ghtb", gs.toggle_current_line_blame, { desc = "Toggle line blame" })
+      map("n", "<leader>ghtd", gs.toggle_deleted, { desc = "Toggle deleted" })
+      map("n", "<leader>ghtw", gs.toggle_word_diff, { desc = "Toggle word diff" })
 
       -- Text object
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })

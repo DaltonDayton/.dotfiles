@@ -21,6 +21,8 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        ruby = { "rubocop" },
+        eruby = { "erb_format" },
       },
       format_on_save = function(bufnr)
         -- Disable with a global or buffer-local variable
@@ -28,7 +30,7 @@ return {
         return {
           lsp_fallback = true,
           async = false,
-          timeout_ms = 3000,
+          timeout_ms = 1000,
         }
       end,
     })

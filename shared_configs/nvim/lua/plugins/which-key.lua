@@ -17,7 +17,6 @@ return {
     require("which-key").add({
       -- LSP Navigation
       { "g", group = "[G]oto" },
-      { "ga", group = "LSP C[a]lls" },
 
       -- Leader groups
       { "<leader>a", group = "[A]ugment (AI)" },
@@ -34,12 +33,14 @@ return {
       { "<leader>f_", hidden = true },
       { "<leader>g", group = "[G]it" },
       { "<leader>g_", hidden = true },
-      { "<leader>h", group = "Git [H]unk" },
-      { "<leader>h_", hidden = true },
-      { "<leader>ht", group = "[T]oggle (Git)" },
-      { "<leader>ht_", hidden = true },
+      { "<leader>gh", group = "Git [H]unk" },
+      { "<leader>gh_", hidden = true },
+      { "<leader>ght", group = "[T]oggle (Git)" },
+      { "<leader>ght_", hidden = true },
       { "<leader>m", group = "[M]arks (Harpoon)" },
       { "<leader>m_", hidden = true },
+      { "<leader>o", group = "[O]pen" },
+      { "<leader>o_", hidden = true },
       { "<leader>n", group = "[N]eotest" },
       { "<leader>n_", hidden = true },
       { "<leader>np", group = "[P]laywright" },
