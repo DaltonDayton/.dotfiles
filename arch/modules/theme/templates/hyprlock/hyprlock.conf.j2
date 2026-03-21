@@ -5,7 +5,7 @@
 # BACKGROUND
 background {
     monitor =
-    path = ~/.config/wallpapers/escape_velocity.jpg
+    path = {{ wallpapers[0] if wallpapers else "~/.config/wallpapers/escape_velocity.jpg" }}
     blur_passes = 3
     contrast = 0.8916
     brightness = 0.8172

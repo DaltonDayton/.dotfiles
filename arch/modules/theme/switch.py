@@ -104,13 +104,14 @@ def save_current_theme(name: str) -> None:
 # ---------------------------------------------------------------------------
 
 
-def build_template_context(palette: dict) -> dict:
+def build_template_context(palette: dict, palette_name: str) -> dict:
     """Flatten palette into a template context dict.
 
     Colors are available as top-level names (e.g., {{ base }}, {{ mauve }}).
     Terminal colors are nested under 'terminal' (e.g., {{ terminal.color0 }}).
     UI accent colors are nested under 'ui' (e.g., {{ ui.accent }}).
     Meta and integrations are nested under 'meta' and 'integrations'.
+    Wallpapers list is available as 'wallpapers' (absolute paths).
     """
     ctx = {}
     ctx.update(palette.get("colors", {}))
@@ -120,6 +121,7 @@ def build_template_context(palette: dict) -> dict:
     ctx["integrations"] = palette.get("integrations", {})
     ctx["device"] = get_device_name()
     ctx["monitors"] = get_monitors()
+    ctx["wallpapers"] = [str(wp) for wp in get_wallpapers(palette_name)]
     return ctx
 
 
@@ -474,7 +476,7 @@ def cmd_apply(args: argparse.Namespace) -> None:
     print(f"Applying theme: {palette['meta']['name']} ({name})")
 
     env = create_jinja_env()
-    context = build_template_context(palette)
+    context = build_template_context(palette, name)
     rendered = render_templates(env, context)
 
     if not rendered:
@@ -498,7 +500,7 @@ def cmd_preview(args: argparse.Namespace) -> None:
     print(f"Preview: {palette['meta']['name']} ({name})")
 
     env = create_jinja_env()
-    context = build_template_context(palette)
+    context = build_template_context(palette, name)
     rendered = render_templates(env, context, dry_run=True)
 
     if not rendered:
