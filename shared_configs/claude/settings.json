@@ -71,15 +71,6 @@
     "pr": ""
   },
   "autoMemoryEnabled": true,
-  "extraKnownMarketplaces": {
-    "oac-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "darrenhinde/OpenAgentsControl"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "oac@oac-marketplace": true
-  }
+  "extraKnownMarketplaces": {},
+  "enabledPlugins": {}
 }
