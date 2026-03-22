@@ -94,8 +94,7 @@ function install_hyprland() {
     # # Themes and appearance
     # "catppuccin-gtk-theme-mocha" # GTK theme
     # "nwg-look"                   # Run nwg-look to configure themes
-    # "hyprcursor"
-    # "bibata-cursor-theme-bin"
+    "bibata-cursor-theme-bin"
     #
     # # "swayidle"
     # # "sway-audio-idle-inhibit-git"
@@ -275,6 +274,10 @@ function configure_voxtype() {
   if command -v voxtype >/dev/null 2>&1; then
     log_info "Downloading voxtype whisper model (if not already present)..."
     voxtype setup --download
+
+    # Enable GPU (Vulkan) backend for faster transcription
+    log_info "Enabling voxtype GPU backend..."
+    sudo voxtype setup gpu --enable
   else
     log_warn "voxtype not found in PATH. Run manually after install: voxtype setup --download"
   fi
