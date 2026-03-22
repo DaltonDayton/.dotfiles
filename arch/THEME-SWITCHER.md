@@ -1,8 +1,126 @@
-opencode -s ses_30bd72228ffeiakmixrPs3jM7n
-
 # Theme Switcher
 
 A Python-based theme engine that manages colors and wallpapers across all desktop applications from a single palette definition.
+
+## Quick Reference
+
+```bash
+# Apply a theme (renders templates, sets wallpapers, reloads all apps)
+python3 modules/theme/switch.py apply catppuccin-mocha
+
+# List available themes
+python3 modules/theme/switch.py list
+
+# Preview without applying
+python3 modules/theme/switch.py preview nord
+
+# Show current theme
+python3 modules/theme/switch.py current
+
+# Or use the rofi picker
+# SUPER+D
+```
+
+## How It Works
+
+The theme switcher has four mechanisms that run in sequence when you apply a theme:
+
+### 1. Template rendering
+Jinja2 templates in `templates/` are rendered with colors from the palette TOML file.
+Output goes to `generated/` (gitignored). Templates use `{{ color_name }}` for colors,
+`{{ ui.accent }}` for semantic UI colors, `{{ terminal.color0 }}` for ANSI colors,
+and `{{ device }}` / `{{ monitors }}` for device-aware config.
+
+### 2. Symlink wiring
+Generated files are symlinked to where apps expect their configs. Some go directly
+to `~/.config/<app>/`, others go into module directories that are already symlinked
+from `~/.config/`. The symlink map is defined in `SYMLINK_MAP` in `switch.py`.
+
+### 3. Plugin integrations
+Apps with their own theme systems (Tmux, Starship, Yazi, OpenCode) get a regex
+find-and-replace on their config files to swap the theme/flavor name. Defined in
+`INTEGRATION_MAP` in `switch.py`. Empty values in `[integrations]` skip with a warning.
+
+### 4. Wallpapers + reload
+Wallpapers from `wallpapers/<theme-name>/` are assigned to detected monitors.
+`hyprpaper.conf` is generated and hyprpaper is restarted. Then all apps are
+hot-reloaded (kitty via socket, waybar via signal, swaync via client, tmux via
+source-file). Each reload has a 5-second timeout to prevent hangs.
+
+## How To: Add a New Theme
+
+1. Create `palettes/<name>.toml` with all four sections:
+   - `[meta]` — name, type (dark/light), source
+   - `[colors]` — 26 color slots (use official theme colors, duplicate if needed)
+   - `[terminal]` — 16 ANSI colors (color0-color15)
+   - `[ui]` — semantic accent mappings (clock, network, battery, gpu, etc.)
+   - `[integrations]` — plugin theme names (empty string to skip)
+
+2. Add wallpapers to `wallpapers/<name>/` (jpg, png, webp)
+
+3. For plugin-based apps, ensure the theme is available:
+   - Starship: add a `[palettes.<name>]` block to `starship.toml`
+   - Yazi: install the flavor (`ya pkg add <author>/<name>`)
+   - Tmux: the color override template handles this automatically
+   - OpenCode: check if a built-in theme exists
+
+4. Test: `python3 switch.py apply <name>`
+
+**Palette design rule:** Only use official colors from the theme. Never interpolate
+or derive colors. If the theme has fewer than 26 distinct colors, duplicate the
+nearest official color. This ensures the theme looks authentic.
+
+## How To: Add a New App
+
+### Template-generated app (colors hardcoded in config)
+
+1. Create a template in `templates/<app>/<config-file>.j2`
+   - Use `{{ color_name }}` for palette colors
+   - Use `{{ ui.accent }}` etc. for semantic colors
+   - Use Jinja2 filters: `strip_hash`, `to_rgb`, `to_rgba`, `upper_hex`, `to_rgb_r/g/b`
+   - Add `{{ device }}` conditionals for device-specific behavior
+
+2. Add to `SYMLINK_MAP` in `switch.py`:
+   ```python
+   "app/config-file": str(MODULES_DIR / "path/to/config-file"),
+   # or
+   "app/config-file": "~/.config/app/config-file",
+   ```
+
+3. Add to `RELOAD_COMMANDS` if the app supports hot-reload
+
+4. Add the original config file to `.gitignore` (it's now a generated symlink)
+
+5. Update the app's module to not conflict with the generated file
+
+### Plugin-based app (has its own theme system)
+
+1. Add an entry to `INTEGRATION_MAP` in `switch.py`:
+   ```python
+   {
+       "name": "app-name",
+       "file": str(MODULES_DIR / "path/to/config"),
+       "pattern": r'(setting = )"[^"]*"',
+       "template": r'\1"{value}"',
+       "key": "app_name",
+   },
+   ```
+
+2. Add the integration key to each palette's `[integrations]` section
+
+3. Add to `RELOAD_COMMANDS` if applicable
+
+## Device Awareness
+
+The switcher reads `DEVICE_NAME` from `arch/device.env` (values: `desktop`, `laptop`, `default`).
+Monitors are detected dynamically via `hyprctl monitors -j` at runtime.
+
+Both `device` and `monitors` are available in all templates:
+```jinja2
+{% if device == "desktop" and monitors %}
+  "output": "{{ monitors[0] }}"
+{% endif %}
+```
 
 ## Architecture
 
